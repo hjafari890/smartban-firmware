@@ -27,8 +27,8 @@ The workstation plots live 250 Hz biopotential waveforms, R-peak markers, 3-axis
 The system consists of a Texas Instruments CC2652R1 LaunchPad paired with a custom multi-sensor shield:
 
 <p align="center">
-  <img src="assets/smartban_shield_3d_render.png" alt="SmartBAN Sensor Shield 3D Render" width="45%" />
-  <img src="assets/hardware_launchpad_assembly.png" alt="LaunchPad Hardware Fit Check" width="45%" />
+  <img src="assets/hardware_shield_physical.jpg" alt="SmartBAN Sensor Shield and LaunchPad Hardware" width="48%" />
+  <img src="assets/smartban_shield_pcb_layout.png" alt="SmartBAN Sensor Shield 4-Layer PCB Layout" width="48%" />
 </p>
 
 ### On-Board Sensors & Components
