@@ -1,6 +1,6 @@
-# Technical Summary: Dedicated Bare-Metal ECG & Respiration Firmware (V1.1)
+﻿# Technical Summary: Dedicated Bare-Metal ECG & Respiration Firmware (V1.1)
 
-**Project / Thesis Title:** *Integration and Validation of an Intelligent Sensor Node for a Smart Body Area Network (SmartBAN) Testbed*  
+**Project / project Title:** *Integration and Validation of an Intelligent Sensor Node for a Smart Body Area Network (SmartBAN) Testbed*  
 **Target Platform:** Texas Instruments CC2652R1 Microcontroller (ARM Cortex-M4F) + SmartBAN Custom Sensor Shield Rev 3.5  
 **Analog Front-End (AFE):** Texas Instruments ADS1292R (24-bit Low-Power Biopotential & Impedance Pneumography AFE)  
 **Firmware Subdirectory:** `firmware/08_ecg_dedicated/`  
@@ -68,7 +68,7 @@ firmware/08_ecg_dedicated/
 | **ADS1292R ignored register write commands (`WREG`)** | Device was in default continuous conversion mode (`RDATAC`) with `START` pin floating/high, locking shadow registers. | Added strict pre-initialization hardware sequence: clamp `START = LOW`, issue `SDATAC` (`0x11`), write registers with readback verification, then assert `START = HIGH`. |
 | **No biopotential signal on electrode attachment** | Channel mapping confusion in prior firmware versions (Channel 1 was assumed to be ECG, while Channel 2 was powered down). | Mapped PCB netlist traces: Channel 1 connects to Respiration ($40.2\text{ k}\Omega$ / $47\text{ nF}$ filter), Channel 2 connects to ECG biopotentials. Reconfigured `CH1SET = 0x40` (Gain 4) and `CH2SET = 0x00` (Gain 6). |
 | **Severe 50/60 Hz powerline saturation** | Active Right-Leg Drive (RLD) was disabled or derived from the wrong channel. | Enabled internal RLD amplifier with $V_{\text{ref}}$ common-mode derived from Channel 2 inputs (`RLD_SENS = 0x2C`), driving patient ground through the $1\text{ M}\Omega / 1.5\text{ nF}$ stabilization loop. |
-| **Heart rate stuck at upper clamp (220 BPM)** | Preliminary Pan-Tompkins algorithm used level-triggering on MWI output without bandpass filtering. High-frequency ambient noise kept MWI above threshold, firing a false beat every time the 200 ms refractory window expired ($15000 / 50 = 300\text{ BPM} \to 220\text{ BPM}$). | Implemented 5.5–13 Hz integer FIR bandpass filtering before derivative stage and enforced local maximum peak detection ($MWI[n-1] > MWI[n-2]$ and $MWI[n-1] \ge MWI[n]$). |
+| **Heart rate stuck at upper clamp (220 BPM)** | Preliminary Pan-Tompkins algorithm used level-triggering on MWI output without bandpass filtering. High-frequency ambient noise kept MWI above threshold, firing a false beat every time the 200 ms refractory window expired ($15000 / 50 = 300\text{ BPM} \to 220\text{ BPM}$). | Implemented 5.5 - 13 Hz integer FIR bandpass filtering before derivative stage and enforced local maximum peak detection ($MWI[n-1] > MWI[n-2]$ and $MWI[n-1] \ge MWI[n]$). |
 | **Hardware lead-off detection inoperative** | $10\text{ M}\Omega$ PCB pull-down resistors ($R_{51}, R_{52}$) on analog inputs prevented $6\text{ nA}$ DC current from reaching the $2.85\text{ V}$ comparator threshold. | Added software Signal Quality Index (SQI) monitoring signal variance ($< 0.0001\text{ mV}^2$) and rail saturation in both MCU firmware and PC GUI, cleanly reporting `0 BPM` / `--` on open leads. |
 
 ---
@@ -98,4 +98,4 @@ firmware/08_ecg_dedicated/
 
 ## 7. Personal Reflection & Research Insights
 
-Through this phase of the research, I developed a deep appreciation for the critical importance of rigorous hardware netlist tracing and analog front-end state machine timing. I learned that biopotential acquisition failures often stem not from silicon defects, but from subtle race conditions during startup sequences—such as shadow register locking and missing filter settling margins. Furthermore, debugging the QRS detector reinforced that embedded biomedical algorithms must always couple frequency-selective filtering with strict geometric peak detection to remain resilient against real-world powerline interference.
+Through this phase of the research, I developed a deep appreciation for the critical importance of rigorous hardware netlist tracing and analog front-end state machine timing. I learned that biopotential acquisition failures often stem not from silicon defects, but from subtle race conditions during startup sequences, such as shadow register locking and missing filter settling margins. Furthermore, debugging the QRS detector reinforced that embedded biomedical algorithms must always couple frequency-selective filtering with strict geometric peak detection to remain resilient against real-world powerline interference.

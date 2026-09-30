@@ -1,6 +1,6 @@
-# Technical Engineering Report: Integration & Validation of an Intelligent Sensor Node for SmartBAN Testbed
+﻿# Technical Engineering Report: Integration & Validation of an Intelligent Sensor Node for SmartBAN Testbed
 
-**Project**: Master's Thesis — *Integration and Validation of an Intelligent Sensor Node for a Smart Body Area Network (SmartBAN) Testbed*  
+**Project**: SmartBAN Project, *Integration and Validation of an Intelligent Sensor Node for a Smart Body Area Network (SmartBAN) Testbed*  
 **Target Hardware**: Texas Instruments SimpleLink CC2652R1 LaunchPad (ARM Cortex-M4F @ 48 MHz, 352 KB Flash, 80 KB SRAM) + Custom SmartBAN Shield Rev 3.5  
 **Firmware Covered**: `09_tirtos_all_in_one` (Checkpoints v1, v2, and v3)  
 **Host Software**: `sensor_gui.py` (Tkinter + Matplotlib Clinical Real-Time Dashboard)  
@@ -28,7 +28,7 @@ The firmware implements a real-time, deterministic, multi-tasking operating syst
 - **Engineering Solution**: Architected an atomic SPI Bus Manager in `bsp_spi.c` utilizing a mutual exclusion mutex (`pthread_mutex_t`). The arbiter transparently tests the required bus mode before each transaction; if switching from IMU to ECG, it dynamically resets the CC2652R1 SSI peripheral frame format via `SPI_control(..., SPICC26XXDMA_CMD_SET_FRAME_FORMAT, ...)`, deasserts both CS lines, and inserts a 2 µs guard interval, guaranteeing zero bit-clock distortion.
 
 ### Breakthrough 2: Zero-Droop BME680 Gas Heater Compensation (AVDD Rail Protection)
-- **Problem**: The BME680 metal-oxide (MOX) gas sensor requires heating its internal plate to 320°C, drawing 16 mA for 100–180 ms. During continuous 1 Hz environmental polling, this 16 mA current pulse pulled down the shared 1.8V analog rail ($\text{AVDD}$) by $\sim 18\text{ mV}$. This injected an artificial $0.40\text{ mV}$, $100\text{ ms}$ QRS-like electrical pulse into the ADS1292R analog inputs at exactly $50.8\text{ BPM}$, completely falsifying the Pan-Tompkins heart rate detector.
+- **Problem**: The BME680 metal-oxide (MOX) gas sensor requires heating its internal plate to 320°C, drawing 16 mA for 100 - 180 ms. During continuous 1 Hz environmental polling, this 16 mA current pulse pulled down the shared 1.8V analog rail ($\text{AVDD}$) by $\sim 18\text{ mV}$. This injected an artificial $0.40\text{ mV}$, $100\text{ ms}$ QRS-like electrical pulse into the ADS1292R analog inputs at exactly $50.8\text{ BPM}$, completely falsifying the Pan-Tompkins heart rate detector.
 - **Engineering Solution**: Developed a novel **Cold IAQ Tracking Algorithm** in `hal_bme680.c`. The driver fires the hotplate only once at system boot for $180\text{ ms}$, locks the baseline MOX resistance ($R_0 \approx 12,914\text{ k}\Omega$), and immediately sets `RUN_GAS = 0`. During normal runtime, the 1 Hz task measures temperature and humidity without firing the heater, dynamically estimating indoor air quality index (IAQ) and $\text{eCO}_2$ using an empirical polynomial model:
 $$\text{Compensated IAQ} = \text{Base IAQ} + 0.15 \cdot (T - 20.0) + 0.25 \cdot |H - 40.0|$$
 This completely eliminated the 18 mV power rail droop while delivering valid IAQ ($\sim 15\text{--}35$) and $\text{eCO}_2$ ($\sim 448\text{--}515\text{ ppm}$) telemetry.
@@ -67,7 +67,7 @@ The codebase is organized into a modular, layered embedded architecture:
 | **Display & Keypad HAL** | [`hal/hal_ui.c`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/09_tirtos_all_in_one/hal/hal_ui.c) | Interfaces with PCAL6408A 6-button expander and CH455H 7-segment display driver to render live BPM, vitals, and LED pulses. |
 | **Edge-AI Cardiac DSP** | [`edgeai/edgeai_ecg.c`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/09_tirtos_all_in_one/edgeai/edgeai_ecg.c) | Embedded Pan-Tompkins QRS detector, 12-beat rolling RR mean window, and autonomic HRV feature extraction (SDNN, RMSSD). |
 | **Edge-AI Motion DSP** | [`edgeai/edgeai_imu.c`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/09_tirtos_all_in_one/edgeai/edgeai_imu.c) | PDR step-and-heading system, cadence estimator, posture classification (sedentary/active), and impact/free-fall alarm detector. |
-| **Clinical Dashboard** | [`sensor_gui.py`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/09_tirtos_all_in_one/sensor_gui.py) | Python GUI with 10 FPS direct canvas blitting, 1st–99th percentile auto-scaling, 3D posture horizon, and TinyML visualizer. |
+| **Clinical Dashboard** | [`sensor_gui.py`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/09_tirtos_all_in_one/sensor_gui.py) | Python GUI with 10 FPS direct canvas blitting, 1st - 99th percentile auto-scaling, 3D posture horizon, and TinyML visualizer. |
 | **Automated Build Tool** | [`build_and_flash.py`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/09_tirtos_all_in_one/build_and_flash.py) | Python compilation pipeline orchestrating SysConfig CLI, `tiarmclang`, `tiarmobjcopy`, and SmartRF Flash Programmer 2. |
 
 ---
@@ -136,7 +136,7 @@ flowchart TD
 | **Deep Sleep Shutdown Power** | **< 0.005 mA @ 3.3V** ($<0.016\text{ mW}$) | Sub-5 µA shutdown entered via `DEEPSLEEP` command; battery life > 1 year. |
 | **UART Telemetry Throughput** | **~9,220 bytes/sec** @ 115,200 baud | 250 Hz ECG (6.5 KB/s) + 25 Hz IMU (2.5 KB/s) + 1 Hz ENV (0.22 KB/s) = 80% bus cap. |
 | **Flash Memory Consumption** | **81,622 bytes** (23.2% of 352 KB) | Leaves 270 KB available for BLE stack, Over-the-Air (OAD), and flash logging. |
-| **SRAM Memory Consumption** | **34,816 bytes** (43.5% of 80 KB) | Includes TI-RTOS kernel heap, 4 task stacks (1024–2048B), and ring buffers. |
+| **SRAM Memory Consumption** | **34,816 bytes** (43.5% of 80 KB) | Includes TI-RTOS kernel heap, 4 task stacks (1024 - 2048B), and ring buffers. |
 | **QRS Detection Latency** | **< 48 ms** (12 samples) | Real-time R-peak detection with 100% synchronization to physical LED/display. |
 | **Heart Rate Stability** | **$\pm 1.2\text{ BPM}$ std dev** at resting state | 12-beat firmware rolling mean + 16-beat host trimmed mean with slew limiting. |
 
@@ -148,8 +148,8 @@ flowchart TD
    With the TI-RTOS7 preemptive kernel running deterministically and SPI/I2C arbitration proven bug-free, the project is completely primed to enable the TI SimpleLink BLE5-Stack. The current design leaves over **270 KB of Flash and 45 KB of RAM**, providing ample headroom for the BLE Controller and Host stack.
 2. **Standardized Clinical Sensor Abstraction Layer (HAL)**:
    Every sensor now exposes a clean, non-blocking HAL API (`hal_ecg_read_sample`, `hal_imu_get_sample`, `hal_bme680_read`, etc.). Any future wireless profile (SmartBAN standard, BLE Heart Rate Service, or Environmental Sensing Service) can read these structures directly without touching low-level hardware registers.
-3. **Reproducible Master's Thesis Experimental Dataset**:
-   The synchronized 250 Hz ECG, 25 Hz IMU, and 1 Hz environmental telemetry stream provides an end-to-end validated dataset for demonstrating multi-modal sensor fusion in the thesis examination.
+3. **Reproducible SmartBAN Project Experimental Dataset**:
+   The synchronized 250 Hz ECG, 25 Hz IMU, and 1 Hz environmental telemetry stream provides an end-to-end validated dataset for demonstrating multi-modal sensor fusion in the project examination.
 
 ---
 

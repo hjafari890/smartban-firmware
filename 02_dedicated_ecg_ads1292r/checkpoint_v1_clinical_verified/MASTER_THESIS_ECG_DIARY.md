@@ -1,14 +1,14 @@
-# Master's Thesis Research & Engineering Diary: Clinical Wearable ECG & Edge-AI Subsystem (`CC2652R1` + `ADS1292R`)
+﻿# SmartBAN Project Research & Engineering Diary: Clinical Wearable ECG & Edge-AI Subsystem (`CC2652R1` + `ADS1292R`)
 
 > [!IMPORTANT]
-> **Project Handover & Thesis Reference Document**
+> **Project Handover & project Reference Document**
 > * **Active Target Directory**: [`c:\Users\hjafa\OneDrive\Desktop\shield cc2650\firmware\08_ecg_dedicated\`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/08_ecg_dedicated/)
 > * **Strict Constraint**: Do **NOT** modify `firmware/09_tirtos_all_in_one/` (it has been restored from `09_tirtos_checkpoint_backup` and must remain untouched). All dedicated ECG development, flashing, DSP tuning, and TinyML analytics reside in `firmware/08_ecg_dedicated/`.
 > * **Hardware Platform**: Texas Instruments **SimpleLink CC2652R1 LaunchPad** (`ARM Cortex-M4F @ 48 MHz`, `COM3` @ `115200` baud) + **Custom BAN Shield V3.5** (`TI ADS1292R` 24-bit $\Delta\Sigma$ Biopotential Analog Front-End over `SPI0` @ `4 MHz`, Mode 1 `CPOL=0, CPHA=1`, `250 SPS` continuous `RDATAC`).
 
 ---
 
-## 1. Executive Summary (Thesis Abstract Context)
+## 1. Executive Summary (project Abstract Context)
 
 Wearable biopotential sensor nodes operating in dry-electrode or non-standard anatomical placements face severe analog and digital signal integrity challenges:
 1. **Large Electrode-Skin Half-Cell Potentials** ($\pm 30\text{ mV}$ to $\pm 200\text{ mV}$ DC offset) that saturate fixed-range IIR filters if clipped prior to high-pass filtering.
@@ -22,13 +22,13 @@ This engineering diary records the complete, chronological diagnosis, mathematic
 
 ## 2. Chronological Step-by-Step Engineering Diary
 
-### Entry 1 — Initial Symptom & Workspace Isolation
+### Entry 1, Initial Symptom & Workspace Isolation
 * **Observation**: Test Modes 1 (`1 Hz Cal`), 2 (`Input Short`), and 3 (`Die Temp`) were functional, whereas Mode 4 (`Live Electrodes`) exhibited either a complete flatline (`0.00 mV`) or $16.95\text{ mV}_{\text{pp}}$ of broadband noise, failed to compute Heart Rate (`BPM`), and did not assert hardware lead-off flags when electrodes were detached.
 * **Action Taken**: Isolated all experimental and production changes strictly to [`firmware/08_ecg_dedicated/`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/08_ecg_dedicated/) (`main.c`, `edgeai_ecg.c`, `edgeai_ecg.h`, `ecg_gui.py`) and restored `firmware/09_tirtos_all_in_one/` to its exact pristine state.
 
 ---
 
-### Entry 2 — Root Cause #1: Pre-HPF DC Half-Cell Offset Clipping in `BiquadFilter`
+### Entry 2, Root Cause #1: Pre-HPF DC Half-Cell Offset Clipping in `BiquadFilter`
 * **Discovery**: In [`ecg_gui.py`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/08_ecg_dedicated/ecg_gui.py#L84-L102), `BiquadFilter.process(x)` previously clamped every incoming sample `x` to `[-25.0, +25.0] mV` **before** applying the $0.5\text{ Hz}$ High-Pass Filter (`HPF`).
 * **Biophysical Explanation**: According to the Nernst equation, the Ag/AgCl or dry metal-electrolyte interface develops a DC half-cell potential $E_{\text{hc}}$ up to $\pm 150\text{ mV}$ between `LA` (`IN2P`) and `RA` (`IN2N`). At $\text{Gain} = 6$ and $V_{\text{ref}} = 2.42\text{ V}$, the `ADS1292R` linear differential input range is:
   $$V_{\text{FS}} = \pm \frac{V_{\text{ref}}}{\text{Gain}} = \pm \frac{2.42\text{ V}}{6} = \pm 403.33\text{ mV}$$
@@ -37,7 +37,7 @@ This engineering diary records the complete, chronological diagnosis, mathematic
 
 ---
 
-### Entry 3 — Root Cause #2: `ADS1292R` 32 kHz Respiration Carrier Crosstalk & Floating RLD Reference
+### Entry 3, Root Cause #2: `ADS1292R` 32 kHz Respiration Carrier Crosstalk & Floating RLD Reference
 * **Discovery (Live Hardware Telemetry on `COM3`)**:
   * With `REG_RESP1 = 0xEA` ($32\text{ kHz}$ respiration modulation/demodulation enabled) and `REG_RESP2 = 0x03` (`RLDREF_INT = 0`), raw CH2 (`ECG Lead I`) exhibited:
     $$\text{Mean} = -94.25\text{ mV}, \quad V_{\text{pp}} = 16.95\text{ mV}, \quad \text{Status} = \mathtt{0xC0}$$
@@ -54,7 +54,7 @@ This engineering diary records the complete, chronological diagnosis, mathematic
 | `CH2SET` | `0x05` | `0x00` | `0x00` | Dedicated ECG Lead I (`IN2P = LA`, `IN2N = RA`), $\text{PGA Gain} = 6$ ($1\text{ LSB} = 0.04808\ \mu\text{V}$). |
 | `RLD_SENS` | `0x06` | `0x2C` | `0x2C` | RLD buffer ON (`PDB_RLD=1`), closed-loop common-mode feedback derived from `IN2P` + `IN2N`. |
 | `LOFF_SENS`| `0x07` | `0x0C` | `0x0C` | Current sources enabled on `IN2P` (`LA`) and `IN2N` (`RA`). |
-| `RESP1` | `0x09` | `0xEA` | **`0x00`** | **Disabled $32\text{ kHz}$ carrier injection** — reduced CH2 open-lead noise **21×** ($16.95\text{ mV}_{\text{pp}} \rightarrow 0.65\text{ mV}_{\text{pp}}$) and restored DC lead-off sensing (`Status = 0xCC`). |
+| `RESP1` | `0x09` | `0xEA` | **`0x00`** | **Disabled $32\text{ kHz}$ carrier injection**, reduced CH2 open-lead noise **21×** ($16.95\text{ mV}_{\text{pp}} \rightarrow 0.65\text{ mV}_{\text{pp}}$) and restored DC lead-off sensing (`Status = 0xCC`). |
 | `RESP2` | `0x0A` | `0x03` | **`0x07`** | Enabled internal mid-supply RLD reference (`RLDREF_INT = 1`, $1.21\text{ V}$); `0x87` during `OFFSETCAL`. |
 
 * **Hardware Self-Test Verification Table (`COM3` @ `250.0 SPS`)**:
@@ -65,20 +65,20 @@ This engineering diary records the complete, chronological diagnosis, mathematic
 
 ---
 
-### Entry 4 — Biopotential Physics of Non-Exact Electrode Placement & Heartbeat (`BPM`) Lock
+### Entry 4, Biopotential Physics of Non-Exact Electrode Placement & Heartbeat (`BPM`) Lock
 * **Theoretical Analysis (Einthoven's Triangle & Dipole Projection)**:
   * The cardiac electrical field is modeled as a time-varying current dipole vector $\vec{p}(t)$. The voltage measured by Lead I (`LA` minus `RA`, separation vector $\vec{d}$) is:
     $$V_{\text{Lead I}}(t) = \vec{p}(t) \cdot \vec{d} = |\vec{p}(t)|\,|\vec{d}|\cos\theta$$
   * **Effect 1 (Amplitude Reduction)**: Placing electrodes too close together ($|\vec{d}|$ small) or perpendicular to the $+60^\circ$ cardiac axis ($\cos\theta \rightarrow 0$) reduces R-peak amplitude from $1.2\text{ mV}$ down to $0.12\text{--}0.30\text{ mV}$.
   * **Effect 2 (Polarity Inversion)**: Reversing `RA` and `LA` flips $\vec{d} \rightarrow -\vec{d}$, inverting the R-wave downward.
-  * **Effect 3 (Skeletal Muscle Myopotentials — EMG)**: Placing electrodes over pectoral or forearm flexor muscles injects $15\text{--}90\text{ Hz}$ motor-unit action potentials ($\sim 50\text{--}200\ \mu\text{V}_{\text{rms}}$).
+  * **Effect 3 (Skeletal Muscle Myopotentials, EMG)**: Placing electrodes over pectoral or forearm flexor muscles injects $15\text{--}90\text{ Hz}$ motor-unit action potentials ($\sim 50\text{--}200\ \mu\text{V}_{\text{rms}}$).
 * **Root Cause of Missing BPM (`--`) & Solution**:
   1. Previously, [`main.c`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/08_ecg_dedicated/main.c) and [`ecg_gui.py`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/08_ecg_dedicated/ecg_gui.py) blanked out BPM whenever `status & 0x0E != 0`. However, Bit 3 (`0x08`, `RLD_STAT`) is always `1` when `RLD_LOFF_SENS=0`, and dry-skin contact impedance can trip a single comparator bit even while differential ECG is clearly captured. We un-gated [`edgeai_ecg_process_sample()`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/08_ecg_dedicated/main.c#L755) and GUI BPM fusion so heartbeat calculation is never suppressed when a rhythmic QRS signal is present.
   2. In [`edgeai_ecg.c`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/08_ecg_dedicated/edgeai_ecg.c#L265-L372) and [`PanTompkinsDetector`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/08_ecg_dedicated/ecg_gui.py#L220-L360), we added **first-sample filter priming** (preventing DC step transients from inflating `peak_max_learning`), **first-beat RR timer anchoring**, and **Auto-Gain 95th-Percentile Envelope Thresholding** so R-peaks as small as $0.06\text{ mV}$ or inverted R-peaks lock onto the exact BPM within 2 beats.
 
 ---
 
-### Entry 5 — Resolving GUI Event-Loop Starvation (Unclickable Buttons)
+### Entry 5, Resolving GUI Event-Loop Starvation (Unclickable Buttons)
 * **Root Cause Diagnosis**:
   1. Calling `self.ecg_ax.set_ylim(...)` and `self.resp_ax.set_ylim(...)` inside a $50\text{ ms}$ (`20 Hz`) Tkinter timer callback invalidated Matplotlib's tick/grid/font layout on every frame ($\sim 110\text{ ms}$ CPU time per callback). Because execution time exceeded the $50\text{ ms}$ timer period, Tkinter's event loop never reached idle, starving `<Button-1>` mouse clicks.
   2. Calling `self._ser.write()` from the GUI thread while the background thread blocked on `self._ser.readline()` caused Windows `pyserial` lock contention.
@@ -88,7 +88,7 @@ This engineering diary records the complete, chronological diagnosis, mathematic
 
 ---
 
-### Entry 6 — Expert 5-Stage QRS-Gated Clinical DSP Filter Pipeline (Hospital-Monitor Signal Quality)
+### Entry 6, Expert 5-Stage QRS-Gated Clinical DSP Filter Pipeline (Hospital-Monitor Signal Quality)
 * **Why Standard Bandpass Filtering Looked Noisy**:
   1. `Auto-Scale` previously zoomed the Y-axis down to $\pm 0.25\text{ mV}$ ($8\times$ magnification compared to the clinical $\pm 2.0\text{ mV}$ scale), magnifying micro-noise across the full screen. Default Y-scale is now restored to **`±2.0 mV`** (and `Auto-Scale` is clamped to a clinical minimum of `±1.0 mV`).
   2. Between QRS complexes (during the P-wave, T-wave, and isoelectric T-P segment), no physiological cardiac energy exists above $8\text{ Hz}$, whereas skeletal muscle EMG noise spans $12\text{--}40\text{ Hz}$. A simple $40\text{ Hz}$ low-pass filter passes all $12\text{--}38\text{ Hz}$ EMG tremor onto the baseline.
@@ -105,7 +105,7 @@ This engineering diary records the complete, chronological diagnosis, mathematic
 
 ---
 
-### Entry 7 — Edge-AI & TinyML Cardiac Analytics Architecture
+### Entry 7, Edge-AI & TinyML Cardiac Analytics Architecture
 * **MCU-Side (`CC2652R1` in [`edgeai_ecg.c`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/08_ecg_dedicated/edgeai_ecg.c) & [`main.c`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/08_ecg_dedicated/main.c))**:
   * Executes integer Pan-Tompkins QRS detection (`LPF -> HPF -> 5-pt Derivative -> Squaring -> 38-sample MWI -> Adaptive Thresholding + Searchback`) and computes time-domain Heart Rate Variability metrics (**`SDNN`** via two-pass integer square root `ecg_isqrt` and **`RMSSD`** via successive RR differences) in $<15\ \mu\text{s}$ per sample (`<0.4%` CPU load at 48 MHz).
   * Streams 1 Hz Edge-AI telemetry packets: `S,bpm,rr_ms,resp_rpm,lead_off,sdnn_ms,rmssd_ms,cardiac_flags`.
@@ -117,11 +117,11 @@ This engineering diary records the complete, chronological diagnosis, mathematic
 
 ---
 
-### Entry 8 — Anti-Spike Heart Rate Analyzer, Dual-Source ECG-Derived Respiration (EDR), & CH455H 7-Segment Display Integration
+### Entry 8, Anti-Spike Heart Rate Analyzer, Dual-Source ECG-Derived Respiration (EDR), & CH455H 7-Segment Display Integration
 
 #### 1. Root Cause & Elimination of Sudden High Heart Rate Spikes (`PanTompkinsDetector` & [`edgeai_ecg.c`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/08_ecg_dedicated/edgeai_ecg.c))
-* **Why BPM Suddenly Jumped to High Values (`160–210 BPM`)**:
-  * In standard Pan-Tompkins implementations with a `200–220 ms` (`50–55 sample`) refractory period, a prominent T-wave (which occurs $260\text{--}340\text{ ms}$ after the R-peak) or a brief skeletal muscle (EMG) twitch can cross the adaptive MWI threshold. When a second trigger occurs $300\text{ ms}$ ($75\text{ samples}$) after a real R-peak, the instantaneous interval is $60 / 0.30\text{ s} = 200\text{ BPM}$, dragging the displayed heart rate up to unrealistically high numbers.
+* **Why BPM Suddenly Jumped to High Values (`160 - 210 BPM`)**:
+  * In standard Pan-Tompkins implementations with a `200 - 220 ms` (`50 - 55 sample`) refractory period, a prominent T-wave (which occurs $260\text{--}340\text{ ms}$ after the R-peak) or a brief skeletal muscle (EMG) twitch can cross the adaptive MWI threshold. When a second trigger occurs $300\text{ ms}$ ($75\text{ samples}$) after a real R-peak, the instantaneous interval is $60 / 0.30\text{ s} = 200\text{ BPM}$, dragging the displayed heart rate up to unrealistically high numbers.
 * **5-Layer Anti-Spike Heartbeat Counter Architecture ([`PanTompkinsDetector`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/08_ecg_dedicated/ecg_gui.py#L442-L585))**:
   1. **Extended Physiological Refractory Window (`380 ms` / `95 samples`) + Adaptive RR Gate**: Enforces a strict $380\text{ ms}$ minimum blanking window (completely covering the ST segment and entire T-wave) plus an adaptive gate requiring $\text{RR}_{\text{new}} \ge 0.66 \times \overline{\text{RR}}_{\text{median}}$ once rhythm lock is established.
   2. **Morphological QRS Prominence Verification**: Every candidate trigger must exhibit a local $96\text{ ms}$ ($24\text{-sample}$) peak-to-peak excursion of at least $50\%$ of the 98th-percentile R-wave amplitude (`win_ptp >= 0.50 * dominant_amp`), rejecting small T-waves and baseline glitches.

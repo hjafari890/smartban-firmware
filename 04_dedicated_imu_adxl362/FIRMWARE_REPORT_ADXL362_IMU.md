@@ -1,6 +1,6 @@
-# Technical Report: SmartBAN ADXL362 IMU Firmware & 3D Telemetry System
-**Thesis Topic:** *Integration and Validation of an Intelligent Sensor Node for a Smart Body Area Network (SmartBAN) Testbed*  
-**Module:** Firmware Subsystem 05 — Dedicated ADXL362 IMU Bring-Up, Calibration & 3D Spatial Attitude Visualizer  
+﻿# Technical Report: SmartBAN ADXL362 IMU Firmware & 3D Telemetry System
+**project Topic:** *Integration and Validation of an Intelligent Sensor Node for a Smart Body Area Network (SmartBAN) Testbed*  
+**Module:** Firmware Subsystem 05, Dedicated ADXL362 IMU Bring-Up, Calibration & 3D Spatial Attitude Visualizer  
 **Target Platform:** Texas Instruments CC2652R1 LaunchPad (`CC26X2R1_LAUNCHXL`) + BAN Shield Rev 3.5  
 **Primary Sensor:** Analog Devices ADXL362 Ultra-Low Power 3-Axis MEMS Accelerometer  
 
@@ -87,7 +87,7 @@ The firmware implements:
 | **FLASH Footprint** | **35,553 bytes (34.7 KB)** | $10.1\%$ of 352 KB Flash |
 | **SRAM Footprint** | **19,816 bytes (19.4 KB)** | $24.2\%$ of 80 KB RAM |
 | **UART Telemetry Stream Rate** | **10.0 Hz (115,200 baud)** | Non-blocking ring buffer |
-| **Internal Sensor ODR** | **100 Hz** (selectable 12.5–400 Hz) | Ultra-Low Noise Mode |
+| **Internal Sensor ODR** | **100 Hz** (selectable 12.5 - 400 Hz) | Ultra-Low Noise Mode |
 | **Active Sensor Current** | **13.0 $\mu\text{A}$** @ 3.3V | $13\ \mu\text{A}$ @ 100 Hz ODR |
 | **Dynamic Range** | **$\pm 8\text{ g}$** ($4\text{ mg/LSB}$ sensitivity) | Linear range $\pm 8.192\text{ g}$ |
 | **Calibrated Stationary Accuracy** | **$|a| = 0.994\text{ g} \pm 0.015\text{ g}$** | $1.000\text{ g}$ nominal Earth gravity |

@@ -1,6 +1,6 @@
-# Master's Thesis Technical Report & Executive Abstract
+﻿# SmartBAN Project Technical Report & Executive Abstract
 
-**Thesis Title:** Integration and Validation of an Intelligent Sensor Node for a Smart Body Area Network (SmartBAN) Testbed  
+**project Title:** Integration and Validation of an Intelligent Sensor Node for a Smart Body Area Network (SmartBAN) Testbed  
 **Target Hardware Platform:** Texas Instruments CC2652R1 LaunchPad (`CC26X2R1_LAUNCHXL`) + Custom SmartBAN Sensor Shield Rev 3.5  
 **Operating System / SDK:** TI-RTOS7 Kernel (SysConfig 1.21.1, SimpleLink SDK 8.33.00.16, `tiarmclang` 5.1.1.LTS)  
 **Reporting Period:** Firmware Porting, Multi-Task Scheduling, Hardware-in-the-Loop Debugging, & GUI Telemetry Validation  
@@ -101,7 +101,7 @@ The firmware implements real-time physiological and kinematic signal acquisition
 
 ---
 
-## 6. Significance & Foundation for Subsequent Thesis Milestones
+## 6. Significance & Foundation for Subsequent project Milestones
 
 This firmware version establishes the verified, deterministic real-time bedrock for the final phases of the Master's research:
 
@@ -113,4 +113,4 @@ This firmware version establishes the verified, deterministic real-time bedrock 
 
 ## 7. Researcher's Reflection & Insights
 
-> *"Transitioning from bare-metal firmware to a real-time preemptive RTOS revealed that concurrent embedded systems demand far more than correct driver code—they require meticulous bus arbitration, interrupt-to-task synchronization, and strict hardware timing compliance. Overcoming complex multi-device SPI conflicts and timing discrepancies deepened my understanding of mixed-signal hardware-software co-design, cementing a solid, scalable foundation for the intelligent SmartBAN sensor node."*
+> *"Transitioning from bare-metal firmware to a real-time preemptive RTOS revealed that concurrent embedded systems demand far more than correct driver code, they require meticulous bus arbitration, interrupt-to-task synchronization, and strict hardware timing compliance. Overcoming complex multi-device SPI conflicts and timing discrepancies deepened my understanding of mixed-signal hardware-software co-design, cementing a solid, scalable foundation for the intelligent SmartBAN sensor node."*

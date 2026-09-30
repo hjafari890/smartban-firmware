@@ -1,4 +1,4 @@
-# TI-RTOS Integration Handover Guide (From Verified `08_ecg_dedicated` Checkpoint)
+﻿# TI-RTOS Integration Handover Guide (From Verified `08_ecg_dedicated` Checkpoint)
 
 **Checkpoint Directory**: `c:\Users\hjafa\OneDrive\Desktop\shield cc2650\firmware\08_ecg_dedicated\checkpoint_v1_clinical_verified\`  
 **Full Engineering Diary**: [`MASTER_THESIS_ECG_DIARY.md`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/08_ecg_dedicated/MASTER_THESIS_ECG_DIARY.md)
@@ -28,8 +28,8 @@ Located in [`main.c`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/fi
 
 ## 2. Anti-Spike Heart Rate Analyzer (`edgeai_ecg.c` & `PanTompkinsDetector`)
 Located in [`edgeai_ecg.c`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/08_ecg_dedicated/edgeai_ecg.c#L195-L310) and [`ecg_gui.py`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/08_ecg_dedicated/ecg_gui.py#L442-L585):
-* **Why BPM Previously Spiked to High Numbers (`160–210 BPM`)**:
-  * A `200–220 ms` refractory window allowed tall T-waves (`260–340 ms` after R-peak) or EMG muscle twitches to trigger a false second beat (`300 ms` interval = `200 BPM`).
+* **Why BPM Previously Spiked to High Numbers (`160 - 210 BPM`)**:
+  * A `200 - 220 ms` refractory window allowed tall T-waves (`260 - 340 ms` after R-peak) or EMG muscle twitches to trigger a false second beat (`300 ms` interval = `200 BPM`).
 * **5-Layer Anti-Spike Solution**:
   1. **`380 ms` (`95 samples` at 250 Hz) Physiological Refractory Period** + **Adaptive RR Gate** ($\text{RR}_{\text{new}} \ge 0.66 \times \overline{\text{RR}}_{\text{median}}$).
   2. **Morphological QRS Prominence Check**: Local 96 ms peak-to-peak excursion must be $\ge 50\%$ of the 98th-percentile QRS amplitude.
@@ -41,7 +41,7 @@ Located in [`edgeai_ecg.c`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2
 
 ## 3. Dual-Source ECG-Derived Respiration (`EDR`) Rate & Waveform
 Located in [`main.c`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/08_ecg_dedicated/main.c#L337-L422) (`resp_process(ch1_raw, ch2_raw)`) and [`ecg_gui.py`](file:///c:/Users/hjafa/OneDrive/Desktop/shield%20cc2650/firmware/08_ecg_dedicated/ecg_gui.py#L316-L435) (`RespFilterChain`):
-* Fuses **`0.35 * CH1 + 0.65 * CH2_raw` (ECG-Derived Respiration `EDR`)** in the **`0.10–0.42 Hz` ($6\text{--}25\text{ RPM}$)** passband.
+* Fuses **`0.35 * CH1 + 0.65 * CH2_raw` (ECG-Derived Respiration `EDR`)** in the **`0.10 - 0.42 Hz` ($6\text{--}25\text{ RPM}$)** passband.
 * Normalizes the breathing wave into `[-1.0, +1.0]` for live display and estimates `RPM` continuously via zero-crossing peak hysteresis cross-checked by 15-second respiratory autocorrelation.
 
 ---

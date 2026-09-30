@@ -1,8 +1,8 @@
-# Technical Summary & Master's Thesis Engineering Report
+﻿# Technical Summary & SmartBAN Project Engineering Report
 
 **Project Title:** Integration and Validation of an Intelligent Sensor Node for a Smart Body Area Network (SmartBAN) Testbed  
 **Target Hardware:** Texas Instruments CC2652R1 LaunchPad (ARM Cortex-M4F @ 48 MHz) + Custom SmartBAN Shield Rev 3.5  
-**Document Purpose:** Supervisor Technical Progress Report & Master's Thesis Abstract Foundation  
+**Document Purpose:** Supervisor Technical Progress Report & SmartBAN Project Abstract Foundation  
 
 ---
 
@@ -90,7 +90,7 @@ firmware/07_all_in_one_sensor/
 | **False Lead-Off Status ("OK" When Unplugged)** | 32 kHz respiration modulation carrier was active (`RESP1 = 0xEA`), blinding the 6 nA DC lead-off comparators. | Set `REG_RESP1 = 0x00` in Live mode, allowing DC lead-off current sources to pull open inputs to the supply rails. |
 | **Common-Mode Saturation & Floating Baseline** | `REG_RESP2` was set to `0x03`, disabling the internal mid-supply RLD reference (`RLDREF_INT = 0`). | Configured `REG_RESP2 = 0x07` (`RLDREF_INT = 1`), establishing closed-loop $1.21\text{ V}$ common-mode biasing. |
 | **False Tachycardia Spikes ($180\text{--}210\text{ BPM}$)** | Standard $200\text{ ms}$ Pan-Tompkins refractory period allowed tall T-waves ($260\text{--}340\text{ ms}$) or EMG noise to trigger duplicate counts. | Implemented an extended $380\text{ ms}$ refractory blanking period, adaptive RR interval gating ($\ge 0.66 \times \overline{\text{RR}}$), and morphological prominence verification. |
-| **GUI Freeze & Unclickable Buttons** | Matplotlib canvas redraws executed inside high-frequency Tkinter timers ($\sim 110\text{ ms}$ per frame), starving GUI event handling. | Decimated serial data reads, throttled canvas rendering to 8–10 FPS, cached axis limits, and bounded the serial terminal widget to a 150-line circular buffer. |
+| **GUI Freeze & Unclickable Buttons** | Matplotlib canvas redraws executed inside high-frequency Tkinter timers ($\sim 110\text{ ms}$ per frame), starving GUI event handling. | Decimated serial data reads, throttled canvas rendering to 8 - 10 FPS, cached axis limits, and bounded the serial terminal widget to a 150-line circular buffer. |
 
 ---
 
@@ -132,4 +132,4 @@ This validated bare-metal baseline provides the verified hardware register found
 
 ## 7. Personal Reflection & Research Insights
 
-> *"Working through the analog biopotential front-end reinforced that wearable biomedical signal integrity cannot be resolved by software digital filtering alone; improper analog hardware registers—such as an active 32 kHz carrier or a floating RLD reference—will irrevocably corrupt biopotentials before digitization. Systematically modeling the physical electrode-skin interface and verifying each stage with hardware self-tests bridged the gap between theoretical medical instrumentation and practical embedded engineering."*
+> *"Working through the analog biopotential front-end reinforced that wearable biomedical signal integrity cannot be resolved by software digital filtering alone; improper analog hardware registers, such as an active 32 kHz carrier or a floating RLD reference, will irrevocably corrupt biopotentials before digitization. Systematically modeling the physical electrode-skin interface and verifying each stage with hardware self-tests bridged the gap between theoretical medical instrumentation and practical embedded engineering."*

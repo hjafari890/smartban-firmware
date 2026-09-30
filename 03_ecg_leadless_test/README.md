@@ -1,23 +1,23 @@
 # 03_ecg_leadless_test: ECG Leadless Electrode Verification
 
-> Standalone diagnostic firmware for verifying leadless dry-contact electrodes and electrode impedance.  
+> Test firmware for verifying leadless dry-contact electrodes and skin impedance.  
 > Target: TI CC2652R1 LaunchPad + ADS1292R Dry Electrode Interface
 
 ---
 
-## ⚡ Overview
+## Overview
 
-This diagnostic firmware validates leadless dry-contact electrode topologies on the SmartBAN shield. In wearable cardiac patches, wet Ag/AgCl gel electrodes cause skin irritation over multi-day monitoring periods. This firmware verifies the front-end performance when coupled directly to dry leadless electrodes.
+This test firmware evaluates dry-contact electrode setups on the SmartBAN shield. For wearable patches, dry electrodes avoid skin irritation caused by wet gel pads over multiple days of wear. This code tests the signal quality and contact impedance.
 
-### Key Highlights:
-- **Lead-Off Detection (LOD):** Continuous monitoring of electrode-skin contact impedance using ADS1292R internal current sources.
-- **Dynamic Noise & Motion Artifact Characterization:** Benchmarking baseline drift and motion artifact susceptibility under physical movement.
-- **Dry Contact Signal Integrity:** Verification of R-peak sharpness and baseline stability across high-impedance dry contacts.
-- **Serial Verification Tool (`view_ecg_test.py`):** Real-time CLI verification tool capturing sample continuity and signal fidelity.
+### Key Points:
+- Lead-off detection: Tracks electrode-to-skin contact impedance using ADS1292R internal current sources.
+- Motion artifact characterization: Tests baseline drift and noise during movement.
+- Signal integrity: Checks R-peak sharpness and baseline stability across dry contacts.
+- Serial verification utility (`view_ecg_test.py`): Quick terminal tool to check continuity and sample validity.
 
 ---
 
-## 📂 File Directory
+## File Directory
 
 ```text
 03_ecg_leadless_test/
@@ -29,19 +29,19 @@ This diagnostic firmware validates leadless dry-contact electrode topologies on 
 ├── cc13x2_cc26x2_nortos.cmd                                 # NoRTOS linker command file
 ├── ecg_leadless_test_CC26X2R1_LAUNCHXL_nortos_ticlang.projectspec # CCS project specification
 ├── view_ecg_test.py                                         # Serial CLI waveform viewer
-└── syscfg/                                                  # Generated TI driver headers/sources
+└── syscfg/                                                  # Generated TI driver headers and sources
 ```
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
-### 1. Flash the Leadless Test Firmware
+### 1. Flash the Firmware
 ```bash
 python build_and_flash.py
 ```
 
-### 2. Run the Verification Script
+### 2. View Live Data
 ```bash
 python view_ecg_test.py --port COM3
 ```

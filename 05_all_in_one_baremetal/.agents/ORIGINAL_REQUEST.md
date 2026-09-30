@@ -1,6 +1,6 @@
-# Original User Request
+﻿# Original User Request
 
-## Initial Request — 2026-09-05T19:16:25Z
+## Initial Request, 2026-09-05T19:16:25Z
 
 Debug and calibrate the remaining biomedical and environmental sensors on the SmartBAN multi-sensor shield: resolve the Bosch BME680 barometric pressure compensation formula (currently reporting ~3352 hPa), correct the Melexis MLX90632 FIR sensor die temperature calculation (currently overflowing), and bring up the Maxim MAX30102 / MAX32664 optical pulse oximeter front-end and physical LED.
 
@@ -16,11 +16,11 @@ Integrity mode: development
 ## Requirements
 
 ### R1. Bosch BME680 Barometric Pressure Compensation
-- Identify and resolve the calculation discrepancy in the BME680 pressure compensation pipeline so that atmospheric pressure is reported accurately within realistic ambient ranges (~980–1030 hPa at normal sea-level / room elevation).
+- Identify and resolve the calculation discrepancy in the BME680 pressure compensation pipeline so that atmospheric pressure is reported accurately within realistic ambient ranges (~980 - 1030 hPa at normal sea-level / room elevation).
 - Preserve the verified room temperature compensation (currently reading ~21.5 °C), relative humidity, and MOX gas hotplate resistance.
 
 ### R2. Melexis MLX90632 FIR Skin & Die Temperature Compensation
-- Correct the thermopile raw RAM conversion and temperature calculation so that both Sensor Die Temperature and Target/Skin Temperature report rational physical values (~20–37 °C) without numerical overflow.
+- Correct the thermopile raw RAM conversion and temperature calculation so that both Sensor Die Temperature and Target/Skin Temperature report rational physical values (~20 - 37 °C) without numerical overflow.
 
 ### R3. Maxim MAX32664 & MAX30102 Optical PPG Subsystem
 - Investigate the hardware and firmware initialization chain between CC2652R1 host, PCA9306 level shifter, MAX32664 Biometric Hub, and MAX30102 optical sensor.
@@ -30,12 +30,12 @@ Integrity mode: development
 
 ### BME680 Barometric Pressure
 - [ ] Atmospheric pressure reads between 980.0 hPa and 1030.0 hPa under ambient indoor conditions.
-- [ ] Temperature reading remains accurate at ambient room temperature (~20–25 °C).
+- [ ] Temperature reading remains accurate at ambient room temperature (~20 - 25 °C).
 - [ ] Firmware builds cleanly with `python build_and_flash.py` and flashes to target without errors.
 
 ### MLX90632 FIR Temperature
-- [ ] Sensor die temperature reports rational ambient temperature (~20–30 °C) with zero arithmetic overflow.
-- [ ] Target temperature responds dynamically to hand proximity (~30–35 °C).
+- [ ] Sensor die temperature reports rational ambient temperature (~20 - 30 °C) with zero arithmetic overflow.
+- [ ] Target temperature responds dynamically to hand proximity (~30 - 35 °C).
 
 ### MAX30102 / MAX32664 Optical Pulse Oximeter
 - [ ] MAX30102 optical LED emits visible light when active.

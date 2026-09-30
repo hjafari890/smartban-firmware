@@ -1,4 +1,4 @@
-# Design, Firmware Architecture, and Clinical-Aerospace Telemetry for an Integrated Multi-Modal Wireless Body Area Network
+﻿# Design, Firmware Architecture, and Clinical-Aerospace Telemetry for an Integrated Multi-Modal Wireless Body Area Network
 
 **Authors:** SmartBAN Engineering & Embedded Systems Research Group  
 **Target Venue:** *IEEE Transactions on Biomedical Circuits and Systems (TBioCAS) / IEEE Internet of Things Journal*  
@@ -286,8 +286,8 @@ The integration of physical millivolt-scaled digital filtering, adaptive Pan-Tom
 
 ## References
 
-1. S. Chen, et al., "Body Area Networks: A Survey," *Mobile Networks and Applications*, vol. 16, no. 2, pp. 171–193, 2011.
-2. J. Pan and W. J. Tompkins, "A Real-Time QRS Detection Algorithm," *IEEE Transactions on Biomedical Engineering*, vol. BME-32, no. 3, pp. 230–236, 1985.
+1. S. Chen, et al., "Body Area Networks: A Survey," *Mobile Networks and Applications*, vol. 16, no. 2, pp. 171 - 193, 2011.
+2. J. Pan and W. J. Tompkins, "A Real-Time QRS Detection Algorithm," *IEEE Transactions on Biomedical Engineering*, vol. BME-32, no. 3, pp. 230 - 236, 1985.
 3. Texas Instruments, "ADS1292R Low-Power, 2-Channel, 24-Bit Analog Front-End for Biopotential Measurements," *Datasheet SBAS502*, 2020.
 4. Analog Devices, "ADXL362: Micropower, 3-Axis, $\pm 2g/\pm 4g/\pm 8g$ Digital Output MEMS Accelerometer," *Datasheet Rev. E*, 2021.
 5. Texas Instruments, "SimpleLink CC13xx/CC26xx NoRTOS Driver Porting Guide," *Application Report SWRA599*, 2019.

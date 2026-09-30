@@ -1,15 +1,15 @@
-# Master Thesis Engineering Architecture & Research Roadmap
+﻿# SmartBAN Project Engineering Architecture & Research Roadmap
 
-**Thesis Topic**: *Integration and Validation of an Intelligent Sensor Node for a Smart Body Area Network (SmartBAN) Testbed*  
+**project Topic**: *Integration and Validation of an Intelligent Sensor Node for a Smart Body Area Network (SmartBAN) Testbed*  
 **Platform**: Texas Instruments CC2652R1 LaunchPad (`CC26X2R1_LAUNCHXL`) + SmartBAN Multi-Sensor Shield Rev 3.5  
 **Firmware Location**: `firmware/09_tirtos_all_in_one/`  
 **Operating System**: TI-RTOS7 Kernel (`ti.sysbios`) with POSIX Threading (`pthread`, `semaphore`, `pthread_mutex`)
 
 ---
 
-## 1. Executive Summary & Thesis Alignment
+## 1. Executive Summary & project Alignment
 
-This document outlines the software engineering architecture, semantic communication evaluation, and multi-stage research roadmap for the Master Thesis.
+This document outlines the software engineering architecture, semantic communication evaluation, and multi-stage research roadmap for the SmartBAN Project.
 
 ```mermaid
 graph TD
@@ -40,7 +40,7 @@ graph TD
     end
 ```
 
-The implemented firmware fulfills the key objectives of the thesis:
+The implemented firmware fulfills the key objectives of the project:
 1. **Reusable Sensor Software Architecture**: Modular, decoupled Hardware Abstraction Layers (HAL) and Board Support Packages (BSP) driven by a deterministic, priority-preemptive RTOS.
 2. **Lightweight Edge-AI & Semantic Communication**: Real-time extraction of clinically actionable tokens on the Cortex-M4F microcontroller, reducing wireless channel occupancy by **over 99%**.
 3. **Multi-Modal Sensing Suite**: Simultaneous acquisition of 24-bit biopotentials (ECG Lead I & respiration pneumography), 3-axis inertial kinematics, barometric pressure, temperature, relative humidity, air quality, ambient light, optical proximity, and far-infrared medical skin temperature.
@@ -50,7 +50,7 @@ The implemented firmware fulfills the key objectives of the thesis:
 
 ## 2. Quantitative Evaluation: Semantic Communication vs. Raw Streaming
 
-The core hypothesis of the thesis is that semantic communication significantly reduces communication load, channel contention, and energy consumption while preserving clinical utility.
+The core hypothesis of the project is that semantic communication significantly reduces communication load, channel contention, and energy consumption while preserving clinical utility.
 
 ### 2.1 Bandwidth & Throughput Comparison
 
@@ -87,7 +87,7 @@ Energy Profile on CC2652R1 Cortex-M4F (VDD = 3.3V):
    - Estimated battery runtime (500 mAh LiPo): $\approx \mathbf{1,033\text{ hours}}$ (**~43.0 days**).
 
 > [!TIP]
-> **Thesis Finding**: Transitioning from continuous raw streaming to local on-node semantic intelligence increases sensor node battery longevity by **13.8$\times$** (from 3.1 days to over 6 weeks) on identical battery hardware.
+> **project Finding**: Transitioning from continuous raw streaming to local on-node semantic intelligence increases sensor node battery longevity by **13.8$\times$** (from 3.1 days to over 6 weeks) on identical battery hardware.
 
 ---
 
@@ -133,7 +133,7 @@ The firmware contains a modular, integer-arithmetic Edge-AI engine designed spec
 
 ```mermaid
 gantt
-    title SmartBAN Master Thesis Development Roadmap
+    title SmartBAN SmartBAN Project Development Roadmap
     dateFormat  YYYY-MM
     section Milestone M1
     TI-RTOS7 Core Firmware & Bus Manager   :done, m1, 2026-08, 2026-09
@@ -162,7 +162,7 @@ gantt
   - Input: 64-sample QRS morphology window centered on confirmed R-peak.
   - Output: 5-class AAMI EC57 heartbeat classification (Normal [N], Supraventricular ectopic [S], Ventricular ectopic [V], Fusion [F], Unknown [Q]).
   - Memory footprint: $< 12\text{ KB}$ Flash, $< 4\text{ KB}$ RAM.
-- **Advantage for Thesis**: Validates the upper bound of semantic compression by transmitting a 1-byte diagnostic classification instead of the 64 raw 24-bit samples.
+- **Advantage for project**: Validates the upper bound of semantic compression by transmitting a 1-byte diagnostic classification instead of the 64 raw 24-bit samples.
 
 ### Stage 3: Shield Rev 4.0 PCB Hardware Spin (PPG Resolution)
 - **Problem in Rev 3.5**: The Maxim MAX32664 PPG Hub failed due to an electrical level-shifter conflict between the 1.8V analog domain and 3.3V digital rail on the $SDA/SCL$ pull-up lines.
@@ -178,9 +178,9 @@ gantt
 
 ---
 
-## 5. Experimental Testbed Methodology for Thesis Defense
+## 5. Experimental Testbed Methodology for project Defense
 
-To generate empirical graphs and tables for the thesis dissertation, the following laboratory test procedures are established:
+To generate empirical graphs and tables for the project dissertation, the following laboratory test procedures are established:
 
 ### Test Protocol 1: Zero-Loss Reliability & Latency
 - **Apparatus**: CC2652R1 LaunchPad connected to Fluke/Rigol ECG Patient Simulator and automated serial logger.
@@ -199,4 +199,4 @@ To generate empirical graphs and tables for the thesis dissertation, the followi
   2. Idle sensor listening
   3. Continuous raw streaming ($9.8\text{ kB/s}$)
   4. Semantic token streaming ($92\text{ B/s}$)
-- **Thesis Deliverable**: Power-delay-throughput Pareto efficiency frontier.
+- **project Deliverable**: Power-delay-throughput Pareto efficiency frontier.

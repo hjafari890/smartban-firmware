@@ -1,4 +1,4 @@
-# Technical Summary Report: Integration & Hardware-Software Co-Design of an Intelligent Biomedical Sensor Node for SmartBAN
+﻿# Technical Summary Report: Integration & Hardware-Software Co-Design of an Intelligent Biomedical Sensor Node for SmartBAN
 
 **Project Title:** Integration and Validation of an Intelligent Sensor Node for a Smart Body Area Network (SmartBAN) Testbed  
 **Author / Researcher:** Master's Degree Candidate  
@@ -70,7 +70,7 @@ The firmware executes a deterministic 100 ms sensing and control pipeline under 
 * **Engineering Action:** Safe firmware bypass implemented (`hub_ready = false`) to isolate the optical hub, prevent pin over-voltage injection, and avoid electrical latch-up, enabling safe bring-up of all remaining 6 sensor modalities while defining the layout revision requirement for Shield Rev 4.0.
 
 ### Breakthrough 4: Multi-Modal HMI Navigation & Display Engine with Interactive Tare Triggering
-* **Engineering Solution:** Designed an interactive, non-blocking state machine coupling the PCAL6408A interrupt-driven 6-button expander (`SW1`–`SW6`) with the CH455H 7-segment display. Integrated 8 display modes (`tEP`, `PrS`, `HuD`, `LUX`, `PrX`, `Irt`, `ECG`, `PPG`) with real-time numeric rendering and mapped button `SW4` to trigger live on-demand recalibration of the zero-g accelerometer tare baseline.
+* **Engineering Solution:** Designed an interactive, non-blocking state machine coupling the PCAL6408A interrupt-driven 6-button expander (`SW1` - `SW6`) with the CH455H 7-segment display. Integrated 8 display modes (`tEP`, `PrS`, `HuD`, `LUX`, `PrX`, `Irt`, `ECG`, `PPG`) with real-time numeric rendering and mapped button `SW4` to trigger live on-demand recalibration of the zero-g accelerometer tare baseline.
 
 ---
 
@@ -143,7 +143,7 @@ The complete firmware binary was profiled using the Linker Map Output (`diagnost
 | :--- | :--- | :--- | :--- | :--- |
 | **On-Chip Flash** | $352.0\,\text{KB}$ ($360,448\,\text{B}$) | **$41,091\,\text{B}$** ($40.13\,\text{KB}$) | **$11.67\%$** | **$311\,\text{KB}$ ($88.33\%$)** |
 | **On-Chip SRAM** | $80.0\,\text{KB}$ ($81,920\,\text{B}$) | **$20,352\,\text{B}$** ($19.88\,\text{KB}$) | **$24.84\%$** | **$59.6\,\text{KB}$ ($75.16\%$)** |
-| **Raw Intel HEX** | — | **$115,635\,\text{B}$** | — | Production Ready |
+| **Raw Intel HEX** |, | **$115,635\,\text{B}$** |, | Production Ready |
 
 ### Timing, Throughput & Sensor Metrics
 * **Core Clock Speed:** $48.0\,\text{MHz}$ derived from external High-Frequency Crystal Oscillator (XOSCHF).
@@ -164,12 +164,12 @@ The complete firmware binary was profiled using the Linker Map Output (`diagnost
 
 ## 6. Foundation Enabled for the Next Milestone
 
-The successful completion and stabilization of this diagnostic firmware establish the empirical foundation for subsequent thesis milestones:
+The successful completion and stabilization of this diagnostic firmware establish the empirical foundation for subsequent project milestones:
 
 1. **Guaranteed Sensor Data Integrity for Edge Feature Extraction:**
    * Sensor drivers now output calibrated physical SI units rather than unverified ADC words. This allows immediate deployment of edge intelligence algorithms (e.g., fall detection, activity recognition, arrhythmia screening) directly on the ARM Cortex-M4F without signal artifacts.
 2. **Deterministic Multi-Bus Power & Timing Characterization:**
-   * Establishing an $88\%$ Flash and $75\%$ RAM headroom proves that the complete SmartBAN software stack—including the SmartBAN MAC layer (IEEE 802.15.6), BLE 5.2 protocol stack, and TinyML inference models—can easily co-exist on the CC2652R1 without requiring external memory.
+   * Establishing an $88\%$ Flash and $75\%$ RAM headroom proves that the complete SmartBAN software stack, including the SmartBAN MAC layer (IEEE 802.15.6), BLE 5.2 protocol stack, and TinyML inference models, can easily co-exist on the CC2652R1 without requiring external memory.
 3. **Definitive Hardware Errata for Carrier Board Revision 4.0:**
    * The hardware-software co-design process has rigorously verified all net connections. The physical errata documented here (swapping ADXL362 SDI/SDO traces and integrating $3.3\text{V} \leftrightarrow 1.8\text{V}$ bidirectional level shifting on `HOST_HUB_MFIO` and `HOST_HUB_RST`) will be incorporated directly into the next PCB revision, transitioning the testbed to fully production-ready wearable prototypes.
 

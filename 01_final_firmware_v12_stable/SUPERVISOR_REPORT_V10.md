@@ -1,6 +1,6 @@
-# Technical Progress Report: SmartBAN Intelligent Sensor Node (Firmware v10)
+﻿# Technical Progress Report: SmartBAN Intelligent Sensor Node (Firmware v10)
 
-**Project / Thesis**: *Integration and Validation of an Intelligent Sensor Node for a Smart Body Area Network (SmartBAN) Testbed*  
+**Project / project**: *Integration and Validation of an Intelligent Sensor Node for a Smart Body Area Network (SmartBAN) Testbed*  
 **Researcher**: Hesamoddin Jafari  
 **Supervisor**: Prof. Konstantin Mikhaylov (Faculty of ITEE / CWC, University of Oulu)  
 **Hardware Target**: TI CC2652R1 LaunchPad (`ARM Cortex-M4F @ 48 MHz`) + Custom SmartBAN Multi-Sensor Shield Rev 3.5  
@@ -26,7 +26,7 @@ The key engineering milestones completed in this iteration are:
 
 ## 2. Reusable Software Architecture (Enabling Future Testbed & 5G Extensions)
 
-To satisfy the core thesis objective of creating a **reusable, extensible software framework** for future SmartBAN and 5G demonstrations, the firmware is structured into five hardware-decoupled layers:
+To satisfy the core project objective of creating a **reusable, extensible software framework** for future SmartBAN and 5G demonstrations, the firmware is structured into five hardware-decoupled layers:
 
 ```mermaid
 flowchart LR
@@ -80,7 +80,7 @@ flowchart LR
 
 ## 4. Engineering Transparency: Hardware-Executed vs. Modeled Components (Current Status)
 
-To maintain strict scientific rigor for the thesis and publication, the current status of each subsystem in `v10.0` is documented below:
+To maintain strict scientific rigor for the project and publication, the current status of each subsystem in `v10.0` is documented below:
 
 | Subsystem | Current Implementation Status | Planned Next Upgrade |
 | :--- | :--- | :--- |
@@ -94,7 +94,7 @@ To maintain strict scientific rigor for the thesis and publication, the current 
 
 ## 5. Living Milestone Tracker (Updated at Each Step)
 
-- [x] **Milestone 10.0 (Completed — Sept 2026)**:
+- [x] **Milestone 10.0 (Completed, Sept 2026)**:
   - Separated baseline (`09_tirtos_all_in_one`) from new SmartBAN/Edge-AI branch (`10_smartban_semantic_tinyml`).
   - Implemented `smartban_mac.c` (`SAP`/`CAP` superframe controller, Policies `0/1/2`, cumulative byte & CRC-16 proof inspector) and `edgeai_tinyml.c` (`576-Byte` Int8 classifier + `DWT_CYCCNT` cycle profiling).
   - Upgraded workstation GUI (`sensor_gui.py`) with industrial telemetry deck, live cumulative byte-saving proof bar, Wireless LAN Coordinator Hub (`Port 8080`), and Protocol/5G Reference Guide.

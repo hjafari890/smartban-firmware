@@ -1,10 +1,10 @@
-# Technical Report: Clinical ECG & Respiration Subsystem for SmartBAN Intelligent Sensor Node
+﻿# Technical Report: Clinical ECG & Respiration Subsystem for SmartBAN Intelligent Sensor Node
 
 **Project Title**: Integration and Validation of an Intelligent Sensor Node for a Smart Body Area Network (SmartBAN) Testbed  
 **Subsystem**: Clinical Biopotential ECG, Dual-Source Respiration, & Edge-AI Analytics  
 **Firmware Version**: `08_ecg_dedicated` (Clinical Baseline Checkpoint `v1.1`)  
 **Target Hardware**: Texas Instruments CC2652R1 (ARM Cortex-M4F @ 48 MHz) + SmartBAN Custom Shield Rev 3.5 (TI ADS1292R 24-bit AFE + WCH CH455H LED Driver)  
-**Document Purpose**: Executive Technical Summary for Thesis Abstract & Supervisor Milestone Reporting  
+**Document Purpose**: Executive Technical Summary for project Abstract & Supervisor Milestone Reporting  
 
 ---
 
@@ -39,7 +39,7 @@ A clinically validated, ultra-low-latency, edge-intelligent wearable ECG and res
 ### Core Subsystem Capabilities:
 1. **Clinical Analog Front-End Acquisition**: Configured the ADS1292R Delta-Sigma ADC at 250 SPS with continuous Lead-Off Detection (6 nA DC pull-up/pull-down), closed-loop Right Leg Drive (RLD) common-mode rejection, and verified register handshaking.
 2. **On-Chip Integer Edge-AI Engine**: Embedded an integer Pan-Tompkins QRS peak detector and time-domain Heart Rate Variability (`SDNN`, `RMSSD`) pipeline executing in $<15\ \mu\text{s}$ per sample ($<0.4\%$ CPU load).
-3. **Dual-Source Respiration Fusion (EDR)**: Extracted breath-to-breath respiration rates (6–25 RPM) and clean respiratory waveforms by fusing Channel 1 thoracic bioimpedance potential drift with Channel 2 ECG-Derived Respiration (cardiac vector axis shift).
+3. **Dual-Source Respiration Fusion (EDR)**: Extracted breath-to-breath respiration rates (6 - 25 RPM) and clean respiratory waveforms by fusing Channel 1 thoracic bioimpedance potential drift with Channel 2 ECG-Derived Respiration (cardiac vector axis shift).
 4. **Hardware & GUI Synchronized BPM Display**: Integrated an I2C driver for the on-shield WCH CH455H controller displaying live Heart Rate ($\text{BPM}$) across a 3-digit 7-segment display with an event-driven $140\text{ ms}$ pulse flash on each detected R-peak.
 5. **High-Performance Host Visualizer (`ecg_gui.py`)**: Built a non-blocking GUI featuring a 5-stage QRS-gated clinical DSP filter, autocorrelation-anchored anti-spike BPM lock, real-time TinyML arrhythmia screening, and placement quality feedback.
 
@@ -58,7 +58,7 @@ A clinically validated, ultra-low-latency, edge-intelligent wearable ECG and res
    * Reduced baseline muscle tremor (EMG) noise to $< 27\ \mu\text{V}_{\text{rms}}$ ($<0.6\%$ of full-scale span) while maintaining clinical QRS amplitude fidelity.
 
 3. **5-Layer Anti-Spike Heart Rate Analyzer**:
-   * Eliminated sudden high-BPM doubling artifacts (160–210 BPM caused by prominent T-waves or EMG twitches) via:
+   * Eliminated sudden high-BPM doubling artifacts (160 - 210 BPM caused by prominent T-waves or EMG twitches) via:
      - $380\text{ ms}$ ($95\text{ samples}$) physiological refractory blanking.
      - Morphological prominence gate ($\ge 50\%$ of 98th-percentile QRS peak-to-peak amplitude).
      - Single-beat outlier quarantine ($\Delta\text{RR} > 25\%$).
@@ -83,7 +83,7 @@ firmware/08_ecg_dedicated/
 ├── diagnostic.syscfg          # TI SysConfig: pinmux & peripherals (SPI0, I2C0, UART2, GPIOs, LEDs)
 ├── build_and_flash.py         # Automated compiler/linker pipeline (tiarmclang + SmartRF Flash Programmer 2)
 ├── cc13x2_cc26x2_nortos.cmd   # Linker memory map (Flash: 352 KB @ 0x0, SRAM: 80 KB @ 0x20000000)
-├── MASTER_THESIS_ECG_DIARY.md # Comprehensive engineering log (Entries 1–8) for thesis handover
+├── MASTER_THESIS_ECG_DIARY.md # Comprehensive engineering log (Entries 1 - 8) for project handover
 └── checkpoint_v1_clinical_verified/ # Frozen backup directory with all source files, binaries, and handover guides
 ```
 
@@ -102,7 +102,7 @@ firmware/08_ecg_dedicated/
 | **Signal Saturated at Rails ($\pm 2.42\text{ V}$)** | RLD reference buffer disabled post-calibration (`REG_RESP2=0x03` instead of `0x07`). | Restored `REG_RESP2 = 0x07` (`RLDREF_INT = 1`), tying body common-mode voltage to $1.21\text{ V}$. |
 | **Erroneous DC Lead-Off Flags (`0x06`)** | 32 kHz bioimpedance carrier (`REG_RESP1 = 0xEA`) interfered with 6 nA DC comparators. | Set `REG_RESP1 = 0x00` in Live ECG mode; added QRS rhythm override to prevent dry-skin false disconnects. |
 | **GUI Freeze & Lag Under Data Stream** | Per-byte serial syscalls, GIL contention, and unbounded Matplotlib `set_ylim()` redraw calls. | Implemented chunked serial reads (`in_waiting`), thread-safe TX command queue, and throttled canvas redraws (10 FPS). |
-| **High Heart Rate Doubling (160–210 BPM)** | $220\text{ ms}$ refractory window allowed tall T-waves ($260\text{--}340\text{ ms}$) to register as false beats. | Implemented $380\text{ ms}$ refractory window, $\ge 50\%$ prominence gate, 5s autocorrelation lock, and rate-of-change limiter. |
+| **High Heart Rate Doubling (160 - 210 BPM)** | $220\text{ ms}$ refractory window allowed tall T-waves ($260\text{--}340\text{ ms}$) to register as false beats. | Implemented $380\text{ ms}$ refractory window, $\ge 50\%$ prominence gate, 5s autocorrelation lock, and rate-of-change limiter. |
 | **Respiration Flatline in Live Mode** | ADS1292R carrier disabled, leaving CH1 without bioimpedance excitation. | Engineered Dual-Source Respiration Fusion ($0.35 \times \text{CH1} + 0.65 \times \text{CH2 EDR}$) in the $0.10\text{--}0.42\text{ Hz}$ band. |
 | **Rapid, Asynchronous Heart Icon Blinking** | Legacy free-running timer loop toggled visibility every $140\text{ ms}$ regardless of real cardiac cycles. | Replaced timer with event-driven R-peak pulse triggering a $170\text{ ms}$ systolic flash window on detected beats only. |
 
@@ -125,7 +125,7 @@ Flash Memory Footprint                   71,662 Bytes (20.3% of 352K) < 50% allo
 SRAM Memory Footprint                    ~14.2 KB (17.7% of 80 KB)   Plenty of margin for RTOS
 Baseline RMS Noise (Isoelectric)         < 27 µVrms                  < 50 µVrms (AAMI)
 R-Peak Amplitude Preservation            100.0 % (0 dB attenuation)  Savitzky-Golay preserved
-Respiration Rate Extraction Range        6.0 – 25.0 RPM (0.1–0.42 Hz) Physiological range
+Respiration Rate Extraction Range        6.0 - 25.0 RPM (0.1 - 0.42 Hz) Physiological range
 Respiration Estimation Error             < 0.8 RPM (vs simulated)   Accurate breathing trend
 BPM Tracking Stability                   Zero spurious jumps         Locked to 5s ACF
 GUI Frame Rate / Refresh Rate            10 FPS plots / 22 Hz queues 100% click-responsive
@@ -146,4 +146,4 @@ This dedicated firmware version (`08_ecg_dedicated`) serves as the verified, gol
 
 ## 7. Personal Reflection & Research Insights
 
-Through this rigorous engineering phase, I gained deep practical insight into the delicate interplay between mixed-signal analog front-end design, DC electrode-tissue interface dynamics, and real-time digital signal processing. I learned that hardware-level register subtleties—such as carrier modulation crosstalk and reference buffer routing—can fundamentally compromise digital processing downstream, and that true clinical signal quality requires tightly coupling domain-specific physiological constraints (e.g., QRS-gated multi-bandwidth filtering and morphological refractory blanking) with resource-constrained embedded algorithms. This milestone demonstrated that sophisticated edge-AI cardiac diagnostics and multi-parameter biopotential monitoring can be achieved with exceptional stability on ultra-low-power microcontrollers without requiring heavy runtime frameworks.
+Through this rigorous engineering phase, I gained deep practical insight into the delicate interplay between mixed-signal analog front-end design, DC electrode-tissue interface dynamics, and real-time digital signal processing. I learned that hardware-level register subtleties, such as carrier modulation crosstalk and reference buffer routing, can fundamentally compromise digital processing downstream, and that true clinical signal quality requires tightly coupling domain-specific physiological constraints (e.g., QRS-gated multi-bandwidth filtering and morphological refractory blanking) with resource-constrained embedded algorithms. This milestone demonstrated that sophisticated edge-AI cardiac diagnostics and multi-parameter biopotential monitoring can be achieved with exceptional stability on ultra-low-power microcontrollers without requiring heavy runtime frameworks.

@@ -1,4 +1,4 @@
-# 07_all_in_one_sensor: SmartBAN Integrated Clinical & Aerospace Firmware
+# 05_all_in_one_baremetal: SmartBAN Integrated Bare-Metal Firmware
 
 A unified, bare-metal (NoRTOS) embedded platform for the Texas Instruments CC26X2 / CC2650 MCU that integrates physiological biosignals, 3-axis inertial flight dynamics, multi-modal environmental sensing, and local UI controls into a single synchronized, low-latency firmware.
 

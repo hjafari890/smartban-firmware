@@ -1,30 +1,30 @@
-# 06_final_tirtos_all_in_one: TI-RTOS7 Multi-Tasking Architecture Baseline
+﻿# 06_final_tirtos_all_in_one: TI-RTOS7 Multi-Tasking Architecture Baseline
 
-> Foundational preemptive RTOS kernel integration with SPI bus arbitration and lock-free ring buffers.  
-> Target: Texas Instruments CC2652R1 LaunchPad (`CC26X2R1_LAUNCHXL`) + SmartBAN Shield Rev 3.5
+> Preemptive RTOS kernel integration with SPI bus arbitration and lock-free ring buffers.  
+> Target: Texas Instruments CC2652R1 LaunchPad (CC26X2R1_LAUNCHXL) + SmartBAN Shield Rev 3.5
 
 ---
 
-## ⏱️ Overview
+## Overview
 
-This firmware establishes the core **TI-RTOS7** preemptive real-time operating system architecture for multi-sensor data acquisition. Moving from bare-metal superloops to a preemptive kernel required engineering solutions to critical real-time embedded challenges:
+This firmware is the foundational TI-RTOS7 preemptive real-time operating system setup for multi-sensor data acquisition. Moving from bare-metal superloops to a preemptive kernel solves several critical real-time embedded challenges:
 
-### Architectural Innovations:
-1. **Mutex-Protected SPI Bus Arbitration (`bsp_spi.c`):**
-   - The ADS1292R operates in **SPI Mode 1** at 250 Hz; the ADXL362 operates in **SPI Mode 0** at 25 Hz.
-   - Both share the CC2652R1 hardware `SSI0` peripheral.
-   - An atomic bus manager protects transactions with an RTOS mutex and enforces a $2\,\mu\text{s}$ guard interval during mode reconfiguration, preventing context-switch mid-frame bus collisions.
-2. **Thermal Decoupling via Cold-IAQ Estimation:**
-   - The Bosch BME680 gas heater pulls $\sim 16\text{ mA}$ during gas measurement cycles, causing an $18\text{ mV}$ droop on the shared 1.8 V analog rail.
-   - In bare-metal prototypes, this appeared as a false cardiac artifact at 50.8 BPM.
-   - Resolved by firing the heater once at boot to establish baseline resistance, followed by cold IAQ estimation via temperature and humidity compensation models.
-3. **Lock-Free SPSC Ring Buffers (`ring_buffer.c`):**
+### Key Highlights:
+1. **SPI Bus Arbitration (`bsp_spi.c`)**:
+   - The ADS1292R runs in SPI Mode 1 at 250 Hz, while the ADXL362 runs in SPI Mode 0 at 25 Hz.
+   - Both share the CC2652R1 hardware SSI0 peripheral.
+   - A mutex protects transactions and inserts a 2 microsecond guard interval during mode switches, preventing context-switch bus collisions.
+2. **Cold-IAQ Estimation for Thermal Decoupling**:
+   - The Bosch BME680 gas heater draws about 16 mA during gas sensing, which caused an 18 mV droop on the shared 1.8 V analog rail in early tests.
+   - In bare-metal tests, this droop looked like a false heartbeat at 50.8 BPM.
+   - Fixed by firing the heater once at boot to measure baseline resistance, then estimating IAQ at runtime using temperature and humidity compensation models.
+3. **Lock-Free SPSC Ring Buffers (`ring_buffer.c`)**:
    - Single-producer single-consumer circular buffers with ARM Cortex-M4 Data Memory Barriers (`__DMB()`).
-   - Guarantees zero dropped biopotential samples between the 250 Hz sensor acquisition task and telemetry task without blocking the interrupt-critical path.
+   - Guarantees zero dropped biopotential samples between the 250 Hz sensor acquisition task and telemetry task without blocking high-priority interrupts.
 
 ---
 
-## 📂 File Directory
+## File Directory
 
 ```text
 06_final_tirtos_all_in_one/
@@ -41,12 +41,12 @@ This firmware establishes the core **TI-RTOS7** preemptive real-time operating s
 ├── ipc/                                     # Lock-free SPSC ring buffers
 ├── telemetry/                               # Binary protocol serialization
 ├── syscfg/                                  # Generated driver configurations
-└── THESIS_FIRMWARE_REPORT_INTEGRATION.md    # Full integration engineering report
+└── THESIS_FIRMWARE_REPORT_INTEGRATION.md    # Integration engineering report
 ```
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Build and Flash
 ```bash
@@ -57,3 +57,4 @@ python build_and_flash.py
 ```bash
 python sensor_gui.py --port COM3 --baud 115200
 ```
+Replace `COM3` with your LaunchPad's COM port.
