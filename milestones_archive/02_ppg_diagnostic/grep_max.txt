@@ -1,0 +1,91 @@
+698: * Maxim MAX32664GTGC+T Biometric Sensor Hub & MAXM86161 Optical Engine
+700: #define MAX32664_I2C_ADDR           0x55
+763: /* Hardware reset sequence for MAX32664 Biometric Hub on DIO 19 (RST, J2-8) and DIO 28 (MFIO, J1-11).
+766: static void max32664_hw_reset(void)
+792: /* Unified I2C transfer with MAX32664 MFIO Wake-Up Handshake.
+793: * Per MAX32664 Datasheet & Zephyr OS driver (drivers/sensor/adi/max32664c/max32664c.c):
+799: static bool max32664_transmit(const uint8_t *tx_buf, uint8_t tx_len, uint8_t *rx_buf, uint32_t rx_len, uint32_t delay_ms)
+811: trans.targetAddress = MAX32664_I2C_ADDR;
+831: trans.targetAddress = MAX32664_I2C_ADDR;
+839: /* 5. Post-command delay (10 ms per Zephyr MAX32664C_DEFAULT_CMD_DELAY) */
+849: static uint8_t max32664_write_byte(uint8_t family, uint8_t index, uint8_t val, uint32_t delay_ms)
+853: if (max32664_transmit(tx, 3, &statusByte, 1, delay_ms)) {
+859: static uint8_t max32664_read_byte(uint8_t family, uint8_t index, uint8_t *val, uint32_t delay_ms)
+863: if (max32664_transmit(tx, 2, rx, 2, delay_ms)) {
+885: static uint8_t max32664_write_sensor_reg(uint8_t index, uint8_t reg_addr, uint8_t reg_val, uint32_t delay_ms)
+889: if (max32664_transmit(tx, 4, &statusByte, 1, delay_ms)) {
+895: static uint8_t max32664_read_sensor_reg(uint8_t index, uint8_t reg_addr, uint8_t *val, uint32_t delay_ms)
+899: if (max32664_transmit(tx, 3, rx, 2, delay_ms)) {
+906: static bool max32664_read_version(uint8_t *major, uint8_t *minor, uint8_t *rev)
+910: if (max32664_transmit(tx, 2, rx, 4, 10) && rx[0] == 0x00) {
+1013: static bool max32664_init(void)
+1017: uartPrint("  [MAX32664] Initiating hardware reset (DIO19=RST, DIO28=MFIO HIGH)...\r\n");
+1018: max32664_hw_reset();
+1022: uint8_t st = max32664_read_byte(0x02, 0x00, &mode, 5);
+1023: uartPrint("  [MAX32664] Initial Mode: 0x"); printHex8(mode);
+1030: uartPrint("  [MAX32664] In Bootloader Mode (0x08). Sending Exit Bootloader command (0x01 0x00 0x00)...\r\n");
+1031: uint8_t cmd_st = max32664_write_byte(0x01, 0x00, 0x00, 50);
+1032: uartPrint("  [MAX32664] Command response status: 0x"); printHex8(cmd_st); uartPrint("\r\n");
+1035: st = max32664_read_byte(0x02, 0x00, &mode, 5);
+1036: uartPrint("  [MAX32664] Mode after software command: 0x"); printHex8(mode); uartPrint("\r\n");
+1044: max32664_read_byte(0xFF, 0x00, &hub_mcu_type, 5);
+1047: max32664_read_version(&hub_ver_major, &hub_ver_minor, &hub_ver_rev);
+1051: uartPrint("  [MAX32664] SUCCESS: Sensor Hub in APPLICATION MODE (0x00)!\r\n");
+1055: uint8_t out_st = max32664_write_byte(0x10, 0x00, hub_out_mode, 10);
+1056: uartPrint("  [MAX32664] Set Output Mode 0x01 (Sensor Only): st=0x"); printHex8(out_st); uartPrint("\r\n");
+1059: uint8_t fifo_st = max32664_write_byte(0x10, 0x01, 0x01, 10);
+1060: uartPrint("  [MAX32664] Set FIFO Threshold 0x01: st=0x"); printHex8(fifo_st); uartPrint("\r\n");
+1065: max32664_transmit(tx_acc, 4, &acc_st, 1, 20);
+1066: uartPrint("  [MAX32664] Disable Internal Accel (0x44 0x04 0x00 0x00): st=0x"); printHex8(acc_st); uartPrint("\r\n");
+1071: max32664_transmit(tx_afe, 4, &hub_afe_st0, 1, 250);
+1072: uartPrint("  [MAX32664] Enable AFE (0x44 0x00 0x01 0x00): st=0x"); printHex8(hub_afe_st0); uartPrint("\r\n");
+1078: uint8_t pid_st = max32664_read_sensor_reg(0x00, 0xFF, &pid_val, 15);
+1079: uint8_t rev_st = max32664_read_sensor_reg(0x00, 0xFE, &rev_val, 15);
+1084: uartPrint("  [MAX32664] MAXM86161 Pass-Through ID Probe: PartID=0x"); printHex8(pid_val);
+1091: max32664_read_sensor_reg(0x00, 0x00, &dummy_stat1, 15);
+1092: max32664_read_sensor_reg(0x00, 0x01, &dummy_stat2, 15);
+1095: max32664_write_sensor_reg(0x00, 0x11, 0x0B, 15); /* PPG Config 1: 16uA range, 117.3us pulse */
+1096: max32664_write_sensor_reg(0x00, 0x12, 0x18, 15); /* PPG Config 2: 100 Hz sample rate */
+1097: max32664_write_sensor_reg(0x00, 0x15, 0x01, 15); /* Photo Diode Bias */
+1098: max32664_write_sensor_reg(0x00, 0x2A, 0x3F, 15); /* LED Current Range: 124mA */
+1099: max32664_write_sensor_reg(0x00, 0x23, 0x30, 15); /* LED1 Green Drive: ~24mA */
+1100: max32664_write_sensor_reg(0x00, 0x24, 0x30, 15); /* LED2 IR Drive: ~24mA */
+1101: max32664_write_sensor_reg(0x00, 0x25, 0x30, 15); /* LED3 Red Drive: ~24mA */
+1102: max32664_write_sensor_reg(0x00, 0x20, 0x21, 15); /* LEDC1=Green, LEDC2=IR */
+1103: max32664_write_sensor_reg(0x00, 0x21, 0x03, 15); /* LEDC3=Red */
+1109: * This forces INTB (pin 14 connected to MAX32664 HR_INT pin 18) to assert!
+1111: max32664_write_sensor_reg(0x00, 0x09, 0x0F, 15);
+1112: max32664_write_sensor_reg(0x00, 0x0A, 0x02, 15);
+1113: uint8_t int_en_st = max32664_write_sensor_reg(0x00, 0x02, 0xC0, 15);
+1114: uartPrint("  [MAX32664] Enabled MAXM86161 INTB (Reg 0x02=0xC0, Reg 0x09=0x0F): st=0x"); printHex8(int_en_st); uartPrint("\r\n");
+1117: max32664_write_sensor_reg(0x00, 0x04, 0x00, 15);
+1118: max32664_write_sensor_reg(0x00, 0x05, 0x00, 15);
+1119: max32664_write_sensor_reg(0x00, 0x06, 0x00, 15);
+1120: uint8_t sc_st = max32664_write_sensor_reg(0x00, 0x0D, 0x08, 15);
+1123: uartPrint("  [MAX32664] Started MAXM86161 Sampling (Reg 0x0D=0x08): st=0x"); printHex8(sc_st); uartPrint("\r\n");
+1128: max32664_transmit(tx_probe, 3, rx_probe, 6, 15);
+1129: uartPrint("  [MAX32664] 0x41 0x00 0x23 raw rx[6]: ");
+1138: max32664_transmit(tx_ext_acc, 4, &rx_ext_acc, 1, 50);
+1139: uartPrint("  [MAX32664] Enable External Accel (0x44 0x04 0x01 0x01): st=0x"); printHex8(rx_ext_acc); uartPrint("\r\n");
+1145: uartPrint("  [MAX32664] Testing Output Mode 0x"); printHex8(tmode); uartPrint(":\r\n");
+1148: uint8_t s_st = max32664_write_byte(0x10, 0x00, tmode, 10);
+1154: max32664_transmit(tx_a2, 3, &rx_a2, 1, 100);
+1162: max32664_transmit(tx_feed, 8, &rx_feed, 1, 10);
+1166: uint8_t fst = max32664_read_byte(0x12, 0x00, &cnt, 10);
+1178: if (max32664_transmit(tx_f, 2, rx_f, rlen, 10)) {
+1195: max32664_write_byte(0x10, 0x00, hub_out_mode, 10);
+1290: static bool max32664_read_biometrics(BioData_t *data)
+1294: /* 1. Check MAX32664 Hub FIFO if in Application Mode */
+1299: if (max32664_transmit(hub_sys, 2, rx_sys, 2, 5)) {
+1305: uint8_t st = max32664_read_byte(0x12, 0x00, &numSamples, 5);
+1317: if (max32664_transmit(tx, 2, rx, readLen, 10) && rx[0] == 0x00) {
+2226: /* Hardware reset and power sequencing for MAX32664 Biometric Hub & Sensors:
+2265: max32664_init();
+2269: uartPrint("  Sensors: ADS1292R(ECG) + MAX32664C/MAXM86161(PPG) + BME680 + OPT4041 + VCNL4040 + MLX90632 + ADXL362\r\n");
+2321: uartPrint("  * MAX32664C PPG Hub  : Mode=0x"); printHex8(hub_mode);
+2391: /* 5. Read MAX32664 PPG Optical Pulse Oximeter & Heart Rate */
+2394: bool bioOk = max32664_read_biometrics(&bio);
+2548: /* MAX32664C Biometric Hub & MAXM86161 Optical PPG */
+2551: uartPrint("  * [MAX32664C PPG]   : HR = ");
+2574: uartPrint("  * [MAX32664C PPG]   : Hub Ready | FIFO: samples=");
+2589: uartPrint("  * [MAX32664C PPG]   : Hub Bootloader (Mode=0x");

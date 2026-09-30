@@ -1,0 +1,56 @@
+{
+  "accuracy_pct": 99.8,
+  "flash_bytes": 576,
+  "ram_bytes": 128,
+  "confusion_matrix": [
+    [
+      195,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      207,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      204,
+      2,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      207,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      185
+    ]
+  ],
+  "class_names": [
+    "N (Normal)",
+    "S (SVEB)",
+    "V (PVC)",
+    "F (Fusion)",
+    "Q (Artifact)"
+  ],
+  "class_codes": [
+    "N",
+    "S",
+    "V",
+    "F",
+    "Q"
+  ]
+}

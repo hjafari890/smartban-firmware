@@ -1,0 +1,157 @@
+// @cliArgs --board /ti/boards/CC26X2R1_LAUNCHXL --rtos tirtos7
+
+/* ======== Power Module ======== */
+var Power = scripting.addModule("/ti/drivers/Power");
+
+/* ======== RF Module ======== */
+var RF = scripting.addModule("/ti/drivers/RF");
+if (system.deviceData.board && system.deviceData.board.components.RF) {
+    RF.$hardware = system.deviceData.board.components.RF;
+}
+
+/* ======== Kernel Configuration (TI-RTOS7) ======== */
+system.getScript("kernel_config_release.syscfg.js");
+
+/* ======== UART2 ======== */
+var UART2 = scripting.addModule("/ti/drivers/UART2");
+var uart2 = UART2.addInstance();
+uart2.$hardware = system.deviceData.board.components.XDS110UART;
+uart2.$name = "CONFIG_UART2_0";
+
+/* ======== I2C ======== */
+var I2C = scripting.addModule("/ti/drivers/I2C");
+var i2c = I2C.addInstance();
+i2c.$name = "CONFIG_I2C_0";
+i2c.i2c.sclPin.$assign = "DIO_4";
+i2c.i2c.sdaPin.$assign = "DIO_5";
+
+/* ======== SPI ======== */
+var SPI = scripting.addModule("/ti/drivers/SPI");
+var spi = SPI.addInstance();
+spi.$name = "CONFIG_SPI_0";
+spi.spi.sclkPin.$assign = "DIO_10";
+spi.spi.mosiPin.$assign = "DIO_9";
+spi.spi.misoPin.$assign = "DIO_8";
+
+/* ======== GPIOs ======== */
+var GPIO = scripting.addModule("/ti/drivers/GPIO");
+
+// 1.8V LDO Regulator Enable (DIO 21)
+var gpio1v8 = GPIO.addInstance();
+gpio1v8.$name = "CONFIG_GPIO_1V8_EN";
+gpio1v8.gpioPin.$assign = "DIO_21";
+gpio1v8.mode = "Output";
+gpio1v8.initialOutputState = "High";
+
+// PCA9306 Level Shifter Enable (DIO 30)
+var gpioI2cEn = GPIO.addInstance();
+gpioI2cEn.$name = "CONFIG_GPIO_I2C_EN";
+gpioI2cEn.gpioPin.$assign = "DIO_30";
+gpioI2cEn.mode = "Output";
+gpioI2cEn.initialOutputState = "High";
+
+// IMU Power Switch Q1 (DIO 18, Must be LOW in normal operation)
+var gpioImuSw = GPIO.addInstance();
+gpioImuSw.$name = "CONFIG_GPIO_IMU_SW";
+gpioImuSw.gpioPin.$assign = "DIO_18";
+gpioImuSw.mode = "Output";
+gpioImuSw.initialOutputState = "Low";
+
+// MAX32664 Biometric Hub Reset Pin (DIO 19, Held HIGH to disable/quiesce)
+var gpioHubRst = GPIO.addInstance();
+gpioHubRst.$name = "CONFIG_GPIO_HUB_RST";
+gpioHubRst.gpioPin.$assign = "DIO_19";
+gpioHubRst.mode = "Output";
+gpioHubRst.initialOutputState = "High";
+
+// MAX32664 Biometric Hub MFIO Boot Mode Pin (DIO 28)
+var gpioHubMfio = GPIO.addInstance();
+gpioHubMfio.$name = "CONFIG_GPIO_HUB_MFIO";
+gpioHubMfio.gpioPin.$assign = "DIO_28";
+gpioHubMfio.mode = "Output";
+gpioHubMfio.initialOutputState = "High";
+
+// ADS1292R Chip Select (DIO 11)
+var gpioEcgCs = GPIO.addInstance();
+gpioEcgCs.$name = "CONFIG_GPIO_ECG_CS";
+gpioEcgCs.gpioPin.$assign = "DIO_11";
+gpioEcgCs.mode = "Output";
+gpioEcgCs.initialOutputState = "High";
+scripting.suppress("Connected to hardware.*", gpioEcgCs, "gpioPin");
+
+// Suppress SPI shared pin warnings
+scripting.suppress("Connected to hardware.*", spi.spi, "sclkPin");
+scripting.suppress("Connected to hardware.*", spi.spi, "pociPin");
+scripting.suppress("Connected to hardware.*", spi.spi, "picoPin");
+
+// ADS1292R Power Down / Reset (DIO 22)
+var gpioEcgPwdn = GPIO.addInstance();
+gpioEcgPwdn.$name = "CONFIG_GPIO_ECG_PWDN";
+gpioEcgPwdn.gpioPin.$assign = "DIO_22";
+gpioEcgPwdn.mode = "Output";
+gpioEcgPwdn.initialOutputState = "High";
+
+// ADS1292R Start Conversion (DIO 24)
+var gpioEcgStart = GPIO.addInstance();
+gpioEcgStart.$name = "CONFIG_GPIO_ECG_START";
+gpioEcgStart.gpioPin.$assign = "DIO_24";
+gpioEcgStart.mode = "Output";
+gpioEcgStart.initialOutputState = "High";
+
+// ADS1292R Data Ready Interrupt (DIO 23)
+var gpioEcgDrdy = GPIO.addInstance();
+gpioEcgDrdy.$name = "CONFIG_GPIO_ECG_DRDY";
+gpioEcgDrdy.gpioPin.$assign = "DIO_23";
+gpioEcgDrdy.mode = "Input";
+gpioEcgDrdy.pull = "Pull Up";
+
+// ADXL362 Chip Select (DIO 15)
+var gpioImuCs = GPIO.addInstance();
+gpioImuCs.$name = "CONFIG_GPIO_IMU_CS";
+gpioImuCs.gpioPin.$assign = "DIO_15";
+gpioImuCs.mode = "Output";
+gpioImuCs.initialOutputState = "High";
+
+// ADXL362 INT1 (DIO 26)
+var gpioImuInt1 = GPIO.addInstance();
+gpioImuInt1.$name = "CONFIG_GPIO_IMU_INT1";
+gpioImuInt1.gpioPin.$assign = "DIO_26";
+gpioImuInt1.mode = "Input";
+gpioImuInt1.pull = "Pull Up";
+
+// ADXL362 INT2 (DIO 27)
+var gpioImuInt2 = GPIO.addInstance();
+gpioImuInt2.$name = "CONFIG_GPIO_IMU_INT2";
+gpioImuInt2.gpioPin.$assign = "DIO_27";
+gpioImuInt2.mode = "Input";
+gpioImuInt2.pull = "Pull Up";
+
+// OPT4041 Ambient Light Interrupt (DIO 25)
+var gpioOptInt = GPIO.addInstance();
+gpioOptInt.$name = "CONFIG_GPIO_OPT_INT";
+gpioOptInt.gpioPin.$assign = "DIO_25";
+gpioOptInt.mode = "Input";
+gpioOptInt.pull = "Pull Up";
+
+// VCNL4040 Proximity Interrupt (DIO 12)
+var gpioVcnlInt = GPIO.addInstance();
+gpioVcnlInt.$name = "CONFIG_GPIO_VCNL_INT";
+gpioVcnlInt.gpioPin.$assign = "DIO_12";
+gpioVcnlInt.mode = "Input";
+gpioVcnlInt.pull = "Pull Up";
+
+// PCAL6408A Button Expander Interrupt (DIO 29)
+var gpioBtnInt = GPIO.addInstance();
+gpioBtnInt.$name = "CONFIG_GPIO_BTN_INT";
+gpioBtnInt.gpioPin.$assign = "DIO_29";
+gpioBtnInt.mode = "Input";
+gpioBtnInt.pull = "Pull Up";
+
+// LaunchPad Debug LEDs
+var gpioLed0 = GPIO.addInstance();
+gpioLed0.$hardware = system.deviceData.board.components.LED0;
+gpioLed0.$name = "CONFIG_GPIO_LED_0";
+
+var gpioLed1 = GPIO.addInstance();
+gpioLed1.$hardware = system.deviceData.board.components.LED1;
+gpioLed1.$name = "CONFIG_GPIO_LED_1";

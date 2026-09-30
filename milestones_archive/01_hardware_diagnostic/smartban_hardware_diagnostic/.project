@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>smartban_hardware_diagnostic</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.cdt.managedbuilder.core.genmakebuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.ti.ccstudio.core.ccsNature</nature>
+		<nature>org.eclipse.cdt.core.cnature</nature>
+		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
+		<nature>org.eclipse.cdt.core.ccnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>cc13x2_cc26x2_nortos.cmd</name>
+			<type>1</type>
+			<location>C:/Users/hjafa/OneDrive/Desktop/shield cc2650/firmware/01_hardware_diagnostic/cc13x2_cc26x2_nortos.cmd</location>
+		</link>
+		<link>
+			<name>diagnostic.syscfg</name>
+			<type>1</type>
+			<location>C:/Users/hjafa/OneDrive/Desktop/shield cc2650/firmware/01_hardware_diagnostic/diagnostic.syscfg</location>
+		</link>
+	</linkedResources>
+</projectDescription>

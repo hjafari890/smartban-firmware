@@ -1,0 +1,28 @@
+{
+  "milestone": "M5",
+  "timestamp": 1789255342.8266642,
+  "duration_sec": 0.06050300598144531,
+  "mode": "sim",
+  "summary": {
+    "total_checks": 389,
+    "total_passed": 389,
+    "total_failed": 0,
+    "tier1": {
+      "passed": 155,
+      "failed": 0
+    },
+    "tier2": {
+      "passed": 150,
+      "failed": 0
+    },
+    "tier3": {
+      "passed": 35,
+      "failed": 0
+    },
+    "tier4": {
+      "passed": 49,
+      "failed": 0
+    },
+    "failures": []
+  }
+}

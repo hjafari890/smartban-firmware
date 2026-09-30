@@ -1,0 +1,1141 @@
+******************************************************************************
+            TI ARM Clang Linker PC v5.1.1                      
+******************************************************************************
+>> Linked Mon Sep  7 23:26:18 2026
+
+OUTPUT FILE NAME:   <C:\Users\hjafa\OneDrive\Desktop\shield cc2650\firmware\03_ppg_led_bringup\ppg_bringup.out>
+ENTRY POINT SYMBOL: "resetISR"  address: 00003bb5
+
+
+MEMORY CONFIGURATION
+
+         name            origin    length      used     unused   attr    fill
+----------------------  --------  ---------  --------  --------  ----  --------
+  FLASH                 00000000   00058000  00004c58  000533a8  R  X
+  GPRAM                 11000000   00002000  00000000  00002000  RW X
+  SRAM                  20000000   00014000  00004d8b  0000f275  RW X
+  LOG_DATA              90000000   00040000  00000000  00040000  R   
+  LOG_PTR               94000008   00040000  00000000  00040000  R   
+
+
+SEGMENT ALLOCATION MAP
+
+run origin  load origin   length   init length attrs members
+----------  ----------- ---------- ----------- ----- -------
+00000000    00000000    00004b10   00004b10    r-x
+  00000000    00000000    000000d8   000000d8    r-- .resetVecs
+  000000d8    000000d8    00003ffc   00003ffc    r-x .text
+  000040d4    000040d4    00000a3c   00000a3c    r-- .rodata
+00004b10    00004b10    00000008   00000008    rw-
+  00004b10    00004b10    00000008   00000008    rw- .args
+00004b18    00004b18    000000e8   000000e8    r--
+  00004b18    00004b18    000000e8   000000e8    r-- .cinit
+00057fa8    00057fa8    00000058   00000058    r--
+  00057fa8    00057fa8    00000058   00000058    r-- .ccfg
+20000000    20000000    00000853   00000000    rw-
+  20000000    20000000    000004d0   00000000    rw- .bss
+  200004d0    200004d0    00000383   00000000    rw- .data
+20001830    20001830    00000040   00000000    rw-
+  20001830    20001830    00000010   00000000    rw- .TI.bound:dmaSpi0RxControlTableEntry
+  20001840    20001840    00000010   00000000    rw- .TI.bound:dmaSpi0TxControlTableEntry
+  20001850    20001850    00000010   00000000    rw- .TI.bound:dmaUart1RxControlTableEntry
+  20001860    20001860    00000010   00000000    rw- .TI.bound:dmaUart1TxControlTableEntry
+20001a30    20001a30    00000020   00000000    rw-
+  20001a30    20001a30    00000010   00000000    rw- .TI.bound:dmaSpi0RxAltControlTableEntry
+  20001a40    20001a40    00000010   00000000    rw- .TI.bound:dmaSpi0TxAltControlTableEntry
+20001a50    20001a50    00004000   00000000    rw-
+  20001a50    20001a50    00004000   00000000    rw- .sysmem
+20013c00    20013c00    00000400   00000000    rw-
+  20013c00    20013c00    00000400   00000000    rw- .stack
+
+
+SECTION ALLOCATION MAP
+
+ output                                  attributes/
+section   page    origin      length       input sections
+--------  ----  ----------  ----------   ----------------
+.resetVecs 
+*          0    00000000    000000d8     
+                  00000000    000000d8     nortos_cc26x2.a : startup_cc13x2_cc26x2_ticlang.c.obj (.resetVecs)
+
+.binit     0    00000000    00000000     
+
+.text      0    000000d8    00003ffc     
+                  000000d8    000006d4     main.obj (.text.main)
+                  000007ac    000001f0     drivers_cc26x2.a : UART2CC26X2.c.obj (.text.UART2CC26X2_hwiIntFxn)
+                  0000099c    00000194                      : PowerCC26X2_calibrateRCOSC.c.obj (.text.PowerCC26X2_auxISR)
+                  00000b30    0000018c                      : UART2CC26X2.c.obj (.text.UART2_open)
+                  00000cbc    0000016c                      : UART2.c.obj (.text.UART2_writeTimeoutBlocking)
+                  00000e28    00000158                      : PowerCC26X2.c.obj (.text.Power_sleep)
+                  00000f80    0000013c                      : I2CCC26XX.c.obj (.text.I2C_open)
+                  000010bc    00000126                      : I2C.c.obj (.text.I2C_transferTimeout)
+                  000011e2    00000002     ti_drivers_config.obj (.text.Board_initHook)
+                  000011e4    00000118     drivers_cc26x2.a : PowerCC26X2.c.obj (.text.Power_init)
+                  000012fc    00000118                      : UART2.c.obj (.text.UART2_writeTimeoutNonblocking)
+                  00001414    0000010c                      : PowerCC26X2_calibrateRCOSC.c.obj (.text.PowerCC26X2_calibrate)
+                  00001520    00000104                      : UART2CC26X2.c.obj (.text.UART2CC26X2_initHw)
+                  00001624    00000100                      : GPIOCC26X2.c.obj (.text.GPIO_init)
+                  00001724    000000f8     main.obj (.text.max32664_transmit)
+                  0000181c    000000f0     drivers_cc26x2.a : UART2CC26X2.c.obj (.text.UART2Support_dmaStartRx)
+                  0000190c    000000e4                      : I2CCC26XX.c.obj (.text.I2CCC26XX_hwiFxn)
+                  000019f0    000000e0     driverlib.lib : sys_ctrl.c.obj (.text.NOROM_SysCtrlStandby)
+                  00001ad0    000000dc     nortos_cc26x2.a : PowerCC26X2_nortos.c.obj (.text.PowerCC26XX_standbyPolicy)
+                  00001bac    000000d0     driverlib.lib : setup.c.obj (.text.NOROM_SetupTrimDevice)
+                  00001c7c    000000d0     drivers_cc26x2.a : PowerCC26X2.c.obj (.text.configureXOSCHF)
+                  00001d4c    000000c4     nortos_cc26x2.a : SwiP_nortos.c.obj (.text.SwiP_construct)
+                  00001e10    000000c0     drivers_cc26x2.a : UART2CC26X2.c.obj (.text.UART2Support_dmaStartTx)
+                  00001ed0    000000bc     main.obj (.text.max32664_hw_reset)
+                  00001f8c    000000b0     drivers_cc26x2.a : GPIOCC26XX.c.obj (.text.GPIO_setConfigAndMux)
+                  0000203c    000000b0                      : PowerCC26X2.c.obj (.text.Power_setDependency)
+                  000020ec    000000b0     driverlib.lib : setup.c.obj (.text.TrimAfterColdResetWakeupFromShutDown)
+                  0000219c    000000b0     libclang_rt.builtins.a : udivmoddi4.S.obj (.text)
+                  0000224c    000000ac     drivers_cc26x2.a : PowerCC26X2.c.obj (.text.Power_releaseDependency)
+                  000022f8    000000a4     nortos_cc26x2.a : ClockPTimer_nortos.c.obj (.text.ClockP_workFuncDynamic)
+                  0000239c    000000a0     drivers_cc26x2.a : I2CCC26XX.c.obj (.text.I2CCC26XX_swiFxn)
+                  0000243c    000000a0     nortos_cc26x2.a : TimerPCC26XX_nortos.c.obj (.text.TimerP_construct)
+                  000024dc    00000098                     : SemaphoreP_nortos.c.obj (.text.SemaphoreP_pend)
+                  00002574    00000090                     : SwiP_nortos.c.obj (.text.SwiP_dispatch)
+                  00002604    00000080     drivers_cc26x2.a : UART2CC26X2.c.obj (.text.UART2Support_dmaStopTx)
+                  00002684    0000007c     nortos_cc26x2.a : ClockPTimer_nortos.c.obj (.text.ClockP_startup)
+                  00002700    0000007c                     : HwiPCC26XX_nortos.c.obj (.text.HwiP_construct)
+                  0000277c    00000078     driverlib.lib : sys_ctrl.c.obj (.text.NOROM_SysCtrlSetRechargeBeforePowerDown)
+                  000027f4    00000074     drivers_cc26x2.a : PowerCC26X2_calibrateRCOSC_helpers.c.obj (.text.PowerCC26X2_updateSubSecInc)
+                  00002868    00000074     libc.a : copy_decompress_lzss.c.obj (.text:decompress:lzss)
+                  000028dc    00000070     nortos_cc26x2.a : ClockPTimer_nortos.c.obj (.text.ClockP_start)
+                  0000294c    00000070     drivers_cc26x2.a : I2CCC26XX.c.obj (.text.I2CSupport_primeTransfer)
+                  000029bc    0000006c                      : PowerCC26X2.c.obj (.text.oscillatorISR)
+                  00002a28    00000068     nortos_cc26x2.a : ClockPTimer_nortos.c.obj (.text.ClockP_walkQueueDynamic)
+                  00002a90    00000068     drivers_cc26x2.a : UART2CC26X2.c.obj (.text.UART2Support_dmaStopRx)
+                  00002af8    00000064     driverlib.lib : osc.c.obj (.text.NOROM_OSCHF_AttemptToSwitchToXosc)
+                  00002b5c    00000064     drivers_cc26x2.a : PowerCC26X2_calibrateRCOSC.c.obj (.text.PowerCC26X2_initiateCalibration)
+                  00002bc0    00000064                      : UDMACC26XX.c.obj (.text.UDMACC26XX_open)
+                  00002c24    0000005c     nortos_cc26x2.a : SwiP_nortos.c.obj (.text.SwiP_post)
+                  00002c80    00000058                     : ClockPTimer_nortos.c.obj (.text.ClockP_usleep)
+                  00002cd8    00000054     drivers_cc26x2.a : I2CCC26XX.c.obj (.text.I2CCC26XX_initHw)
+                  00002d2c    00000050     ti_drivers_config.obj (.text.Board_shutDownExtFlash)
+                  00002d7c    00000050     nortos_cc26x2.a : SemaphoreP_nortos.c.obj (.text.SemaphoreP_construct)
+                  00002dcc    00000050     main.obj (.text.printDec)
+                  00002e1c    0000004e     ti_drivers_config.obj (.text.Board_sendExtFlashByte)
+                  00002e6a    00000002     drivers_cc26x2.a : I2C.c.obj (.text.I2C_init)
+                  00002e6c    0000004c     driverlib.lib : chipinfo.c.obj (.text.NOROM_ChipInfo_GetHwRevision)
+                  00002eb8    0000004c     drivers_cc26x2.a : PowerCC26X2.c.obj (.text.switchXOSCHF)
+                  00002f04    00000048     nortos_cc26x2.a : ClockPTimer_nortos.c.obj (.text.ClockP_construct)
+                  00002f4c    00000048                     : TimerPCC26XX_nortos.c.obj (.text.TimerP_start)
+                  00002f94    00000046     drivers_cc26x2.a : RingBuf.c.obj (.text.RingBuf_put)
+                  00002fda    00000002     nortos_cc26x2.a : SemaphoreP_nortos.c.obj (.text.SemaphoreP_destruct)
+                  00002fdc    00000044     drivers_cc26x2.a : GPIOCC26X2.c.obj (.text.GPIO_hwiIntFxn)
+                  00003020    00000044     driverlib.lib : prcm.c.obj (.text.NOROM_PRCMPowerDomainsAllOff)
+                  00003064    00000044                   : prcm.c.obj (.text.NOROM_PRCMPowerDomainsAllOn)
+                  000030a8    00000040     drivers_cc26x2.a : PowerCC26X2_calibrateRCOSC.c.obj (.text.PowerCC26X2_RCOSC_clockFunc)
+                  000030e8    00000040                      : PowerCC26X2_calibrateRCOSC_helpers.c.obj (.text.PowerCC26X2_setAclkRefSrc)
+                  00003128    00000040     nortos_cc26x2.a : SemaphoreP_nortos.c.obj (.text.SemaphoreP_post)
+                  00003168    0000003c     drivers_cc26x2.a : GPIO.c.obj (.text.GPIO_resetConfig)
+                  000031a4    0000003c     driverlib.lib : osc.c.obj (.text.NOROM_OSC_HPOSCRelativeFrequencyOffsetGet)
+                  000031e0    0000003c     drivers_cc26x2.a : PowerCC26X2_calibrateRCOSC_helpers.c.obj (.text.PowerCC26X2_setTdcClkSrc24M)
+                  0000321c    0000003a     main.obj (.text.hub_read_sensor_reg)
+                  00003256    00000002     drivers_cc26x2.a : UART2CC26X2.c.obj (.text.UART2CC26X2_eventCallback)
+                  00003258    00000038     driverlib.lib : osc.c.obj (.text.InternCapArrayAdjustWithBaseline7001F)
+                  00003290    00000038                   : aux_sysif.c.obj (.text.NOROM_AUXSYSIFOpModeChange)
+                  000032c8    00000038                   : osc.c.obj (.text.NOROM_OSCHF_SwitchToRcOscTurnOffXosc)
+                  00003300    00000038                   : sys_ctrl.c.obj (.text.NOROM_SysCtrlIdle)
+                  00003338    00000038                   : osc.c.obj (.text.OSCHfSourceSwitch)
+                  00003370    00000038     drivers_cc26x2.a : PowerCC26X2_helpers.c.obj (.text.PowerCC26X2_oscDisableQualifiers)
+                  000033a8    00000038                      : RingBuf.c.obj (.text.RingBuf_putAdvance)
+                  000033e0    00000038     nortos_cc26x2.a : SwiP_nortos.c.obj (.text.SwiP_restore)
+                  00003418    00000038     libc.a : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit)
+                  00003450    00000034     drivers_cc26x2.a : PowerCC26X2_helpers.c.obj (.text.PowerCC26X2_setSubSecIncToXoscLf)
+                  00003484    00000034                      : PowerCC26X2.c.obj (.text.Power_releaseConstraint)
+                  000034b8    00000034     nortos_cc26x2.a : TimerPCC26XX_nortos.c.obj (.text.TimerP_getCurrentTick)
+                  000034ec    00000034     drivers_cc26x2.a : UART2CC26X2.c.obj (.text.UART2Support_sendData)
+                  00003520    00000034     main.obj (.text.max32664_read_byte)
+                  00003554    00000032     main.obj (.text.max32664_write_byte)
+                  00003586    00000002     libclang_rt.builtins.a : aeabi_div0.c.obj (.text.__aeabi_ldiv0)
+                  00003588    00000030     ti_drivers_config.obj (.text.Board_wakeUpExtFlash)
+                  000035b8    00000030     nortos_cc26x2.a : ClockPTimer_nortos.c.obj (.text.ClockP_getTicksUntilInterrupt)
+                  000035e8    00000030     drivers_cc26x2.a : PowerCC26X2.c.obj (.text.Power_setConstraint)
+                  00003618    00000030     driverlib.lib : osc.c.obj (.text.SpecialCapArrayWorkaroundEnabledAndNeeded)
+                  00003648    00000030     drivers_cc26x2.a : PowerCC26X2.c.obj (.text.notify)
+                  00003678    00000030     libc.a : boot_cortex_m.c.obj (.text:_c_int00)
+                  000036a8    0000002e     drivers_cc26x2.a : RingBuf.c.obj (.text.RingBuf_getConsume)
+                  000036d6    0000002e                      : RingBuf.c.obj (.text.RingBuf_putPointer)
+                  00003704    0000002c     driverlib.lib : interrupt.c.obj (.text.NOROM_IntRegister)
+                  00003730    0000002c     nortos_cc26x2.a : TimerPCC26XX_nortos.c.obj (.text.TimerP_setThreshold)
+                  0000375c    0000002c     drivers_cc26x2.a : UART2CC26X2.c.obj (.text.UART2CC26X2_getRxData)
+                  00003788    0000002c     main.obj (.text.printHex8)
+                  000037b4    0000002a     nortos_cc26x2.a : TimerPCC26XX_nortos.c.obj (.text.TimerP_setNextTick)
+                  000037de    0000002a     drivers_cc26x2.a : UART2CC26X2.c.obj (.text.UART2Support_powerRelConstraint)
+                  00003808    0000002a     main.obj (.text.hub_write_sensor_reg)
+                  00003832    00000028     drivers_cc26x2.a : I2C.c.obj (.text.I2C_cancel)
+                  0000385a    00000002     nortos_cc26x2.a : SemaphoreP_nortos.c.obj (.text.clkFxn)
+                  0000385c    00000028     driverlib.lib : osc.c.obj (.text.NOROM_OSC_CapArrayAdjustWorkaround_Boot)
+                  00003884    00000028                   : chipinfo.c.obj (.text.NOROM_ThisLibraryIsFor_CC13x2_CC26x2_HwRev20AndLater_HaltIfViolated)
+                  000038ac    00000028     nortos_cc26x2.a : ClockPTimer_nortos.c.obj (.text.sleepTicks)
+                  000038d4    00000026     drivers_cc26x2.a : UART2CC26X2.c.obj (.text.UART2Support_powerSetConstraint)
+                  000038fa    00000002                      : PowerCC26X2.c.obj (.text.emptyClockFunc)
+                  000038fc    00000024     nortos_cc26x2.a : ClockPTimer_nortos.c.obj (.text.ClockP_getTicks)
+                  00003920    00000024     drivers_cc26x2.a : List.c.obj (.text.List_put)
+                  00003944    00000024     driverlib.lib : osc.c.obj (.text.NOROM_OSCHF_TurnOnXosc)
+                  00003968    00000024     drivers_cc26x2.a : PowerCC26X2_calibrateRCOSC_helpers.c.obj (.text.PowerCC26X2_writeCtrim)
+                  0000398c    00000024                      : PowerCC26X2_calibrateRCOSC_helpers.c.obj (.text.PowerCC26X2_writeCtrimFract)
+                  000039b0    00000024                      : PowerCC26X2_calibrateRCOSC_helpers.c.obj (.text.PowerCC26X2_writeCtrimFractEn)
+                  000039d4    00000024                      : PowerCC26X2_calibrateRCOSC_helpers.c.obj (.text.PowerCC26X2_writeRtrim)
+                  000039f8    00000024                      : PowerCC26X2.c.obj (.text.Power_registerNotify)
+                  00003a1c    00000024     main.obj (.text.uartPrint)
+                  00003a40    00000022     drivers_cc26x2.a : RingBuf.c.obj (.text.RingBuf_getPointer)
+                  00003a62    00000022     nortos_cc26x2.a : TimerPCC26XX_nortos.c.obj (.text.TimerP_getMaxTicks)
+                  00003a84    00000020                     : ClockPTimer_nortos.c.obj (.text.ClockP_add)
+                  00003aa4    00000020                     : ClockPTimer_nortos.c.obj (.text.ClockP_scheduleNextTick)
+                  00003ac4    00000020     drivers_cc26x2.a : PowerCC26X2_helpers.c.obj (.text.PowerCC26X2_disableTCXOQual)
+                  00003ae4    00000020                      : PowerCC26X2_helpers.c.obj (.text.PowerCC26X2_enableTCXOQual)
+                  00003b04    00000020     nortos_cc26x2.a : SemaphoreP_nortos.c.obj (.text.SemaphoreP_constructBinary)
+                  00003b24    0000001e                     : QueueP_nortos.c.obj (.text.QueueP_put)
+                  00003b42    0000001e     drivers_cc26x2.a : UART2.c.obj (.text.UART2_writeTimeout)
+                  00003b60    0000001c     nortos_cc26x2.a : HwiPCC26XX_nortos.c.obj (.text.HwiP_dispatch)
+                  00003b7c    0000001c     drivers_cc26x2.a : PowerCC26X2.c.obj (.text.Power_getTransitionLatency)
+                  00003b98    0000001c     nortos_cc26x2.a : SwiP_nortos.c.obj (.text.SwiP_disable)
+                  00003bb4    0000001c                     : startup_cc13x2_cc26x2_ticlang.c.obj (.text.resetISR)
+                  00003bd0    0000001a                     : ClockPTimer_nortos.c.obj (.text.ClockP_destruct)
+                  00003bea    0000001a     drivers_cc26x2.a : I2CCC26XX.c.obj (.text.I2CCC26XX_completeTransfer)
+                  00003c04    0000001a     nortos_cc26x2.a : QueueP_nortos.c.obj (.text.QueueP_get)
+                  00003c1e    00000002                     : startup_cc13x2_cc26x2_ticlang.c.obj (.text.faultISR)
+                  00003c20    00000018     drivers_cc26x2.a : GPIOCC26XX.c.obj (.text.GPIO_disableInt)
+                  00003c38    00000018                      : PowerCC26X2.c.obj (.text.PowerCC26XX_calibrate)
+                  00003c50    00000018                      : PowerCC26X2.c.obj (.text.Power_idleFunc)
+                  00003c68    00000018     nortos_cc26x2.a : TimerPCC26XX_nortos.c.obj (.text.TimerP_dynamicStub)
+                  00003c80    00000018     drivers_cc26x2.a : UART2CC26X2.c.obj (.text.uartDmaDisable)
+                  00003c98    00000018                      : UART2CC26X2.c.obj (.text.uartDmaEnable)
+                  00003cb0    00000016     ti_drivers_config.obj (.text.Board_init)
+                  00003cc6    00000016     nortos_cc26x2.a : SwiP_nortos.c.obj (.text.SwiP_handleHwi)
+                  00003cdc    00000014                     : HwiPCC26XX_nortos.c.obj (.text.HwiP_inISR)
+                  00003cf0    00000014     drivers_cc26x2.a : I2CCC26XX.c.obj (.text.I2CCC26XX_postNotify)
+                  00003d04    00000014                      : PowerCC26X2.c.obj (.text.Power_disablePolicy)
+                  00003d18    00000014     nortos_cc26x2.a : TimerPCC26XX_nortos.c.obj (.text.TimerP_startup)
+                  00003d2c    00000014     drivers_cc26x2.a : UART2CC26X2.c.obj (.text.UART2CC26X2_postNotifyFxn)
+                  00003d40    00000014     libc.a : args_main.c.obj (.text._args_main)
+                  00003d54    00000014     libclang_rt.builtins.a : aeabi_uldivmod.S.obj (.text)
+                  00003d68    00000012     nortos_cc26x2.a : HwiPCC26XX_nortos.c.obj (.text.HwiP_Params_init)
+                  00003d7a    00000012     drivers_cc26x2.a : I2C.c.obj (.text.I2C_transfer)
+                  00003d8c    00000012     libc.a : memcpy_t2.S.obj (.text:TI_memcpy_small)
+                  00003d9e    00000002     nortos_cc26x2.a : startup_cc13x2_cc26x2_ticlang.c.obj (.text.intDefaultHandler)
+                  00003da0    00000012     libclang_rt.builtins.a : aeabi_memset.S.obj (.text)
+                  00003db2    00000002     nortos_cc26x2.a : startup_cc13x2_cc26x2_ticlang.c.obj (.text.nmiISR)
+                  00003db4    00000010                     : ClockPTimer_nortos.c.obj (.text.ClockP_getCpuFreq)
+                  00003dc4    00000010     drivers_cc26x2.a : GPIOCC26XX.c.obj (.text.GPIO_write)
+                  00003dd4    00000010                      : PowerCC26X2_helpers.c.obj (.text.PowerCC26X2_oscCtlClearXtal)
+                  00003de4    00000010                      : PowerCC26X2_helpers.c.obj (.text.PowerCC26X2_prcmEnableCacheRetention)
+                  00003df4    00000010                      : PowerCC26X2_calibrateRCOSC_helpers.c.obj (.text.PowerCC26X2_readCtrim)
+                  00003e04    00000010                      : PowerCC26X2_calibrateRCOSC_helpers.c.obj (.text.PowerCC26X2_readCtrimFract)
+                  00003e14    00000010                      : PowerCC26X2_calibrateRCOSC_helpers.c.obj (.text.PowerCC26X2_readRtrim)
+                  00003e24    00000010                      : PowerCC26X2_helpers.c.obj (.text.PowerCC26X2_switchToTCXO)
+                  00003e34    00000010     nortos_cc26x2.a : PowerCC26X2_nortos.c.obj (.text.PowerCC26XX_schedulerDisable)
+                  00003e44    00000010     drivers_cc26x2.a : PowerCC26X2.c.obj (.text.Power_enablePolicy)
+                  00003e54    00000010                      : RingBuf.c.obj (.text.RingBuf_construct)
+                  00003e64    00000010     nortos_cc26x2.a : SwiP_nortos.c.obj (.text.SwiP_Params_init)
+                  00003e74    00000010                     : TimerPCC26XX_nortos.c.obj (.text.TimerP_Params_init)
+                  00003e84    00000010     drivers_cc26x2.a : UART2CC26X2.c.obj (.text.UART2Support_txDone)
+                  00003e94    00000010     libc.a : copy_zero_init.c.obj (.text:decompress:ZI)
+                  00003ea4    0000000e     nortos_cc26x2.a : HwiPCC26XX_nortos.c.obj (.text.HwiP_disable)
+                  00003eb2    0000000e                     : HwiPCC26XX_nortos.c.obj (.text.HwiP_interruptsEnabled)
+                  00003ec0    0000000e     drivers_cc26x2.a : PowerCC26X2.c.obj (.text.OUTLINED_FUNCTION_0)
+                  00003ece    0000000e     nortos_cc26x2.a : QueueP_nortos.c.obj (.text.QueueP_remove)
+                  00003edc    0000000e     drivers_cc26x2.a : UART2.c.obj (.text.UART2_write)
+                  00003eea    0000000e     main.obj (.text.strlen)
+                  00003ef8    0000000e     drivers_cc26x2.a : PowerCC26X2.c.obj (.text.switchToTCXO)
+                  00003f06    0000000e     libc.a : memset_t2.S.obj (.text:TI_memset_small)
+                  00003f14    0000000e            : copy_decompress_none.c.obj (.text:decompress:none)
+                  00003f22    00000002     --HOLE-- [fill = 0]
+                  00003f24    0000000c     nortos_cc26x2.a : ClockPTimer_nortos.c.obj (.text.ClockP_doTick)
+                  00003f30    0000000c                     : ClockPTimer_nortos.c.obj (.text.ClockP_getSystemTickPeriod)
+                  00003f3c    0000000c                     : HwiPCC26XX_nortos.c.obj (.text.HwiP_disableInterrupt)
+                  00003f48    0000000c                     : HwiPCC26XX_nortos.c.obj (.text.HwiP_enableInterrupt)
+                  00003f54    0000000c                     : HwiPCC26XX_nortos.c.obj (.text.HwiP_post)
+                  00003f60    0000000c     drivers_cc26x2.a : I2C.c.obj (.text.I2C_Params_init)
+                  00003f6c    0000000c                      : I2CCC26XX.c.obj (.text.OUTLINED_FUNCTION_0)
+                  00003f78    0000000c                      : PowerCC26X2_helpers.c.obj (.text.PowerCC26X2_oscClockSourceGet)
+                  00003f84    0000000c                      : PowerCC26X2_helpers.c.obj (.text.PowerCC26X2_setPeriphDeepSleepEnable)
+                  00003f90    0000000c                      : PowerCC26X2_helpers.c.obj (.text.PowerCC26X2_sysCtrlGetResetSource)
+                  00003f9c    0000000c                      : PowerCC26X2_helpers.c.obj (.text.PowerCC26X2_sysCtrlUpdateVoltageRegulator)
+                  00003fa8    0000000c     nortos_cc26x2.a : PowerCC26X2_nortos.c.obj (.text.PowerCC26XX_schedulerRestore)
+                  00003fb4    0000000c     drivers_cc26x2.a : PowerCC26X2.c.obj (.text.Power_getConstraintMask)
+                  00003fc0    0000000c     nortos_cc26x2.a : QueueP_nortos.c.obj (.text.QueueP_empty)
+                  00003fcc    0000000c                     : TimerPCC26XX_nortos.c.obj (.text.TimerP_getCount64)
+                  00003fd8    0000000c     drivers_cc26x2.a : UART2CC26X2.c.obj (.text.UART2Support_disableTx)
+                  00003fe4    0000000c                      : UART2CC26X2.c.obj (.text.UART2Support_enableTx)
+                  00003ff0    0000000c                      : UART2.c.obj (.text.UART2_Params_init)
+                  00003ffc    0000000a     nortos_cc26x2.a : ClockPTimer_nortos.c.obj (.text.ClockP_Params_init)
+                  00004006    0000000a     drivers_cc26x2.a : I2CCC26XX.c.obj (.text.I2CMasterControl)
+                  00004010    0000000a     main.obj (.text.OUTLINED_FUNCTION_0)
+                  0000401a    0000000a     drivers_cc26x2.a : PowerCC26X2_helpers.c.obj (.text.PowerCC26X2_sysCtrlStandby)
+                  00004024    0000000a                      : UDMACC26XX.c.obj (.text.UDMACC26XX_hwiIntFxn)
+                  0000402e    00000008     nortos_cc26x2.a : HwiPCC26XX_nortos.c.obj (.text.HwiP_restore)
+                  00004036    00000008     drivers_cc26x2.a : I2CCC26XX.c.obj (.text.I2CCC26XX_blockingCallback)
+                  0000403e    00000008                      : I2CCC26XX.c.obj (.text.I2CSupport_controllerFinish)
+                  00004046    00000008     driverlib.lib : cpu.c.obj (.text.NOROM_CPUcpsid)
+                  0000404e    00000008                   : cpu.c.obj (.text.NOROM_CPUcpsie)
+                  00004056    00000008     drivers_cc26x2.a : PowerCC26X2_helpers.c.obj (.text.PowerCC26X2_oschfTrySwitchToXosc)
+                  0000405e    00000006     nortos_cc26x2.a : ClockPTimer_nortos.c.obj (.text.ClockP_stop)
+                  00004064    00000006     drivers_cc26x2.a : GPIOCC26XX.c.obj (.text.GPIO_setConfig)
+                  0000406a    00000006                      : I2CCC26XX.c.obj (.text.I2CSupport_powerRelConstraint)
+                  00004070    00000006                      : I2CCC26XX.c.obj (.text.I2CSupport_powerSetConstraint)
+                  00004076    00000006     driverlib.lib : cpu.c.obj (.text.NOROM_CPUdelay)
+                  0000407c    00000006                   : cpu.c.obj (.text.NOROM_CPUprimask)
+                  00004082    00000006     drivers_cc26x2.a : UART2.c.obj (.text.OUTLINED_FUNCTION_0)
+                  00004088    00000006     nortos_cc26x2.a : QueueP_nortos.c.obj (.text.QueueP_init)
+                  0000408e    00000006     libc.a : exit.c.obj (.text:abort)
+                  00004094    00000004     nortos_cc26x2.a : ClockPTimer_nortos.c.obj (.text.ClockP_isActive)
+                  00004098    00000004                     : ClockPTimer_nortos.c.obj (.text.ClockP_setTimeout)
+                  0000409c    00000004     libsysbm.a : hostexit.c.obj (.text.HOSTexit)
+                  000040a0    00000004     nortos_cc26x2.a : HwiPCC26XX_nortos.c.obj (.text.HwiP_enable)
+                  000040a4    00000004                     : NoRTOS.c.obj (.text.NoRTOS_start)
+                  000040a8    00000004     drivers_cc26x2.a : PowerCC26X2_helpers.c.obj (.text.PowerCC26X2_oschfSwitchToRcosc)
+                  000040ac    00000004                      : PowerCC26X2_helpers.c.obj (.text.PowerCC26X2_sysCtrlIdle)
+                  000040b0    00000004                      : PowerCC26X2_helpers.c.obj (.text.PowerCC26X2_turnOnXosc)
+                  000040b4    00000004     nortos_cc26x2.a : QueueP_nortos.c.obj (.text.QueueP_head)
+                  000040b8    00000004                     : QueueP_nortos.c.obj (.text.QueueP_next)
+                  000040bc    00000004     drivers_cc26x2.a : RingBuf.c.obj (.text.RingBuf_getCount)
+                  000040c0    00000004     libc.a : pre_init.c.obj (.text._system_pre_init)
+                  000040c4    00000004     drivers_cc26x2.a : PowerCC26X2.c.obj (.text.configureRFCoreClocks)
+                  000040c8    00000004                      : PowerCC26X2.c.obj (.text.nopResourceHandler)
+                  000040cc    00000004     nortos_cc26x2.a : posix_sleep.c.obj (.text.usleep)
+                  000040d0    00000004     libclang_rt.builtins.a : aeabi_memcpy.S.obj (.text)
+
+.rodata    0    000040d4    00000a3c     
+                  000040d4    00000058     ti_drivers_config.obj (.rodata.uart2CC26X2HWAttrs)
+                  0000412c    00000054     drivers_cc26x2.a : PowerCC26X2.c.obj (.rodata.resourceDB)
+                  00004180    00000041     main.obj (.rodata.str1.3530083166107438000.1)
+                  000041c1    0000003c     main.obj (.rodata.str1.5043408953494467246.1)
+                  000041fd    0000003b     main.obj (.rodata.str1.7784929982665794503.1)
+                  00004238    0000003a     main.obj (.rodata.str1.14712910685067215323.1)
+                  00004272    0000003a     main.obj (.rodata.str1.2846389346932560359.1)
+                  000042ac    00000039     main.obj (.rodata.str1.11822182024223342093.1)
+                  000042e5    00000039     main.obj (.rodata.str1.16302215771116645891.1)
+                  0000431e    00000038     main.obj (.rodata.str1.11121730273200050387.1)
+                  00004356    00000038     main.obj (.rodata.str1.1311392489248731986.1)
+                  0000438e    00000038     main.obj (.rodata.str1.14079361385603432444.1)
+                  000043c6    00000038     main.obj (.rodata.str1.8154729771448623357.1)
+                  000043fe    00000035     main.obj (.rodata.str1.3292798375424520613.1)
+                  00004433    00000035     main.obj (.rodata.str1.403738606202455663.1)
+                  00004468    00000035     main.obj (.rodata.str1.6554448696319176064.1)
+                  0000449d    00000034     main.obj (.rodata.str1.10313062130652730376.1)
+                  000044d1    00000033     main.obj (.rodata.str1.11321157723316767883.1)
+                  00004504    00000033     main.obj (.rodata.str1.17100691992556644108.1)
+                  00004537    00000033     main.obj (.rodata.str1.6891813955777630061.1)
+                  0000456a    00000032     main.obj (.rodata.str1.10865113624938808685.1)
+                  0000459c    00000032     main.obj (.rodata.str1.14466178792657420020.1)
+                  000045ce    00000031     main.obj (.rodata.str1.14112174005742061988.1)
+                  000045ff    00000031     main.obj (.rodata.str1.18227636981041470289.1)
+                  00004630    00000031     main.obj (.rodata.str1.2123964117280943167.1)
+                  00004661    00000030     main.obj (.rodata.str1.4787932902692149498.1)
+                  00004691    0000002f     main.obj (.rodata.str1.288608917962107522.1)
+                  000046c0    0000002f     main.obj (.rodata.str1.7996925722583989644.1)
+                  000046ef    0000002e     main.obj (.rodata.str1.9059077390166914652.1)
+                  0000471d    0000002d     main.obj (.rodata.str1.8096991282711418442.1)
+                  0000474a    0000002c     main.obj (.rodata.str1.13288086030101331538.1)
+                  00004776    0000002c     main.obj (.rodata.str1.2597068879322958637.1)
+                  000047a2    0000002a     main.obj (.rodata.str1.8108965883388295311.1)
+                  000047cc    0000002a     main.obj (.rodata.str1.8320541211001259012.1)
+                  000047f6    00000026     main.obj (.rodata.str1.10720410773482754683.1)
+                  0000481c    00000026     main.obj (.rodata.str1.12180500075719773345.1)
+                  00004842    00000002     drivers_cc26x2.a : UART2CC26X2.c.obj (.rodata.stopBits)
+                  00004844    00000024                      : UART2.c.obj (.rodata.UART2_defaultParams)
+                  00004868    00000023     main.obj (.rodata.str1.2563708670032483588.1)
+                  0000488b    00000022     main.obj (.rodata.str1.7702501944640899365.1)
+                  000048ad    0000001f     main.obj (.rodata.str1.2763581881760962609.1)
+                  000048cc    0000001e     main.obj (.rodata.str1.11702106008850790973.1)
+                  000048ea    0000001e     main.obj (.rodata.str1.16631870348416990953.1)
+                  00004908    0000001b     main.obj (.rodata.str1.8828068777338075035.1)
+                  00004923    0000001a     main.obj (.rodata.str1.8076846746581808073.1)
+                  0000493d    00000003     main.obj (.rodata.str1.14032527501195285070.1)
+                  00004940    00000018     ti_drivers_config.obj (.rodata.i2cCC26xxHWAttrs)
+                  00004958    00000018     main.obj (.rodata.str1.11870794119293528247.1)
+                  00004970    00000014     ti_drivers_config.obj (.rodata.PowerCC26X2_config)
+                  00004984    00000014     main.obj (.rodata.str1.10635229749459437609.1)
+                  00004998    00000014     main.obj (.rodata.str1.18092426736022315238.1)
+                  000049ac    00000013     main.obj (.rodata.str1.13782249893155712474.1)
+                  000049bf    00000012     main.obj (.rodata.str1.2624144126699937905.1)
+                  000049d1    00000011     main.obj (.rodata.str1.16265332423659789559.1)
+                  000049e2    00000011     main.obj (.rodata.str1.4683166617514778145.1)
+                  000049f3    00000001     ti_drivers_config.obj (.rodata.GPIO_pinLowerBound)
+                  000049f4    00000010     ti_drivers_config.obj (.rodata.GPIO_config)
+                  00004a04    00000010     drivers_cc26x2.a : I2C.c.obj (.rodata.I2C_defaultParams)
+                  00004a14    00000010     nortos_cc26x2.a : SwiP_nortos.c.obj (.rodata.cst16)
+                  00004a24    0000000f     main.obj (.rodata.str1.13030671760666898970.1)
+                  00004a33    0000000f     main.obj (.rodata.str1.39260288392874984.1)
+                  00004a42    0000000e     main.obj (.rodata.str1.17770841602246103764.1)
+                  00004a50    0000000d     main.obj (.rodata.str1.8428454045432808059.1)
+                  00004a5d    00000003     main.obj (.rodata.str1.15159059442110792349.1)
+                  00004a60    0000000c     nortos_cc26x2.a : ClockPTimer_nortos.c.obj (.rodata.ClockP_defaultParams)
+                  00004a6c    0000000c                     : TimerPCC26XX_nortos.c.obj (.rodata.TimerP_defaultParams)
+                  00004a78    0000000c     main.obj (.rodata.str1.625103348304617710.1)
+                  00004a84    0000000c     main.obj (.rodata.str1.6976963560179378225.1)
+                  00004a90    0000000b     main.obj (.rodata.str1.6365796992934770792.1)
+                  00004a9b    00000001     ti_drivers_config.obj (.rodata.GPIO_pinUpperBound)
+                  00004a9c    00000008     ti_drivers_config.obj (.rodata.I2C_config)
+                  00004aa4    00000008     ti_drivers_config.obj (.rodata.UART2_config)
+                  00004aac    00000008     ti_drivers_config.obj (.rodata.UDMACC26XX_config)
+                  00004ab4    00000008     driverlib.lib : aux_sysif.c.obj (.rodata.cst4)
+                  00004abc    00000008     main.obj (.rodata.str1.15996357275703397564.1)
+                  00004ac4    00000008     main.obj (.rodata.str1.16709704744796600189.1)
+                  00004acc    00000008     ti_drivers_config.obj (.rodata.udmaCC26XXHWAttrs)
+                  00004ad4    00000007     main.obj (.rodata.str1.10224226614597680209.1)
+                  00004adb    00000007     main.obj (.rodata.str1.2256192789054937243.1)
+                  00004ae2    00000006     main.obj (.rodata.str1.489408286258209761.1)
+                  00004ae8    00000005     drivers_cc26x2.a : UART2CC26X2.c.obj (.rodata.parityType)
+                  00004aed    00000005                      : UART2CC26X2.c.obj (.rodata.rxFifoThreshold)
+                  00004af2    00000005     main.obj (.rodata.str1.11777244287787065045.1)
+                  00004af7    00000005     drivers_cc26x2.a : UART2CC26X2.c.obj (.rodata.txFifoThreshold)
+                  00004afc    00000004                      : UART2CC26X2.c.obj (.rodata.cst4)
+                  00004b00    00000004     main.obj (.rodata.str1.14402440632258215044.1)
+                  00004b04    00000004     main.obj (.rodata.str1.5630281060179367396.1)
+                  00004b08    00000002     main.obj (.rodata.str1.10753028060609409702.1)
+                  00004b0a    00000002     main.obj (.rodata.str1.17045314124001216156.1)
+                  00004b0c    00000002     main.obj (.rodata.str1.17376258722486336754.1)
+                  00004b0e    00000001     ti_drivers_config.obj (.rodata.I2C_count)
+                  00004b0f    00000001     ti_drivers_config.obj (.rodata.UART2_count)
+
+.cinit     0    00004b18    000000e8     
+                  00004b18    00000061     (.cinit..data.load) [load image, compression = lzss]
+                  00004b79    00000003     --HOLE-- [fill = 0]
+                  00004b7c    0000000c     (__TI_handler_table)
+                  00004b88    00000008     (.cinit..TI.bound:dmaSpi0RxAltControlTableEntry.load) [load image, compression = zero_init]
+                  00004b90    00000008     (.cinit..TI.bound:dmaSpi0RxControlTableEntry.load) [load image, compression = zero_init]
+                  00004b98    00000008     (.cinit..TI.bound:dmaSpi0TxAltControlTableEntry.load) [load image, compression = zero_init]
+                  00004ba0    00000008     (.cinit..TI.bound:dmaSpi0TxControlTableEntry.load) [load image, compression = zero_init]
+                  00004ba8    00000008     (.cinit..TI.bound:dmaUart1RxControlTableEntry.load) [load image, compression = zero_init]
+                  00004bb0    00000008     (.cinit..TI.bound:dmaUart1TxControlTableEntry.load) [load image, compression = zero_init]
+                  00004bb8    00000008     (.cinit..bss.load) [load image, compression = zero_init]
+                  00004bc0    00000040     (__TI_cinit_table)
+
+.init_array 
+*          0    00000000    00000000     UNINITIALIZED
+
+.ccfg      0    00057fa8    00000058     
+                  00057fa8    00000058     ti_devices_config.obj (.ccfg)
+
+.bss       0    20000000    000004d0     UNINITIALIZED
+                  20000000    00000170     (.common:uart2CC26X2Objects)
+                  20000170    00000140     (.common:i2cCC26xxObjects)
+                  200002b0    000000a8     nortos_cc26x2.a : ClockPTimer_nortos.c.obj (.bss.ClockP_module)
+                  20000358    0000007c     (.common:gpioCallbackFunctions)
+                  200003d4    0000007c     (.common:gpioUserArgs)
+                  20000450    00000020     ti_drivers_config.obj (.bss.uart2RxRingBuffer0)
+                  20000470    00000020     ti_drivers_config.obj (.bss.uart2TxRingBuffer0)
+                  20000490    00000020     (.common:udmaCC26XXObject)
+                  200004b0    0000001c     drivers_cc26x2.a : GPIOCC26X2.c.obj (.bss.gpioHwi)
+                  200004cc    00000004     nortos_cc26x2.a : PowerCC26X2_nortos.c.obj (.bss.PowerCC26X2_swiKey)
+
+.data      0    200004d0    00000383     UNINITIALIZED
+                  200004d0    00000174     drivers_cc26x2.a : PowerCC26X2.c.obj (.data.PowerCC26X2_module)
+                  20000644    000000d8     nortos_cc26x2.a : HwiPCC26XX_nortos.c.obj (.data.HwiP_dispatchTable)
+                  2000071c    0000007c     ti_drivers_config.obj (.data.gpioPinConfigs)
+                  20000798    0000004c     nortos_cc26x2.a : SwiP_nortos.c.obj (.data..L_MergedGlobals)
+                  200007e4    00000020                     : TimerPCC26XX_nortos.c.obj (.data..L_MergedGlobals)
+                  20000804    00000010     driverlib.lib : osc.c.obj (.data..L_MergedGlobals)
+                  20000814    00000004     nortos_cc26x2.a : HwiPCC26XX_nortos.c.obj (.data.HwiP_swiPIntNum)
+                  20000818    00000010                     : SemaphoreP_nortos.c.obj (.data..L_MergedGlobals)
+                  20000828    00000010     driverlib.lib : osc.c.obj (.data._hposcCoeffs)
+                  20000838    0000000c     nortos_cc26x2.a : ClockPTimer_nortos.c.obj (.data..L_MergedGlobals)
+                  20000844    00000008     main.obj (.data..L_MergedGlobals)
+                  2000084c    00000004     drivers_cc26x2.a : PowerCC26X2.c.obj (.data.PowerCC26X2_rtcSubSecInc)
+                  20000850    00000001     nortos_cc26x2.a : SwiP_nortos.c.obj (.data.SwiP_initialized)
+                  20000851    00000001                     : TimerPCC26XX_nortos.c.obj (.data.TimerP_initialized)
+                  20000852    00000001     drivers_cc26x2.a : GPIOCC26X2.c.obj (.data.initCalled)
+
+.ramVecs   0    20000900    000000d8     NOLOAD SECTION
+                  20000900    000000d8     driverlib.lib : interrupt.c.obj (.ramVecs)
+
+.sysmem    0    20001a50    00004000     UNINITIALIZED
+                  20001a50    00000010     libc.a : memory.c.obj (.sysmem)
+                  20001a60    00003ff0     --HOLE--
+
+.stack     0    20013c00    00000400     UNINITIALIZED
+                  20013c00    00000004     libc.a : boot_cortex_m.c.obj (.stack)
+                  20013c04    000003fc     --HOLE--
+
+.log_data 
+*          0    90000000    00000000     COPY SECTION
+
+.log_ptr   0    94000008    00000000     COPY SECTION
+
+__llvm_prf_cnts 
+*          0    20000000    00000000     UNINITIALIZED
+
+__llvm_prf_bits 
+*          0    20000000    00000000     UNINITIALIZED
+
+.TI.bound:dmaSpi0RxControlTableEntry 
+*          0    20001830    00000010     UNINITIALIZED
+                  20001830    00000010     ti_drivers_config.obj (.TI.bound:dmaSpi0RxControlTableEntry)
+
+.TI.bound:dmaSpi0TxControlTableEntry 
+*          0    20001840    00000010     UNINITIALIZED
+                  20001840    00000010     ti_drivers_config.obj (.TI.bound:dmaSpi0TxControlTableEntry)
+
+.TI.bound:dmaUart1RxControlTableEntry 
+*          0    20001850    00000010     UNINITIALIZED
+                  20001850    00000010     ti_drivers_config.obj (.TI.bound:dmaUart1RxControlTableEntry)
+
+.TI.bound:dmaUart1TxControlTableEntry 
+*          0    20001860    00000010     UNINITIALIZED
+                  20001860    00000010     ti_drivers_config.obj (.TI.bound:dmaUart1TxControlTableEntry)
+
+.TI.bound:dmaSpi0RxAltControlTableEntry 
+*          0    20001a30    00000010     UNINITIALIZED
+                  20001a30    00000010     ti_drivers_config.obj (.TI.bound:dmaSpi0RxAltControlTableEntry)
+
+.TI.bound:dmaSpi0TxAltControlTableEntry 
+*          0    20001a40    00000010     UNINITIALIZED
+                  20001a40    00000010     ti_drivers_config.obj (.TI.bound:dmaSpi0TxAltControlTableEntry)
+
+.args      0    00004b10    00000008     
+                  00004b10    00000008     --HOLE-- [fill = 0]
+
+MODULE SUMMARY
+
+       Module                                     code    ro data   rw data
+       ------                                     ----    -------   -------
+    C:\Users\hjafa\OneDrive\Desktop\shield cc2650\firmware\03_ppg_led_bringup\
+       main.obj                                   2570    2231      8      
+       ti_drivers_config.obj                      230     184       1252   
+       ti_devices_config.obj                      0       88        0      
+    +--+------------------------------------------+-------+---------+---------+
+       Total:                                     2800    2503      1260   
+                                                                           
+    C:/ti/simplelink_cc13xx_cc26xx_sdk_8_33_00_16/kernel/nortos/lib/ticlang/m4f/nortos_cc26x2.a
+       ClockPTimer_nortos.c.obj                   942     12        180    
+       SwiP_nortos.c.obj                          554     16        77     
+       TimerPCC26XX_nortos.c.obj                  476     12        33     
+       HwiPCC26XX_nortos.c.obj                    266     0         220    
+       SemaphoreP_nortos.c.obj                    332     0         16     
+       PowerCC26X2_nortos.c.obj                   248     0         4      
+       startup_cc13x2_cc26x2_ticlang.c.obj        34      216       0      
+       QueueP_nortos.c.obj                        96      0         0      
+       NoRTOS.c.obj                               4       0         0      
+       posix_sleep.c.obj                          4       0         0      
+    +--+------------------------------------------+-------+---------+---------+
+       Total:                                     2956    256       530    
+                                                                           
+    C:/ti/simplelink_cc13xx_cc26xx_sdk_8_33_00_16/source/ti/devices/cc13x2_cc26x2/driverlib/bin/ticlang/driverlib.lib
+       osc.c.obj                                  452     0         32     
+       sys_ctrl.c.obj                             400     0         0      
+       setup.c.obj                                384     0         0      
+       interrupt.c.obj                            44      0         216    
+       prcm.c.obj                                 136     0         0      
+       chipinfo.c.obj                             116     0         0      
+       aux_sysif.c.obj                            56      8         0      
+       cpu.c.obj                                  28      0         0      
+    +--+------------------------------------------+-------+---------+---------+
+       Total:                                     1616    8         248    
+                                                                           
+    C:/ti/simplelink_cc13xx_cc26xx_sdk_8_33_00_16/source/ti/drivers/lib/ticlang/m4f/drivers_cc26x2.a
+       PowerCC26X2.c.obj                          1710    84        376    
+       UART2CC26X2.c.obj                          2102    21        0      
+       I2CCC26XX.c.obj                            996     0         0      
+       PowerCC26X2_calibrateRCOSC.c.obj           836     0         0      
+       UART2.c.obj                                706     36        0      
+       PowerCC26X2_calibrateRCOSC_helpers.c.obj   432     0         0      
+       I2C.c.obj                                  366     16        0      
+       GPIOCC26X2.c.obj                           324     0         29     
+       PowerCC26X2_helpers.c.obj                  298     0         0      
+       RingBuf.c.obj                              272     0         0      
+       GPIOCC26XX.c.obj                           222     0         0      
+       UDMACC26XX.c.obj                           110     0         0      
+       GPIO.c.obj                                 60      0         0      
+       List.c.obj                                 36      0         0      
+    +--+------------------------------------------+-------+---------+---------+
+       Total:                                     8470    157       405    
+                                                                           
+    C:\ti\ccs2101\ccs\tools\compiler\ti-cgt-armllvm_5.1.1.LTS\lib\armv7em-ti-none-eabihf/c/libc.a
+       copy_decompress_lzss.c.obj                 116     0         0      
+       autoinit.c.obj                             56      0         0      
+       boot_cortex_m.c.obj                        48      0         0      
+       args_main.c.obj                            20      0         0      
+       memcpy_t2.S.obj                            18      0         0      
+       copy_zero_init.c.obj                       16      0         0      
+       copy_decompress_none.c.obj                 14      0         0      
+       memset_t2.S.obj                            14      0         0      
+       exit.c.obj                                 6       0         0      
+       pre_init.c.obj                             4       0         0      
+    +--+------------------------------------------+-------+---------+---------+
+       Total:                                     312     0         0      
+                                                                           
+    C:\ti\ccs2101\ccs\tools\compiler\ti-cgt-armllvm_5.1.1.LTS\lib\armv7em-ti-none-eabihf/c/libsysbm.a
+       hostexit.c.obj                             4       0         0      
+    +--+------------------------------------------+-------+---------+---------+
+       Total:                                     4       0         0      
+                                                                           
+    C:\ti\ccs2101\ccs\tools\compiler\ti-cgt-armllvm_5.1.1.LTS\lib\armv7em-ti-none-eabihf/libclang_rt.builtins.a
+       udivmoddi4.S.obj                           176     0         0      
+       aeabi_uldivmod.S.obj                       20      0         0      
+       aeabi_memset.S.obj                         18      0         0      
+       aeabi_memcpy.S.obj                         4       0         0      
+       aeabi_div0.c.obj                           2       0         0      
+    +--+------------------------------------------+-------+---------+---------+
+       Total:                                     220     0         0      
+                                                                           
+       Heap:                                      0       0         16384  
+       Stack:                                     0       0         1024   
+       Linker Generated:                          0       229       0      
+    +--+------------------------------------------+-------+---------+---------+
+       Grand Total:                               16378   3153      19851  
+
+
+LINKER GENERATED COPY TABLES
+
+__TI_cinit_table @ 00004bc0 records: 8, size/record: 8, table size: 64
+	.data: load addr=00004b18, load size=00000061 bytes, run addr=200004d0, run size=00000383 bytes, compression=lzss
+	.TI.bound:dmaSpi0RxAltControlTableEntry: load addr=00004b88, load size=00000008 bytes, run addr=20001a30, run size=00000010 bytes, compression=zero_init
+	.TI.bound:dmaSpi0RxControlTableEntry: load addr=00004b90, load size=00000008 bytes, run addr=20001830, run size=00000010 bytes, compression=zero_init
+	.TI.bound:dmaSpi0TxAltControlTableEntry: load addr=00004b98, load size=00000008 bytes, run addr=20001a40, run size=00000010 bytes, compression=zero_init
+	.TI.bound:dmaSpi0TxControlTableEntry: load addr=00004ba0, load size=00000008 bytes, run addr=20001840, run size=00000010 bytes, compression=zero_init
+	.TI.bound:dmaUart1RxControlTableEntry: load addr=00004ba8, load size=00000008 bytes, run addr=20001850, run size=00000010 bytes, compression=zero_init
+	.TI.bound:dmaUart1TxControlTableEntry: load addr=00004bb0, load size=00000008 bytes, run addr=20001860, run size=00000010 bytes, compression=zero_init
+	.bss: load addr=00004bb8, load size=00000008 bytes, run addr=20000000, run size=000004d0 bytes, compression=zero_init
+
+
+LINKER GENERATED HANDLER TABLE
+
+__TI_handler_table @ 00004b7c records: 3, size/record: 4, table size: 12
+	index: 0, handler: __TI_decompress_lzss
+	index: 1, handler: __TI_decompress_none
+	index: 2, handler: __TI_zero_init
+
+
+SEGMENT ATTRIBUTES
+
+    id tag       seg value 
+    -- ---       --- ----- 
+     0 PHA_BOUND 5   (null)
+     1 PHA_BOUND 6   (null)
+
+
+GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
+
+address   name                                                               
+-------   ----                                                               
+00003cb1  Board_init                                                         
+000011e3  Board_initHook                                                     
+00002e1d  Board_sendExtFlashByte                                             
+00002d2d  Board_shutDownExtFlash                                             
+00003589  Board_wakeUpExtFlash                                               
+0000409c  C$$EXIT                                                            
+00003ffd  ClockP_Params_init                                                 
+00003a85  ClockP_add                                                         
+00002f05  ClockP_construct                                                   
+00003bd1  ClockP_destruct                                                    
+00003f25  ClockP_doTick                                                      
+00003db5  ClockP_getCpuFreq                                                  
+00003f31  ClockP_getSystemTickPeriod                                         
+000038fd  ClockP_getTicks                                                    
+000035b9  ClockP_getTicksUntilInterrupt                                      
+00004095  ClockP_isActive                                                    
+00003aa5  ClockP_scheduleNextTick                                            
+00004099  ClockP_setTimeout                                                  
+000028dd  ClockP_start                                                       
+00002685  ClockP_startup                                                     
+0000405f  ClockP_stop                                                        
+2000083c  ClockP_tickPeriod                                                  
+00002c81  ClockP_usleep                                                      
+00002a29  ClockP_walkQueueDynamic                                            
+000022f9  ClockP_workFuncDynamic                                             
+000049f4  GPIO_config                                                        
+00003c21  GPIO_disableInt                                                    
+00002fdd  GPIO_hwiIntFxn                                                     
+00001625  GPIO_init                                                          
+000049f3  GPIO_pinLowerBound                                                 
+00004a9b  GPIO_pinUpperBound                                                 
+00003169  GPIO_resetConfig                                                   
+00004065  GPIO_setConfig                                                     
+00001f8d  GPIO_setConfigAndMux                                               
+00003dc5  GPIO_write                                                         
+0000409d  HOSTexit                                                           
+00003d69  HwiP_Params_init                                                   
+00002701  HwiP_construct                                                     
+00003ea5  HwiP_disable                                                       
+00003f3d  HwiP_disableInterrupt                                              
+000040a1  HwiP_enable                                                        
+00003f49  HwiP_enableInterrupt                                               
+00003cdd  HwiP_inISR                                                         
+00003eb3  HwiP_interruptsEnabled                                             
+00003f55  HwiP_post                                                          
+0000402f  HwiP_restore                                                       
+20000814  HwiP_swiPIntNum                                                    
+0000403f  I2CSupport_controllerFinish                                        
+0000406b  I2CSupport_powerRelConstraint                                      
+00004071  I2CSupport_powerSetConstraint                                      
+0000294d  I2CSupport_primeTransfer                                           
+00003f61  I2C_Params_init                                                    
+00003833  I2C_cancel                                                         
+00004a9c  I2C_config                                                         
+00004b0e  I2C_count                                                          
+00004a04  I2C_defaultParams                                                  
+00002e6b  I2C_init                                                           
+00000f81  I2C_open                                                           
+00003d7b  I2C_transfer                                                       
+000010bd  I2C_transferTimeout                                                
+UNDEFED   ITM_flush                                                          
+UNDEFED   ITM_restore                                                        
+00003921  List_put                                                           
+00003291  NOROM_AUXSYSIFOpModeChange                                         
+00004047  NOROM_CPUcpsid                                                     
+0000404f  NOROM_CPUcpsie                                                     
+00004077  NOROM_CPUdelay                                                     
+0000407d  NOROM_CPUprimask                                                   
+00002e6d  NOROM_ChipInfo_GetHwRevision                                       
+00003705  NOROM_IntRegister                                                  
+00002af9  NOROM_OSCHF_AttemptToSwitchToXosc                                  
+000032c9  NOROM_OSCHF_SwitchToRcOscTurnOffXosc                               
+00003945  NOROM_OSCHF_TurnOnXosc                                             
+0000385d  NOROM_OSC_CapArrayAdjustWorkaround_Boot                            
+000031a5  NOROM_OSC_HPOSCRelativeFrequencyOffsetGet                          
+00003021  NOROM_PRCMPowerDomainsAllOff                                       
+00003065  NOROM_PRCMPowerDomainsAllOn                                        
+00001bad  NOROM_SetupTrimDevice                                              
+00003301  NOROM_SysCtrlIdle                                                  
+0000277d  NOROM_SysCtrlSetRechargeBeforePowerDown                            
+000019f1  NOROM_SysCtrlStandby                                               
+00003885  NOROM_ThisLibraryIsFor_CC13x2_CC26x2_HwRev20AndLater_HaltIfViolated
+000040a5  NoRTOS_start                                                       
+000030a9  PowerCC26X2_RCOSC_clockFunc                                        
+0000099d  PowerCC26X2_auxISR                                                 
+00001415  PowerCC26X2_calibrate                                              
+00004970  PowerCC26X2_config                                                 
+00003ac5  PowerCC26X2_disableTCXOQual                                        
+00003ae5  PowerCC26X2_enableTCXOQual                                         
+00002b5d  PowerCC26X2_initiateCalibration                                    
+200004d0  PowerCC26X2_module                                                 
+00003f79  PowerCC26X2_oscClockSourceGet                                      
+00003dd5  PowerCC26X2_oscCtlClearXtal                                        
+00003371  PowerCC26X2_oscDisableQualifiers                                   
+000040a9  PowerCC26X2_oschfSwitchToRcosc                                     
+00004057  PowerCC26X2_oschfTrySwitchToXosc                                   
+00003de5  PowerCC26X2_prcmEnableCacheRetention                               
+00003df5  PowerCC26X2_readCtrim                                              
+00003e05  PowerCC26X2_readCtrimFract                                         
+00003e15  PowerCC26X2_readRtrim                                              
+000030e9  PowerCC26X2_setAclkRefSrc                                          
+00003f85  PowerCC26X2_setPeriphDeepSleepEnable                               
+00003451  PowerCC26X2_setSubSecIncToXoscLf                                   
+000031e1  PowerCC26X2_setTdcClkSrc24M                                        
+00003e25  PowerCC26X2_switchToTCXO                                           
+00003f91  PowerCC26X2_sysCtrlGetResetSource                                  
+000040ad  PowerCC26X2_sysCtrlIdle                                            
+0000401b  PowerCC26X2_sysCtrlStandby                                         
+00003f9d  PowerCC26X2_sysCtrlUpdateVoltageRegulator                          
+000040b1  PowerCC26X2_turnOnXosc                                             
+000027f5  PowerCC26X2_updateSubSecInc                                        
+00003969  PowerCC26X2_writeCtrim                                             
+0000398d  PowerCC26X2_writeCtrimFract                                        
+000039b1  PowerCC26X2_writeCtrimFractEn                                      
+000039d5  PowerCC26X2_writeRtrim                                             
+00003c39  PowerCC26XX_calibrate                                              
+00003e35  PowerCC26XX_schedulerDisable                                       
+00003fa9  PowerCC26XX_schedulerRestore                                       
+00001ad1  PowerCC26XX_standbyPolicy                                          
+00003d05  Power_disablePolicy                                                
+00003e45  Power_enablePolicy                                                 
+00003fb5  Power_getConstraintMask                                            
+00003b7d  Power_getTransitionLatency                                         
+00003c51  Power_idleFunc                                                     
+000011e5  Power_init                                                         
+000039f9  Power_registerNotify                                               
+00003485  Power_releaseConstraint                                            
+0000224d  Power_releaseDependency                                            
+000035e9  Power_setConstraint                                                
+0000203d  Power_setDependency                                                
+00000e29  Power_sleep                                                        
+00003fc1  QueueP_empty                                                       
+00003c05  QueueP_get                                                         
+000040b5  QueueP_head                                                        
+00004089  QueueP_init                                                        
+000040b9  QueueP_next                                                        
+00003b25  QueueP_put                                                         
+00003ecf  QueueP_remove                                                      
+00003e55  RingBuf_construct                                                  
+000036a9  RingBuf_getConsume                                                 
+000040bd  RingBuf_getCount                                                   
+00003a41  RingBuf_getPointer                                                 
+00002f95  RingBuf_put                                                        
+000033a9  RingBuf_putAdvance                                                 
+000036d7  RingBuf_putPointer                                                 
+00002d7d  SemaphoreP_construct                                               
+00003b05  SemaphoreP_constructBinary                                         
+20000820  SemaphoreP_defaultParams                                           
+00002fdb  SemaphoreP_destruct                                                
+000024dd  SemaphoreP_pend                                                    
+00003129  SemaphoreP_post                                                    
+00003e65  SwiP_Params_init                                                   
+00001d4d  SwiP_construct                                                     
+00003b99  SwiP_disable                                                       
+00002575  SwiP_dispatch                                                      
+00002c25  SwiP_post                                                          
+000033e1  SwiP_restore                                                       
+00003d8d  TI_memcpy_small                                                    
+00003f07  TI_memset_small                                                    
+00003e75  TimerP_Params_init                                                 
+0000243d  TimerP_construct                                                   
+00003c69  TimerP_dynamicStub                                                 
+00003fcd  TimerP_getCount64                                                  
+000034b9  TimerP_getCurrentTick                                              
+00003a63  TimerP_getMaxTicks                                                 
+000037b5  TimerP_setNextTick                                                 
+00003731  TimerP_setThreshold                                                
+00002f4d  TimerP_start                                                       
+00003d19  TimerP_startup                                                     
+00003fd9  UART2Support_disableTx                                             
+0000181d  UART2Support_dmaStartRx                                            
+00001e11  UART2Support_dmaStartTx                                            
+00002a91  UART2Support_dmaStopRx                                             
+00002605  UART2Support_dmaStopTx                                             
+00003fe5  UART2Support_enableTx                                              
+000037df  UART2Support_powerRelConstraint                                    
+000038d5  UART2Support_powerSetConstraint                                    
+000034ed  UART2Support_sendData                                              
+00003e85  UART2Support_txDone                                                
+00003ff1  UART2_Params_init                                                  
+00004aa4  UART2_config                                                       
+00004b0f  UART2_count                                                        
+00004844  UART2_defaultParams                                                
+00000b31  UART2_open                                                         
+00003edd  UART2_write                                                        
+00003b43  UART2_writeTimeout                                                 
+00000cbd  UART2_writeTimeoutBlocking                                         
+000012fd  UART2_writeTimeoutNonblocking                                      
+00004aac  UDMACC26XX_config                                                  
+00004025  UDMACC26XX_hwiIntFxn                                               
+00002bc1  UDMACC26XX_open                                                    
+20014000  __STACK_END                                                        
+00000400  __STACK_SIZE                                                       
+00004000  __SYSMEM_SIZE                                                      
+00000000  __TI_ATRegion0_region_sz                                           
+00000000  __TI_ATRegion0_src_addr                                            
+00000000  __TI_ATRegion0_trg_addr                                            
+00000000  __TI_ATRegion1_region_sz                                           
+00000000  __TI_ATRegion1_src_addr                                            
+00000000  __TI_ATRegion1_trg_addr                                            
+00000000  __TI_ATRegion2_region_sz                                           
+00000000  __TI_ATRegion2_src_addr                                            
+00000000  __TI_ATRegion2_trg_addr                                            
+00004bc0  __TI_CINIT_Base                                                    
+00004c00  __TI_CINIT_Limit                                                   
+00004c00  __TI_CINIT_Warm                                                    
+00004b7c  __TI_Handler_Table_Base                                            
+00004b88  __TI_Handler_Table_Limit                                           
+00003419  __TI_auto_init_nobinit_nopinit                                     
+00002869  __TI_decompress_lzss                                               
+00003f15  __TI_decompress_none                                               
+ffffffff  __TI_pprof_out_hndl                                                
+ffffffff  __TI_prof_data_size                                                
+ffffffff  __TI_prof_data_start                                               
+00000000  __TI_static_base__                                                 
+00003e95  __TI_zero_init                                                     
+00003587  __aeabi_ldiv0                                                      
+00003dab  __aeabi_memclr                                                     
+00003dab  __aeabi_memclr4                                                    
+00003dab  __aeabi_memclr8                                                    
+000040d1  __aeabi_memcpy                                                     
+000040d1  __aeabi_memcpy4                                                    
+000040d1  __aeabi_memcpy8                                                    
+00003da1  __aeabi_memset                                                     
+00003da1  __aeabi_memset4                                                    
+00003da1  __aeabi_memset8                                                    
+00003d55  __aeabi_uldivmod                                                   
+ffffffff  __binit__                                                          
+00004b10  __c_args__                                                         
+00057fa8  __ccfg                                                             
+UNDEFED   __mpu_init                                                         
+20013c00  __stack                                                            
+20000000  __start___llvm_prf_bits                                            
+20000000  __start___llvm_prf_cnts                                            
+20000000  __stop___llvm_prf_bits                                             
+20000000  __stop___llvm_prf_cnts                                             
+0000219d  __udivmoddi4                                                       
+00003d41  _args_main                                                         
+00003679  _c_int00                                                           
+20000828  _hposcCoeffs                                                       
+20001a50  _sys_memory                                                        
+UNDEFED   _system_post_cinit                                                 
+000040c1  _system_pre_init                                                   
+0000408f  abort                                                              
+ffffffff  binit                                                              
+0000385b  clkFxn                                                             
+00000000  g_pfnVectors                                                       
+20000358  gpioCallbackFunctions                                              
+2000071c  gpioPinConfigs                                                     
+200003d4  gpioUserArgs                                                       
+00004940  i2cCC26xxHWAttrs                                                   
+20000170  i2cCC26xxObjects                                                   
+000000d9  main                                                               
+00003bb5  resetISR                                                           
+0000412c  resourceDB                                                         
+20000000  uart2CC26X2Objects                                                 
+00004acc  udmaCC26XXHWAttrs                                                  
+20000490  udmaCC26XXObject                                                   
+000040cd  usleep                                                             
+
+
+GLOBAL SYMBOLS: SORTED BY Symbol Address 
+
+address   name                                                               
+-------   ----                                                               
+00000000  __TI_ATRegion0_region_sz                                           
+00000000  __TI_ATRegion0_src_addr                                            
+00000000  __TI_ATRegion0_trg_addr                                            
+00000000  __TI_ATRegion1_region_sz                                           
+00000000  __TI_ATRegion1_src_addr                                            
+00000000  __TI_ATRegion1_trg_addr                                            
+00000000  __TI_ATRegion2_region_sz                                           
+00000000  __TI_ATRegion2_src_addr                                            
+00000000  __TI_ATRegion2_trg_addr                                            
+00000000  __TI_static_base__                                                 
+00000000  g_pfnVectors                                                       
+000000d9  main                                                               
+00000400  __STACK_SIZE                                                       
+0000099d  PowerCC26X2_auxISR                                                 
+00000b31  UART2_open                                                         
+00000cbd  UART2_writeTimeoutBlocking                                         
+00000e29  Power_sleep                                                        
+00000f81  I2C_open                                                           
+000010bd  I2C_transferTimeout                                                
+000011e3  Board_initHook                                                     
+000011e5  Power_init                                                         
+000012fd  UART2_writeTimeoutNonblocking                                      
+00001415  PowerCC26X2_calibrate                                              
+00001625  GPIO_init                                                          
+0000181d  UART2Support_dmaStartRx                                            
+000019f1  NOROM_SysCtrlStandby                                               
+00001ad1  PowerCC26XX_standbyPolicy                                          
+00001bad  NOROM_SetupTrimDevice                                              
+00001d4d  SwiP_construct                                                     
+00001e11  UART2Support_dmaStartTx                                            
+00001f8d  GPIO_setConfigAndMux                                               
+0000203d  Power_setDependency                                                
+0000219d  __udivmoddi4                                                       
+0000224d  Power_releaseDependency                                            
+000022f9  ClockP_workFuncDynamic                                             
+0000243d  TimerP_construct                                                   
+000024dd  SemaphoreP_pend                                                    
+00002575  SwiP_dispatch                                                      
+00002605  UART2Support_dmaStopTx                                             
+00002685  ClockP_startup                                                     
+00002701  HwiP_construct                                                     
+0000277d  NOROM_SysCtrlSetRechargeBeforePowerDown                            
+000027f5  PowerCC26X2_updateSubSecInc                                        
+00002869  __TI_decompress_lzss                                               
+000028dd  ClockP_start                                                       
+0000294d  I2CSupport_primeTransfer                                           
+00002a29  ClockP_walkQueueDynamic                                            
+00002a91  UART2Support_dmaStopRx                                             
+00002af9  NOROM_OSCHF_AttemptToSwitchToXosc                                  
+00002b5d  PowerCC26X2_initiateCalibration                                    
+00002bc1  UDMACC26XX_open                                                    
+00002c25  SwiP_post                                                          
+00002c81  ClockP_usleep                                                      
+00002d2d  Board_shutDownExtFlash                                             
+00002d7d  SemaphoreP_construct                                               
+00002e1d  Board_sendExtFlashByte                                             
+00002e6b  I2C_init                                                           
+00002e6d  NOROM_ChipInfo_GetHwRevision                                       
+00002f05  ClockP_construct                                                   
+00002f4d  TimerP_start                                                       
+00002f95  RingBuf_put                                                        
+00002fdb  SemaphoreP_destruct                                                
+00002fdd  GPIO_hwiIntFxn                                                     
+00003021  NOROM_PRCMPowerDomainsAllOff                                       
+00003065  NOROM_PRCMPowerDomainsAllOn                                        
+000030a9  PowerCC26X2_RCOSC_clockFunc                                        
+000030e9  PowerCC26X2_setAclkRefSrc                                          
+00003129  SemaphoreP_post                                                    
+00003169  GPIO_resetConfig                                                   
+000031a5  NOROM_OSC_HPOSCRelativeFrequencyOffsetGet                          
+000031e1  PowerCC26X2_setTdcClkSrc24M                                        
+00003291  NOROM_AUXSYSIFOpModeChange                                         
+000032c9  NOROM_OSCHF_SwitchToRcOscTurnOffXosc                               
+00003301  NOROM_SysCtrlIdle                                                  
+00003371  PowerCC26X2_oscDisableQualifiers                                   
+000033a9  RingBuf_putAdvance                                                 
+000033e1  SwiP_restore                                                       
+00003419  __TI_auto_init_nobinit_nopinit                                     
+00003451  PowerCC26X2_setSubSecIncToXoscLf                                   
+00003485  Power_releaseConstraint                                            
+000034b9  TimerP_getCurrentTick                                              
+000034ed  UART2Support_sendData                                              
+00003587  __aeabi_ldiv0                                                      
+00003589  Board_wakeUpExtFlash                                               
+000035b9  ClockP_getTicksUntilInterrupt                                      
+000035e9  Power_setConstraint                                                
+00003679  _c_int00                                                           
+000036a9  RingBuf_getConsume                                                 
+000036d7  RingBuf_putPointer                                                 
+00003705  NOROM_IntRegister                                                  
+00003731  TimerP_setThreshold                                                
+000037b5  TimerP_setNextTick                                                 
+000037df  UART2Support_powerRelConstraint                                    
+00003833  I2C_cancel                                                         
+0000385b  clkFxn                                                             
+0000385d  NOROM_OSC_CapArrayAdjustWorkaround_Boot                            
+00003885  NOROM_ThisLibraryIsFor_CC13x2_CC26x2_HwRev20AndLater_HaltIfViolated
+000038d5  UART2Support_powerSetConstraint                                    
+000038fd  ClockP_getTicks                                                    
+00003921  List_put                                                           
+00003945  NOROM_OSCHF_TurnOnXosc                                             
+00003969  PowerCC26X2_writeCtrim                                             
+0000398d  PowerCC26X2_writeCtrimFract                                        
+000039b1  PowerCC26X2_writeCtrimFractEn                                      
+000039d5  PowerCC26X2_writeRtrim                                             
+000039f9  Power_registerNotify                                               
+00003a41  RingBuf_getPointer                                                 
+00003a63  TimerP_getMaxTicks                                                 
+00003a85  ClockP_add                                                         
+00003aa5  ClockP_scheduleNextTick                                            
+00003ac5  PowerCC26X2_disableTCXOQual                                        
+00003ae5  PowerCC26X2_enableTCXOQual                                         
+00003b05  SemaphoreP_constructBinary                                         
+00003b25  QueueP_put                                                         
+00003b43  UART2_writeTimeout                                                 
+00003b7d  Power_getTransitionLatency                                         
+00003b99  SwiP_disable                                                       
+00003bb5  resetISR                                                           
+00003bd1  ClockP_destruct                                                    
+00003c05  QueueP_get                                                         
+00003c21  GPIO_disableInt                                                    
+00003c39  PowerCC26XX_calibrate                                              
+00003c51  Power_idleFunc                                                     
+00003c69  TimerP_dynamicStub                                                 
+00003cb1  Board_init                                                         
+00003cdd  HwiP_inISR                                                         
+00003d05  Power_disablePolicy                                                
+00003d19  TimerP_startup                                                     
+00003d41  _args_main                                                         
+00003d55  __aeabi_uldivmod                                                   
+00003d69  HwiP_Params_init                                                   
+00003d7b  I2C_transfer                                                       
+00003d8d  TI_memcpy_small                                                    
+00003da1  __aeabi_memset                                                     
+00003da1  __aeabi_memset4                                                    
+00003da1  __aeabi_memset8                                                    
+00003dab  __aeabi_memclr                                                     
+00003dab  __aeabi_memclr4                                                    
+00003dab  __aeabi_memclr8                                                    
+00003db5  ClockP_getCpuFreq                                                  
+00003dc5  GPIO_write                                                         
+00003dd5  PowerCC26X2_oscCtlClearXtal                                        
+00003de5  PowerCC26X2_prcmEnableCacheRetention                               
+00003df5  PowerCC26X2_readCtrim                                              
+00003e05  PowerCC26X2_readCtrimFract                                         
+00003e15  PowerCC26X2_readRtrim                                              
+00003e25  PowerCC26X2_switchToTCXO                                           
+00003e35  PowerCC26XX_schedulerDisable                                       
+00003e45  Power_enablePolicy                                                 
+00003e55  RingBuf_construct                                                  
+00003e65  SwiP_Params_init                                                   
+00003e75  TimerP_Params_init                                                 
+00003e85  UART2Support_txDone                                                
+00003e95  __TI_zero_init                                                     
+00003ea5  HwiP_disable                                                       
+00003eb3  HwiP_interruptsEnabled                                             
+00003ecf  QueueP_remove                                                      
+00003edd  UART2_write                                                        
+00003f07  TI_memset_small                                                    
+00003f15  __TI_decompress_none                                               
+00003f25  ClockP_doTick                                                      
+00003f31  ClockP_getSystemTickPeriod                                         
+00003f3d  HwiP_disableInterrupt                                              
+00003f49  HwiP_enableInterrupt                                               
+00003f55  HwiP_post                                                          
+00003f61  I2C_Params_init                                                    
+00003f79  PowerCC26X2_oscClockSourceGet                                      
+00003f85  PowerCC26X2_setPeriphDeepSleepEnable                               
+00003f91  PowerCC26X2_sysCtrlGetResetSource                                  
+00003f9d  PowerCC26X2_sysCtrlUpdateVoltageRegulator                          
+00003fa9  PowerCC26XX_schedulerRestore                                       
+00003fb5  Power_getConstraintMask                                            
+00003fc1  QueueP_empty                                                       
+00003fcd  TimerP_getCount64                                                  
+00003fd9  UART2Support_disableTx                                             
+00003fe5  UART2Support_enableTx                                              
+00003ff1  UART2_Params_init                                                  
+00003ffd  ClockP_Params_init                                                 
+00004000  __SYSMEM_SIZE                                                      
+0000401b  PowerCC26X2_sysCtrlStandby                                         
+00004025  UDMACC26XX_hwiIntFxn                                               
+0000402f  HwiP_restore                                                       
+0000403f  I2CSupport_controllerFinish                                        
+00004047  NOROM_CPUcpsid                                                     
+0000404f  NOROM_CPUcpsie                                                     
+00004057  PowerCC26X2_oschfTrySwitchToXosc                                   
+0000405f  ClockP_stop                                                        
+00004065  GPIO_setConfig                                                     
+0000406b  I2CSupport_powerRelConstraint                                      
+00004071  I2CSupport_powerSetConstraint                                      
+00004077  NOROM_CPUdelay                                                     
+0000407d  NOROM_CPUprimask                                                   
+00004089  QueueP_init                                                        
+0000408f  abort                                                              
+00004095  ClockP_isActive                                                    
+00004099  ClockP_setTimeout                                                  
+0000409c  C$$EXIT                                                            
+0000409d  HOSTexit                                                           
+000040a1  HwiP_enable                                                        
+000040a5  NoRTOS_start                                                       
+000040a9  PowerCC26X2_oschfSwitchToRcosc                                     
+000040ad  PowerCC26X2_sysCtrlIdle                                            
+000040b1  PowerCC26X2_turnOnXosc                                             
+000040b5  QueueP_head                                                        
+000040b9  QueueP_next                                                        
+000040bd  RingBuf_getCount                                                   
+000040c1  _system_pre_init                                                   
+000040cd  usleep                                                             
+000040d1  __aeabi_memcpy                                                     
+000040d1  __aeabi_memcpy4                                                    
+000040d1  __aeabi_memcpy8                                                    
+0000412c  resourceDB                                                         
+00004844  UART2_defaultParams                                                
+00004940  i2cCC26xxHWAttrs                                                   
+00004970  PowerCC26X2_config                                                 
+000049f3  GPIO_pinLowerBound                                                 
+000049f4  GPIO_config                                                        
+00004a04  I2C_defaultParams                                                  
+00004a9b  GPIO_pinUpperBound                                                 
+00004a9c  I2C_config                                                         
+00004aa4  UART2_config                                                       
+00004aac  UDMACC26XX_config                                                  
+00004acc  udmaCC26XXHWAttrs                                                  
+00004b0e  I2C_count                                                          
+00004b0f  UART2_count                                                        
+00004b10  __c_args__                                                         
+00004b7c  __TI_Handler_Table_Base                                            
+00004b88  __TI_Handler_Table_Limit                                           
+00004bc0  __TI_CINIT_Base                                                    
+00004c00  __TI_CINIT_Limit                                                   
+00004c00  __TI_CINIT_Warm                                                    
+00057fa8  __ccfg                                                             
+20000000  __start___llvm_prf_bits                                            
+20000000  __start___llvm_prf_cnts                                            
+20000000  __stop___llvm_prf_bits                                             
+20000000  __stop___llvm_prf_cnts                                             
+20000000  uart2CC26X2Objects                                                 
+20000170  i2cCC26xxObjects                                                   
+20000358  gpioCallbackFunctions                                              
+200003d4  gpioUserArgs                                                       
+20000490  udmaCC26XXObject                                                   
+200004d0  PowerCC26X2_module                                                 
+2000071c  gpioPinConfigs                                                     
+20000814  HwiP_swiPIntNum                                                    
+20000820  SemaphoreP_defaultParams                                           
+20000828  _hposcCoeffs                                                       
+2000083c  ClockP_tickPeriod                                                  
+20001a50  _sys_memory                                                        
+20013c00  __stack                                                            
+20014000  __STACK_END                                                        
+ffffffff  __TI_pprof_out_hndl                                                
+ffffffff  __TI_prof_data_size                                                
+ffffffff  __TI_prof_data_start                                               
+ffffffff  __binit__                                                          
+ffffffff  binit                                                              
+UNDEFED   ITM_flush                                                          
+UNDEFED   ITM_restore                                                        
+UNDEFED   __mpu_init                                                         
+UNDEFED   _system_post_cinit                                                 
+
+[259 symbols]

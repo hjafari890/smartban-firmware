@@ -1,0 +1,70 @@
+﻿// @cliArgs --board /ti/boards/CC26X2R1_LAUNCHXL --rtos nortos
+
+/* ======== Kernel Configuration ======== */
+system.getScript("kernel_config_release.syscfg.js");
+
+/* ======== UART ======== */
+var UART2 = scripting.addModule("/ti/drivers/UART2");
+var uart2 = UART2.addInstance();
+uart2.$hardware = system.deviceData.board.components.XDS110UART;
+uart2.$name = "CONFIG_UART2_0";
+
+/* ======== SPI ======== */
+var SPI = scripting.addModule("/ti/drivers/SPI");
+var spi = SPI.addInstance();
+spi.$name = "CONFIG_SPI_0";
+spi.spi.sclkPin.$assign = "DIO_10";
+spi.spi.mosiPin.$assign = "DIO_9";
+spi.spi.misoPin.$assign = "DIO_8";
+
+/* ======== GPIOs ======== */
+var GPIO = scripting.addModule("/ti/drivers/GPIO");
+
+// ADXL362 Chip Select (DIO 15)
+var gpioImuCs = GPIO.addInstance();
+gpioImuCs.$name = "CONFIG_GPIO_IMU_CS";
+gpioImuCs.gpioPin.$assign = "DIO_15";
+gpioImuCs.mode = "Output";
+gpioImuCs.initialOutputState = "High";
+
+// ADXL362 Power Discharge Switch Q1 Gate (DIO 18) - Keep LOW for normal operation
+var gpioImuSw = GPIO.addInstance();
+gpioImuSw.$name = "CONFIG_GPIO_IMU_SW";
+gpioImuSw.gpioPin.$assign = "DIO_18";
+gpioImuSw.mode = "Output";
+gpioImuSw.initialOutputState = "Low";
+
+// ADS1292R Chip Select (DIO 11) - Deselected HIGH to isolate shared SPI bus
+var gpioEcgCs = GPIO.addInstance();
+gpioEcgCs.$name = "CONFIG_GPIO_ECG_CS";
+gpioEcgCs.gpioPin.$assign = "DIO_11";
+gpioEcgCs.mode = "Output";
+gpioEcgCs.initialOutputState = "High";
+
+// ADXL362 Interrupt 1 (DIO 26, J1 Pin 7)
+var gpioImuInt1 = GPIO.addInstance();
+gpioImuInt1.$name = "CONFIG_GPIO_IMU_INT1";
+gpioImuInt1.gpioPin.$assign = "DIO_26";
+gpioImuInt1.mode = "Input";
+gpioImuInt1.pull = "Pull Up";
+
+// ADXL362 Interrupt 2 (DIO 27, J1 Pin 9)
+var gpioImuInt2 = GPIO.addInstance();
+gpioImuInt2.$name = "CONFIG_GPIO_IMU_INT2";
+gpioImuInt2.gpioPin.$assign = "DIO_27";
+gpioImuInt2.mode = "Input";
+gpioImuInt2.pull = "Pull Up";
+
+// 1.8V Domain Enable (DIO 21)
+var gpio1v8 = GPIO.addInstance();
+gpio1v8.$name = "CONFIG_GPIO_1V8_EN";
+gpio1v8.gpioPin.$assign = "DIO_21";
+gpio1v8.mode = "Output";
+gpio1v8.initialOutputState = "High";
+
+// PCA9306 Level Shifter Enable (DIO 30)
+var gpioI2cEn = GPIO.addInstance();
+gpioI2cEn.$name = "CONFIG_GPIO_I2C_EN";
+gpioI2cEn.gpioPin.$assign = "DIO_30";
+gpioI2cEn.mode = "Output";
+gpioI2cEn.initialOutputState = "High";

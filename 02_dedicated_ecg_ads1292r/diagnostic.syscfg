@@ -1,0 +1,97 @@
+// @cliArgs --board /ti/boards/CC26X2R1_LAUNCHXL --rtos nortos
+
+system.getScript("kernel_config_release.syscfg.js");
+
+/* UART */
+var UART2 = scripting.addModule("/ti/drivers/UART2");
+var uart2 = UART2.addInstance();
+uart2.$hardware = system.deviceData.board.components.XDS110UART;
+uart2.$name = "CONFIG_UART2_0";
+
+/* I2C (for WCH CH455H 7-Segment Display & LED Bar on BAN Shield) */
+var I2C = scripting.addModule("/ti/drivers/I2C");
+var i2c = I2C.addInstance();
+i2c.$name = "CONFIG_I2C_0";
+i2c.i2c.sclPin.$assign = "DIO_4";
+i2c.i2c.sdaPin.$assign = "DIO_5";
+
+/* SPI */
+var SPI = scripting.addModule("/ti/drivers/SPI");
+var spi = SPI.addInstance();
+spi.$name = "CONFIG_SPI_0";
+spi.spi.sclkPin.$assign = "DIO_10";
+spi.spi.mosiPin.$assign = "DIO_9";
+spi.spi.misoPin.$assign = "DIO_8";
+
+/* GPIOs */
+var GPIO = scripting.addModule("/ti/drivers/GPIO");
+
+// 1.8V LDO Enable (DIO 21)
+var gpio1v8 = GPIO.addInstance();
+gpio1v8.$name = "CONFIG_GPIO_1V8_EN";
+gpio1v8.gpioPin.$assign = "DIO_21";
+gpio1v8.mode = "Output";
+gpio1v8.initialOutputState = "High";
+
+// I2C Level Shifter Enable (DIO 30)
+var gpioI2cEn = GPIO.addInstance();
+gpioI2cEn.$name = "CONFIG_GPIO_I2C_EN";
+gpioI2cEn.gpioPin.$assign = "DIO_30";
+gpioI2cEn.mode = "Output";
+gpioI2cEn.initialOutputState = "High";
+
+// ADXL362 CS (DIO 15) - hold HIGH to isolate SPI bus
+var gpioImuCs = GPIO.addInstance();
+gpioImuCs.$name = "CONFIG_GPIO_IMU_CS";
+gpioImuCs.gpioPin.$assign = "DIO_15";
+gpioImuCs.mode = "Output";
+gpioImuCs.initialOutputState = "High";
+
+// ADS1292R Chip Select (DIO 11)
+var gpioEcgCs = GPIO.addInstance();
+gpioEcgCs.$name = "CONFIG_GPIO_ECG_CS";
+gpioEcgCs.gpioPin.$assign = "DIO_11";
+gpioEcgCs.mode = "Output";
+gpioEcgCs.initialOutputState = "High";
+
+// ADS1292R Power Down/Reset (DIO 22)
+var gpioEcgPwdn = GPIO.addInstance();
+gpioEcgPwdn.$name = "CONFIG_GPIO_ECG_PWDN";
+gpioEcgPwdn.gpioPin.$assign = "DIO_22";
+gpioEcgPwdn.mode = "Output";
+gpioEcgPwdn.initialOutputState = "High";
+
+// ADS1292R Start (DIO 24)
+var gpioEcgStart = GPIO.addInstance();
+gpioEcgStart.$name = "CONFIG_GPIO_ECG_START";
+gpioEcgStart.gpioPin.$assign = "DIO_24";
+gpioEcgStart.mode = "Output";
+gpioEcgStart.initialOutputState = "Low";
+
+// ADS1292R DRDY (DIO 23)
+var gpioEcgDrdy = GPIO.addInstance();
+gpioEcgDrdy.$name = "CONFIG_GPIO_ECG_DRDY";
+gpioEcgDrdy.gpioPin.$assign = "DIO_23";
+gpioEcgDrdy.mode = "Input";
+gpioEcgDrdy.pull = "Pull Up";
+
+// IMU Power Switch (DIO 18) - held LOW
+var gpioImuSw = GPIO.addInstance();
+gpioImuSw.$name = "CONFIG_GPIO_IMU_SW";
+gpioImuSw.gpioPin.$assign = "DIO_18";
+gpioImuSw.mode = "Output";
+gpioImuSw.initialOutputState = "Low";
+
+// Red LED (DIO 6)
+var gpioLedRed = GPIO.addInstance();
+gpioLedRed.$name = "CONFIG_GPIO_LED_RED";
+gpioLedRed.gpioPin.$assign = "DIO_6";
+gpioLedRed.mode = "Output";
+gpioLedRed.initialOutputState = "Low";
+
+// Green LED (DIO 7)
+var gpioLedGreen = GPIO.addInstance();
+gpioLedGreen.$name = "CONFIG_GPIO_LED_GREEN";
+gpioLedGreen.gpioPin.$assign = "DIO_7";
+gpioLedGreen.mode = "Output";
+gpioLedGreen.initialOutputState = "Low";

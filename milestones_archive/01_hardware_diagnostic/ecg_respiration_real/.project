@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>ecg_respiration_real</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.cdt.managedbuilder.core.genmakebuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.ti.ccstudio.core.ccsNature</nature>
+		<nature>org.eclipse.cdt.core.cnature</nature>
+		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
+		<nature>org.eclipse.cdt.core.ccnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>cc13x2_cc26x2_nortos.cmd</name>
+			<type>1</type>
+			<location>C:/Users/hjafa/OneDrive/Desktop/shield cc2650/firmware/05_ecg_respiration_real/cc13x2_cc26x2_nortos.cmd</location>
+		</link>
+		<link>
+			<name>diagnostic.syscfg</name>
+			<type>1</type>
+			<location>C:/Users/hjafa/OneDrive/Desktop/shield cc2650/firmware/05_ecg_respiration_real/diagnostic.syscfg</location>
+		</link>
+		<link>
+			<name>main.c</name>
+			<type>1</type>
+			<location>C:/Users/hjafa/OneDrive/Desktop/shield cc2650/firmware/05_ecg_respiration_real/main.c</location>
+		</link>
+	</linkedResources>
+</projectDescription>
