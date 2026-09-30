@@ -115,6 +115,89 @@ Contains all earlier iterative builds (v01 to v11), including initial pinout adj
 
 ---
 
+## 🏛️ System Architecture and Software Engineering
+
+The system is architected as an end-to-end telemetry pipeline comprising embedded real-time firmware on the CC2652R1 and a desktop visualization workstation. The entire data path is built around strict deterministic timing, bus mutual exclusion, and thread decoupling:
+
+```mermaid
+flowchart TD
+    subgraph Hardware ["Hardware Shield Layer"]
+        ADS["ADS1292R ECG Front-End (250 Hz DRDY)"]
+        IMU["ADXL362 3-Axis Accelerometer"]
+        ENV["BME690, OPT4041, VCNL4040, MLX90632"]
+    end
+
+    subgraph Firmware ["TI-RTOS7 Preemptive Kernel (CC2652R1)"]
+        direction TB
+        SPIMutex["SPI Bus Arbiter (Mutex)<br/>Mode 1 (ADS) vs Mode 0 (IMU)"]
+        TaskECG["ECG Acquisition Task<br/>(Priority 4, 250 Hz ISR Wakeup)"]
+        TaskIMU["Motion Dynamics Task<br/>(Priority 3, Periodic 50 Hz)"]
+        TaskENV["Environmental Polling Task<br/>(Priority 1, I2C Fast Mode 400 kHz)"]
+        RingBuf["Thread-Safe Lock-Free Ring Buffers"]
+        TaskMAC["SmartBAN Telemetry and MAC Task<br/>(Priority 2, ETSI Superframe Formatting)"]
+
+        ADS -->|SPI Mode 1| SPIMutex
+        IMU -->|SPI Mode 0| SPIMutex
+        SPIMutex --> TaskECG
+        SPIMutex --> TaskIMU
+        ENV --> TaskENV
+        TaskECG --> RingBuf
+        TaskIMU --> RingBuf
+        TaskENV --> RingBuf
+        RingBuf --> TaskMAC
+    end
+
+    subgraph Transport ["Telemetry Channels"]
+        TaskMAC -->|UART 115200 Baud| DesktopGUI["Desktop Python Workstation<br/>(sensor_gui.py)"]
+        TaskMAC -->|BLE 2.4 GHz Advertising| AndroidApp["Android Companion App<br/>(Kotlin + Jetpack Compose)"]
+    end
+
+    subgraph Workstation ["Desktop Telemetry Workstation Architecture"]
+        ReaderThread["Non-Blocking Serial Ingestion Thread"]
+        DataQueue["Thread-Safe Queue"]
+        DSP["Cascaded IIR Biquad Filters<br/>(0.5 Hz HPF + 40 Hz LPF + 50/60 Hz Notch)"]
+        PanTompkins["Pan-Tompkins QRS R-Peak Detector"]
+        AttitudeMath["Gravity Vector Pitch/Roll Trigonometry"]
+        UIComposition["Windows DWM GPU-Accelerated Tkinter UI (30 FPS)"]
+
+        DesktopGUI --> ReaderThread
+        ReaderThread --> DataQueue
+        DataQueue --> DSP
+        DSP --> PanTompkins
+        DataQueue --> AttitudeMath
+        PanTompkins --> UIComposition
+        AttitudeMath --> UIComposition
+    end
+```
+
+### 1. Embedded Firmware Software Engineering (TI-RTOS7)
+
+The microcontroller firmware is engineered on the SimpleLink TI-RTOS7 real-time multitasking kernel:
+
+- **Preemptive Priority Scheduling**: Tasks operate under deterministic priorities to guarantee zero sample loss on clinical biopotentials:
+  - **ECG Task (Priority 4)**: Woken up by the hardware DRDY interrupt at 250 Hz. Reads 9-byte SPI packets (24-bit status word plus two 24-bit conversion channels) in under 20 microseconds.
+  - **Motion Task (Priority 3)**: Periodically reads 3-axis acceleration vectors and computes dynamic activity markers.
+  - **Telemetry and MAC Task (Priority 2)**: Encapsulates sensor payloads into ETSI TS 103 326 SmartBAN superframes, dynamically routing between scheduled periodic access and contention access bursts.
+  - **Environmental Task (Priority 1)**: Polls slow-changing ambient sensors (BME690 gas, temperature, humidity, pressure, OPT4041 ambient lux, MLX90632 far-infrared) over I2C at 400 kHz without stalling time-critical tasks.
+- **Dynamic SPI Bus Arbiter**: The ADS1292R requires SPI Mode 1 (CPOL=0, CPHA=1), while the ADXL362 requires SPI Mode 0 (CPOL=0, CPHA=0). An RTOS mutex-protected bus driver reconfigures clock phase dynamically between sensor transactions, ensuring neither device receives corrupted clock edges.
+- **Lock-Free Concurrency**: Data exchange between the high-frequency interrupt service routines and lower-priority communication tasks uses lock-free ring buffers, avoiding unbounded mutex blocking and priority inversion.
+
+### 2. Desktop Telemetry GUI Engineering (`sensor_gui.py`)
+
+The companion Python workstation is a multi-threaded telemetry suite built for low-latency bio-signal monitoring:
+
+- **Decoupled Producer-Consumer Concurrency**: A dedicated background thread continuously reads and validates serial UART frames at 115200 baud, pushing parsed frames into a thread-safe queue. The rendering loop runs decoupled at a smooth 30 FPS, preventing UI lag from ever blocking the incoming serial stream.
+- **Hardware GPU Acceleration and Timer Precision**: Uses Windows multimedia timer APIs (`timeBeginPeriod(1)`) to obtain 1.0 ms scheduler precision, eliminating frame judder. Per-Monitor DPI Awareness V2 is enabled to leverage the Windows Desktop Window Manager (DWM) for GPU-accelerated canvas compositing.
+- **3-Stage Cascaded DSP Filter Pipeline**: Raw 250 Hz ADC microvolt samples pass through Direct Form II Transposed IIR biquad filters:
+  - 0.5 Hz 2nd-order highpass filter: Removes baseline wander caused by subject respiration and electrode movement.
+  - 40 Hz 2nd-order Butterworth lowpass filter: Attenuates high-frequency muscle tremor (EMG) artifacts and RF noise.
+  - 50/60 Hz notch filter: Rejects AC mains interference while preserving the cardiac frequency spectrum.
+- **Real-Time QRS Detection**: An integrated Pan-Tompkins algorithm applies derivative filtering, squaring, and moving-window integration with dual adaptive signal and noise thresholds to detect R-peaks, calculate instantaneous heart rate (BPM), and compute RR intervals.
+- **3D Artificial Horizon and Posture Instrumentation**: Trigonometrically decomposes 3-axis accelerometer gravity vectors to display live pitch, roll, and tilt angles on a graphical attitude indicator, tracking patient posture in real time.
+- **Complete Sensor Telemetry Suite**: Displays environmental status (BME690 air quality index, pressure, humidity, temperature), optical measurements (OPT4041 lux, VCNL4040 proximity, MLX90632 IR skin temperature), and provides integrated CSV logging for data replay.
+
+---
+
 ## ⚡ Quick Flash: No CCS Required
 
 If you want to flash and run the pre-built firmware right away:
