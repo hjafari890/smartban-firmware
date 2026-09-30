@@ -26,9 +26,9 @@ The workstation plots live 250 Hz biopotential waveforms, R-peak markers, 3-axis
 
 The project includes a standalone native Android application (`android_app/`) that receives and displays live telemetry wirelessly over Bluetooth Low Energy:
 
-- **Zero-Pairing Wireless Streaming**: Listens for 31-byte ETSI TS 103 326 SmartBAN advertising frames (`ADV_NONCONN_IND`) broadcast directly from the CC2652R1 antenna under manufacturer ID `0x53, 0x42` ("SB"). No Bluetooth pairing, PIN codes, or manual handshakes are needed.
+- **Wireless Telemetry**: Captures live SmartBAN telemetry broadcast directly from the CC2652R1 over Bluetooth Low Energy.
 - **Cardiac Electrophysiology**: Real-time heart rate (BPM), RR intervals, heart rate variability (HRV SDNN), and instantaneous visual arrhythmia warnings.
-- **Edge-AI TinyML Beat Classifier**: Shows the real-time on-chip AAMI EC57 classification results (Normal [N], Premature Ventricular Contraction [V], Supraventricular [S], Fusion [F], Noise [Q]) executed directly on the microcontroller in 30 microseconds.
+- **Edge-AI TinyML Beat Classifier**: Real-time on-chip AAMI EC57 cardiac beat classification (Normal [N], Premature Ventricular Contraction [V], Supraventricular [S], Fusion [F], Noise [Q]).
 - **Biometrics and Environment**: Dual-source respiration rate (derived from thoracic impedance and ECG respiration), skin temperature, real-time posture classification (standing, sitting, supine, walking), and fall alerts.
 - **SmartBAN TDMA and 5G Network Slicing**: Visualizes the 8-slot TDMA superframe (Scheduled Access S0 to S6 versus Contention Access CAP) and shows dynamic routing between high-efficiency 5G-mMTC (1 Hz, 99.03% bandwidth reduction) and low-latency 5G-URLLC (<1 ms emergency response).
 - **Interactive Remote Simulation**: Includes an on-screen trigger to simulate a 5-second PVC arrhythmia event over the air, showing instant switching from 5G-mMTC to 5G-URLLC contention slots.
@@ -49,7 +49,7 @@ The system consists of a Texas Instruments CC2652R1 LaunchPad paired with a cust
 
 - **ADS1292R** (Texas Instruments): 24-bit 2-channel low-power analog front-end for ECG and respiration pneumography.
 - **ADXL362** (Analog Devices): Ultra-low-power 3-axis MEMS accelerometer with integrated autonomous motion detection.
-- **BME680 / BME690** (Bosch Sensortec): Environmental sensor measuring gas resistance (VOC), barometric pressure, relative humidity, and ambient temperature.
+- **BME690** (Bosch Sensortec): Environmental sensor measuring gas resistance (VOC), barometric pressure, relative humidity, and ambient temperature.
 - **MAX30102** (Analog Devices / Maxim Integrated): High-sensitivity optical pulse oximeter and heart-rate sensor.
 - **MAX32664** (Analog Devices / Maxim Integrated): Ultra-low-power biometric sensor hub controller with embedded health algorithms.
 - **VCNL4040** (Vishay): Integrated proximity sensor and high-precision ambient light sensor.
@@ -81,13 +81,13 @@ If you are new to the project, here is how the repository is structured:
 ├── 05_all_in_one_baremetal/            # Multi-sensor integration on bare metal (No-RTOS)
 ├── 06_final_tirtos_all_in_one/         # Base TI-RTOS7 multi-tasking firmware
 ├── android_app/                        # Native Android telemetry app (Kotlin + Jetpack Compose + APK)
-└── milestones_archive/                 # Earlier milestone builds (v01 to v11) and reference drivers
+└── archive/                            # Earlier milestone builds (v01 to v11) and reference drivers
 ```
 
 ### 1. [01_final_firmware_v12_stable/](01_final_firmware_v12_stable/) (Recommended)
 This is the main, fully working firmware. It runs on TI-RTOS7 and includes:
 - **Live 250 Hz hardware ECG streaming**: True physical microvolt samples broadcast over BLE advertising frames.
-- **On-chip TinyML neural network**: An 8-bit quantized classifier that identifies cardiac arrhythmia types (AAMI EC57 classes N, S, V, F, Q) in under 30 microseconds right on the microcontroller.
+- **On-chip TinyML neural network**: An 8-bit quantized classifier that identifies cardiac arrhythmia types (AAMI EC57 classes N, S, V, F, Q) directly on the microcontroller.
 - **SmartBAN adaptive MAC**: An adaptive protocol (ETSI TS 103 326) that drops radio bandwidth by 99% during normal heart rhythms and bursts full data only when an irregular beat or fall occurs.
 - **All sensors active**: Live ECG, IMU motion, and environmental data.
 - **Companion tools**: Works directly with `sensor_gui.py` and the native Android app.
@@ -110,83 +110,41 @@ The foundational TI-RTOS7 firmware. It sets up preemptive tasks, protects the sh
 ### 7. [android_app/](android_app/)
 The companion Android mobile app built with Kotlin and Jetpack Compose. Provides real-time over-the-air ECG viewing, TinyML classification status, and 5G network slicing metrics on your smartphone. Includes complete source code, Gradle build files, and a pre-compiled ready-to-run APK.
 
-### 8. [milestones_archive/](milestones_archive/)
+### 8. [archive/](archive/)
 Contains all earlier iterative builds (v01 to v11), including initial pinout adjustments, PPG experiments, and test scripts. Preserved so you can trace how the system developed step by step.
-
----
-
-## 🛠️ Building and Running in Code Composer Studio (CCS)
-
-If you want to view, compile, or debug the C source code directly in Texas Instruments Code Composer Studio:
-
-### Requirements
-- **Code Composer Studio**: CCS version 12.x or CCS Theia.
-- **Compiler Toolchain**: `tiarmclang` (version 5.1.1.LTS or compatible).
-- **Software Development Kit**: SimpleLink CC13xx and CC26xx SDK version 8.33.x.
-- **System Configuration Tool**: SysConfig 1.21.x or later (bundled with CCS).
-
-### Step-by-Step CCS Workflow
-
-1. **Open Code Composer Studio**:
-   - Launch CCS and choose your preferred workspace directory.
-
-2. **Import the Project**:
-   - Go to **File -> Import...**
-   - Expand **Code Composer Studio** and choose **CCS Projects**.
-   - Click **Browse...** and select the firmware directory you want to run (for example, `01_final_firmware_v12_stable` or `06_final_tirtos_all_in_one`).
-   - Check the discovered project box and click **Finish**.
-
-3. **Build the Project**:
-   - Select the project in the **Project Explorer** pane.
-   - Click **Project -> Build Project** (or click the Hammer icon on the toolbar).
-   - CCS will invoke `tiarmclang` and generate the binary output (`all_in_one.hex` and `.out`).
-
-4. **Connect the Hardware**:
-   - Connect the Texas Instruments CC2652R1 LaunchPad to your computer using a micro-USB cable.
-   - The on-board XDS110 debugger will enumerate automatically.
-
-5. **Flash and Debug**:
-   - Click the green **Debug** icon (bug symbol) or press `F11`.
-   - CCS will automatically connect to the on-board XDS110 debugger, erase the required flash pages, program the binary, and halt at the entry point of `main()`.
-   - Press **Resume** (`F8`) to begin real-time firmware execution.
 
 ---
 
 ## ⚡ Quick Flash: No CCS Required
 
-If you only want to flash and run the pre-built firmware without opening CCS:
+If you want to flash and run the pre-built firmware right away:
 
-### What You Need
-1. TI CC2652R1 LaunchPad plugged in through USB.
-2. Python 3.9+ with `pyserial`, `numpy`, and `pyqtgraph` (or `matplotlib`).
-3. UniFlash or TI SmartRF Flash Programmer 2 (or run the provided Python script).
-
-### Flash in One Step
-Each project directory includes a pre-compiled `.hex` binary and a helper script:
-
-```bash
-cd 01_final_firmware_v12_stable
-python build_and_flash.py
-```
-
-*Note: You can also open TI UniFlash, select CC2652R1, and flash `all_in_one.hex` directly.*
-
-### Launch the Desktop GUI
-Find your LaunchPad serial port (for example, `COM3` on Windows) and run:
-
-```bash
-cd 01_final_firmware_v12_stable
-python sensor_gui.py --port COM3 --baud 115200
-```
-
-### Install the Android Mobile App
-To install the Android application on your smartphone:
-1. Connect your Android phone to your PC via USB with USB Debugging enabled.
-2. In the `android_app` directory, run:
+1. Connect the CC2652R1 LaunchPad to your PC via USB.
+2. Flash the board using the automated script:
+   ```bash
+   cd 01_final_firmware_v12_stable
+   python build_and_flash.py
+   ```
+   *(Or flash `all_in_one.hex` directly via TI UniFlash).*
+3. Launch the desktop telemetry workstation:
+   ```bash
+   python sensor_gui.py --port COM3 --baud 115200
+   ```
+4. Optional: Install the Android mobile app:
    ```cmd
+   cd android_app
    install_apk.bat
    ```
-3. Alternatively, copy `SmartBAN_Monitor_v1.0.apk` directly to your phone and tap to install.
+
+---
+
+## 🛠️ Building with Code Composer Studio (CCS)
+
+To compile and debug from source in CCS (version 12+ or CCS Theia with `tiarmclang`):
+
+1. **Import**: Select **File -> Import... -> CCS Projects**, browse to any firmware directory (such as `01_final_firmware_v12_stable`), and click **Finish**.
+2. **Build**: Right-click the project in Project Explorer and choose **Build Project** (generates `all_in_one.hex`).
+3. **Flash / Debug**: Plug in the CC2652R1 LaunchPad, click **Debug** (`F11`), and press **Resume** (`F8`) to run.
 
 ---
 

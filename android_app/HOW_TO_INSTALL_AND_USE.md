@@ -13,7 +13,7 @@
 
 The **SmartBAN Android Telemetry Monitor** is a standalone native application that interfaces wirelessly with the CC2652R1 sensor node. It listens for periodic 1 Hz / 2 Hz 2.4 GHz BLE advertisements broadcast directly from the CC2652R1 PCB antenna, decodes the 31-byte ETSI TS 103 326 SmartBAN frame over the air, and displays real-time clinical biosignals, on-chip Int8 TinyML beat classifications, and 5G network slice status.
 
-**Zero Bluetooth Pairing Required**: Because telemetry is encoded directly into standard BLE advertising frames, the application requires **no manual Bluetooth pairing, PIN codes, or GATT connection handshakes**. It detects and streams from the node as soon as Bluetooth scanning starts.
+**Instant Connection**: The application captures telemetry directly from Bluetooth Low Energy broadcast advertisements as soon as scanning starts, with no manual pairing needed.
 
 ---
 
@@ -114,7 +114,6 @@ Once scanning starts, the app detects `"SmartBAN-Node"` and displays live teleme
      - **[S] Supraventricular Ectopic**: Orange badge.
      - **[F] Ventricular Fusion**: Orange badge.
      - **[Q] Artifact / Noise**: Muted gray badge.
-   - Confirms the exact on-chip execution latency: **30 $\mu\text{s}$ (1,440 clock cycles @ 48 MHz ARM Cortex-M4F)** with Int8 quantization.
 
 3. **Biometrics & Environment Card**:
    - **Respiration**: Live breathing rate in RPM (derived from dual-source thoracic impedance + ECG-derived respiration).
