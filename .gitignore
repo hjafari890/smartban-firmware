@@ -40,3 +40,11 @@ Desktop.ini
 *.zip
 *.tar.gz
 *.7z
+
+# Android build outputs & local config
+.gradle/
+.kotlin/
+build/
+app/build/
+local.properties
+*.apk.sha1
