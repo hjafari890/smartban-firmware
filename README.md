@@ -69,52 +69,6 @@ The system consists of a Texas Instruments CC2652R1 LaunchPad paired with a cust
 
 ---
 
-## 📁 Repository Guide
-
-If you are new to the project, here is how the repository is structured:
-
-```
-├── 01_final_firmware_v12_stable/       # Flagship working version (v12 stable, start here!)
-├── 02_dedicated_ecg_ads1292r/          # Standalone ADS1292R ECG bring-up with Python GUI
-├── 03_ecg_leadless_test/               # Leadless electrode impedance and contact test
-├── 04_dedicated_imu_adxl362/           # Standalone ADXL362 accelerometer test with 3D GUI
-├── 05_all_in_one_baremetal/            # Multi-sensor integration on bare metal (No-RTOS)
-├── 06_final_tirtos_all_in_one/         # Base TI-RTOS7 multi-tasking firmware
-├── android_app/                        # Native Android telemetry app (Kotlin + Jetpack Compose + APK)
-└── archive/                            # Earlier milestone builds (v01 to v11) and reference drivers
-```
-
-### 1. [01_final_firmware_v12_stable/](01_final_firmware_v12_stable/) (Recommended)
-This is the main, fully working firmware. It runs on TI-RTOS7 and includes:
-- **Live 250 Hz hardware ECG streaming**: True physical microvolt samples broadcast over BLE advertising frames.
-- **On-chip TinyML neural network**: An 8-bit quantized classifier that identifies cardiac arrhythmia types (AAMI EC57 classes N, S, V, F, Q) directly on the microcontroller.
-- **SmartBAN adaptive MAC**: An adaptive protocol (ETSI TS 103 326) that drops radio bandwidth by 99% during normal heart rhythms and bursts full data only when an irregular beat or fall occurs.
-- **All sensors active**: Live ECG, IMU motion, and environmental data.
-- **Companion tools**: Works directly with `sensor_gui.py` and the native Android app.
-
-### 2. [02_dedicated_ecg_ads1292r/](02_dedicated_ecg_ads1292r/)
-A clean, standalone firmware focused strictly on getting clean ECG from the ADS1292R. It handles 250 Hz DRDY interrupt sampling, internal reference settling, and real-time Pan-Tompkins QRS peak detection. Comes with its own desktop oscilloscope (`ecg_gui.py`).
-
-### 3. [03_ecg_leadless_test/](03_ecg_leadless_test/)
-A test firmware to check leadless dry-contact electrodes. It tests contact impedance and signal quality without using wet gel pads.
-
-### 4. [04_dedicated_imu_adxl362/](04_dedicated_imu_adxl362/)
-Dedicated firmware for the ADXL362 accelerometer over SPI Mode 0. It includes a boot calibration to zero out PCB mounting tilt, measures static gravity with 0.994 g accuracy, and includes an interactive 3D attitude visualizer (`gui_3d_imu.py`) plus a recorded demo video.
-
-### 5. [05_all_in_one_baremetal/](05_all_in_one_baremetal/)
-All sensors working together inside a simple bare-metal superloop (No-RTOS). Great for understanding the basic driver logic without RTOS task scheduling overhead.
-
-### 6. [06_final_tirtos_all_in_one/](06_final_tirtos_all_in_one/)
-The foundational TI-RTOS7 firmware. It sets up preemptive tasks, protects the shared SPI bus with a mutex (handling ADS1292R Mode 1 and ADXL362 Mode 0 without collisions), and passes samples through lock-free ring buffers.
-
-### 7. [android_app/](android_app/)
-The companion Android mobile app built with Kotlin and Jetpack Compose. Provides real-time over-the-air ECG viewing, TinyML classification status, and 5G network slicing metrics on your smartphone. Includes complete source code, Gradle build files, and a pre-compiled ready-to-run APK.
-
-### 8. [archive/](archive/)
-Contains all earlier iterative builds (v01 to v11), including initial pinout adjustments, PPG experiments, and test scripts. Preserved so you can trace how the system developed step by step.
-
----
-
 ## 🏛️ System Architecture and Software Engineering
 
 The system is architected as an end-to-end telemetry pipeline comprising embedded real-time firmware on the CC2652R1 and a desktop visualization workstation. The entire data path is built around strict deterministic timing, bus mutual exclusion, and thread decoupling:
@@ -195,6 +149,52 @@ The companion Python workstation is a multi-threaded telemetry suite built for l
 - **Real-Time QRS Detection**: An integrated Pan-Tompkins algorithm applies derivative filtering, squaring, and moving-window integration with dual adaptive signal and noise thresholds to detect R-peaks, calculate instantaneous heart rate (BPM), and compute RR intervals.
 - **3D Artificial Horizon and Posture Instrumentation**: Trigonometrically decomposes 3-axis accelerometer gravity vectors to display live pitch, roll, and tilt angles on a graphical attitude indicator, tracking patient posture in real time.
 - **Complete Sensor Telemetry Suite**: Displays environmental status (BME690 air quality index, pressure, humidity, temperature), optical measurements (OPT4041 lux, VCNL4040 proximity, MLX90632 IR skin temperature), and provides integrated CSV logging for data replay.
+
+---
+
+## 📁 Repository Guide
+
+If you are new to the project, here is how the repository is structured:
+
+```
+├── 01_final_firmware_v12_stable/       # Flagship working version (v12 stable, start here!)
+├── 02_dedicated_ecg_ads1292r/          # Standalone ADS1292R ECG bring-up with Python GUI
+├── 03_ecg_leadless_test/               # Leadless electrode impedance and contact test
+├── 04_dedicated_imu_adxl362/           # Standalone ADXL362 accelerometer test with 3D GUI
+├── 05_all_in_one_baremetal/            # Multi-sensor integration on bare metal (No-RTOS)
+├── 06_final_tirtos_all_in_one/         # Base TI-RTOS7 multi-tasking firmware
+├── android_app/                        # Native Android telemetry app (Kotlin + Jetpack Compose + APK)
+└── archive/                            # Earlier milestone builds (v01 to v11) and reference drivers
+```
+
+### 1. [01_final_firmware_v12_stable/](01_final_firmware_v12_stable/) (Recommended)
+This is the main, fully working firmware. It runs on TI-RTOS7 and includes:
+- **Live 250 Hz hardware ECG streaming**: True physical microvolt samples broadcast over BLE advertising frames.
+- **On-chip TinyML neural network**: An 8-bit quantized classifier that identifies cardiac arrhythmia types (AAMI EC57 classes N, S, V, F, Q) directly on the microcontroller.
+- **SmartBAN adaptive MAC**: An adaptive protocol (ETSI TS 103 326) that drops radio bandwidth by 99% during normal heart rhythms and bursts full data only when an irregular beat or fall occurs.
+- **All sensors active**: Live ECG, IMU motion, and environmental data.
+- **Companion tools**: Works directly with `sensor_gui.py` and the native Android app.
+
+### 2. [02_dedicated_ecg_ads1292r/](02_dedicated_ecg_ads1292r/)
+A clean, standalone firmware focused strictly on getting clean ECG from the ADS1292R. It handles 250 Hz DRDY interrupt sampling, internal reference settling, and real-time Pan-Tompkins QRS peak detection. Comes with its own desktop oscilloscope (`ecg_gui.py`).
+
+### 3. [03_ecg_leadless_test/](03_ecg_leadless_test/)
+A test firmware to check leadless dry-contact electrodes. It tests contact impedance and signal quality without using wet gel pads.
+
+### 4. [04_dedicated_imu_adxl362/](04_dedicated_imu_adxl362/)
+Dedicated firmware for the ADXL362 accelerometer over SPI Mode 0. It includes a boot calibration to zero out PCB mounting tilt, measures static gravity with 0.994 g accuracy, and includes an interactive 3D attitude visualizer (`gui_3d_imu.py`) plus a recorded demo video.
+
+### 5. [05_all_in_one_baremetal/](05_all_in_one_baremetal/)
+All sensors working together inside a simple bare-metal superloop (No-RTOS). Great for understanding the basic driver logic without RTOS task scheduling overhead.
+
+### 6. [06_final_tirtos_all_in_one/](06_final_tirtos_all_in_one/)
+The foundational TI-RTOS7 firmware. It sets up preemptive tasks, protects the shared SPI bus with a mutex (handling ADS1292R Mode 1 and ADXL362 Mode 0 without collisions), and passes samples through lock-free ring buffers.
+
+### 7. [android_app/](android_app/)
+The companion Android mobile app built with Kotlin and Jetpack Compose. Provides real-time over-the-air ECG viewing, TinyML classification status, and 5G network slicing metrics on your smartphone. Includes complete source code, Gradle build files, and a pre-compiled ready-to-run APK.
+
+### 8. [archive/](archive/)
+Contains all earlier iterative builds (v01 to v11), including initial pinout adjustments, PPG experiments, and test scripts. Preserved so you can trace how the system developed step by step.
 
 ---
 
